@@ -1,16 +1,20 @@
 import { FiArrowUp } from 'react-icons/fi'
-import { profile, socials } from '../../data/portfolio.js'
+import { getHomeContent, getSiteSettings } from '../../lib/contentSelectors.js'
+import { getIcon } from '../../lib/icons.js'
 
 export default function Footer() {
+  const { profile, socials } = getHomeContent()
+  const settings = getSiteSettings()
+
   return (
     <footer className="footer">
       <div>
-        <a className="brand footer-brand" href="#home"><span>HS</span><strong>Harsh Singh</strong></a>
-        <p>Building polished, accessible, high-performance web experiences.</p>
+        <a className="brand footer-brand" href="#home"><span>{settings.brandInitials}</span><strong>{profile.name}</strong></a>
+        <p>{profile.tagline}</p>
       </div>
       <div className="footer-links">
         {socials.map((social) => {
-          const Icon = social.icon
+          const Icon = getIcon(social.icon)
           return (
             <a key={social.label} href={social.href} target={social.href.startsWith('mailto:') ? undefined : '_blank'} rel="noreferrer">
               <Icon /> {social.label}
@@ -19,8 +23,8 @@ export default function Footer() {
         })}
       </div>
       <div className="footer-bottom">
-        <span>Copyright 2026 Developed by {profile.name}.</span>
-        <a href="#home" className="back-top" aria-label="Back to top"><FiArrowUp /></a>
+        <span>{settings.copyrightPrefix} {profile.copyrightYear} {settings.developedByLabel} {profile.name}.</span>
+        <a href="#home" className="back-top" aria-label={settings.footerBackToTopLabel}><FiArrowUp /></a>
       </div>
     </footer>
   )

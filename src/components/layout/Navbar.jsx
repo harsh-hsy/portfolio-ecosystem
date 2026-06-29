@@ -3,23 +3,17 @@ import { FiDownload, FiMenu, FiX } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ThemeToggle from './ThemeToggle.jsx'
-import { profile } from '../../data/portfolio.js'
+import { getNavigationContent, getProfileContent, getSiteSettings } from '../../lib/contentSelectors.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
-
-const links = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'experience', label: 'Journey' },
-  { id: 'contact', label: 'Contact' },
-]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const location = useLocation()
-  const ids = useMemo(() => links.map((link) => link.id), [])
+  const navigation = getNavigationContent()
+  const profile = getProfileContent()
+  const settings = getSiteSettings()
+  const ids = useMemo(() => navigation.map((link) => link.id), [navigation])
   const active = useScrollSpy(ids)
 
   useEffect(() => {
@@ -37,14 +31,14 @@ export default function Navbar() {
 
   return (
     <motion.header className={`navbar ${hidden ? 'is-hidden' : ''}`} initial={{ y: -80 }} animate={{ y: 0 }}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <nav className="nav-shell" aria-label="Primary navigation">
+      <a className="skip-link" href="#main-content">{settings.nav.skipLabel}</a>
+      <nav className="nav-shell" aria-label={settings.nav.ariaLabel}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <span>HS</span>
-          <strong>Harsh Singh</strong>
+          <span>{settings.brandInitials}</span>
+          <strong>{profile.name}</strong>
         </Link>
         <div className={`nav-links ${open ? 'is-open' : ''}`}>
-          {links.map((link) => (
+          {navigation.map((link) => (
             <a key={link.id} href={hrefFor(link.id)} className={active === link.id && location.pathname === '/' ? 'active' : ''} onClick={() => setOpen(false)}>
               {link.label}
             </a>
@@ -53,9 +47,9 @@ export default function Navbar() {
         <div className="nav-actions">
           <ThemeToggle />
           <a className="resume-link" href={profile.resume} target="_blank" rel="noreferrer">
-            <FiDownload /> Resume
+            <FiDownload /> {settings.nav.resumeLabel}
           </a>
-          <button className="icon-button menu-button" type="button" onClick={() => setOpen((value) => !value)} aria-label="Toggle menu">
+          <button className="icon-button menu-button" type="button" onClick={() => setOpen((value) => !value)} aria-label={settings.nav.menuToggleLabel}>
             {open ? <FiX /> : <FiMenu />}
           </button>
         </div>

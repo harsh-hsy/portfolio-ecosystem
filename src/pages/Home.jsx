@@ -11,26 +11,20 @@ import Achievements from '../components/sections/Achievements.jsx'
 import Testimonials from '../components/sections/Testimonials.jsx'
 import Contact from '../components/sections/Contact.jsx'
 import { pageTransition } from '../animations/variants.js'
-import { profile } from '../data/portfolio.js'
+import { getHomeContent } from '../lib/contentSelectors.js'
 
 export default function Home() {
+  const { profile, seo, structuredData } = getHomeContent()
+
   return (
     <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
       <Helmet>
-        <title>Harsh Singh | Frontend Developer</title>
+        <title>{seo.title}</title>
         <meta name="description" content={profile.about} />
-        <meta property="og:title" content="Harsh Singh | Frontend Developer" />
-        <meta property="og:description" content="React developer and UI engineer building accessible, responsive, high-performance web experiences." />
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: profile.fullName,
-          jobTitle: profile.role,
-          email: profile.email,
-          address: profile.location,
-          sameAs: [profile.github, profile.linkedin],
-        })}</script>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
       <Hero />
       <About />
