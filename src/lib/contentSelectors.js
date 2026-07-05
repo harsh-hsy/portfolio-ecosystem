@@ -1,26 +1,19 @@
 import { commandActions } from '../config/commands.js'
 import { publicNavigation } from '../config/navigation.js'
 import { getHomeStructuredData, getProjectSeo, siteSeo } from '../config/seo.js'
-import { achievements } from '../content/achievements.js'
-import { certificates } from '../content/certificates.js'
-import { milestones } from '../content/milestones.js'
-import { profile, socials } from '../content/profile.js'
-import { projects } from '../content/projects.js'
-import { sectionContent, stats } from '../content/sections.js'
-import { services } from '../content/services.js'
 import { siteSettings } from '../content/settings.js'
-import { skills } from '../content/skills.js'
-import { timeline } from '../content/timeline.js'
 import { uiContent } from '../content/ui.js'
 import { defaultProfile, defaultProject, defaultSettings } from './contentDefaults.js'
 import { ensureArray, withDefaults } from './contentValidation.js'
+import { getPortfolio } from '../services/storage/portfolioRepository.js'
 
 export function getSiteSettings() {
   return withDefaults(siteSettings, defaultSettings)
 }
 
 export function getProfileContent() {
-  return withDefaults(profile, defaultProfile)
+  const portfolio = getPortfolio()
+  return withDefaults(portfolio.profile, defaultProfile)
 }
 
 export function getNavigationContent() {
@@ -28,36 +21,46 @@ export function getNavigationContent() {
 }
 
 export function getHomeContent() {
+  const portfolio = getPortfolio()
+
   return {
-    profile: getProfileContent(),
-    socials: ensureArray(socials),
+    profile: withDefaults(portfolio.profile, defaultProfile),
+    socials: ensureArray(portfolio.socials),
     seo: siteSeo,
     structuredData: getHomeStructuredData(),
-    sections: sectionContent,
-    stats: ensureArray(stats),
+    sections: portfolio.sections,
+    stats: ensureArray(portfolio.stats),
   }
 }
 
 export function getAboutContent() {
+  const portfolio = getPortfolio()
+
   return {
-    profile: getProfileContent(),
-    section: sectionContent.about,
-    stats: ensureArray(stats),
+    profile: withDefaults(portfolio.profile, defaultProfile),
+    section: portfolio.sections.about,
+    stats: ensureArray(portfolio.stats),
   }
 }
 
 export function getSkillsContent() {
+  const portfolio = getPortfolio()
+
   return {
-    profile: getProfileContent(),
-    section: sectionContent.skills,
-    skills: ensureArray(skills),
+    profile: withDefaults(portfolio.profile, defaultProfile),
+    section: portfolio.sections.skills,
+    skills: ensureArray(portfolio.skills),
   }
 }
 
 export function getProjectsContent() {
+  const portfolio = getPortfolio()
+
   return {
-    section: sectionContent.projects,
-    projects: ensureArray(projects).map((project) => withDefaults(project, defaultProject)),
+    section: portfolio.sections.projects,
+    projects: ensureArray(portfolio.projects).map((project) =>
+      withDefaults(project, defaultProject),
+    ),
     ui: uiContent.projectCard,
   }
 }
@@ -73,50 +76,64 @@ export function getProjectDetailsContent(project) {
 }
 
 export function getExperienceContent() {
+  const portfolio = getPortfolio()
+
   return {
-    section: sectionContent.experience,
-    timeline: ensureArray(timeline),
+    section: portfolio.sections.experience,
+    timeline: ensureArray(portfolio.timeline),
   }
 }
 
 export function getCertificatesContent() {
+  const portfolio = getPortfolio()
+
   return {
-    section: sectionContent.certificates,
-    certificates: ensureArray(certificates),
+    section: portfolio.sections.certificates,
+    certificates: ensureArray(portfolio.certificates),
   }
 }
 
 export function getServicesContent() {
+  const portfolio = getPortfolio()
+
   return {
-    section: sectionContent.services,
-    services: ensureArray(services),
+    section: portfolio.sections.services,
+    services: ensureArray(portfolio.services),
   }
 }
 
 export function getAchievementsContent() {
+  const portfolio = getPortfolio()
+
   return {
-    section: sectionContent.achievements,
-    achievements: ensureArray(achievements),
+    section: portfolio.sections.achievements,
+    achievements: ensureArray(portfolio.achievements),
   }
 }
 
 export function getMilestonesContent() {
-  return ensureArray(milestones)
+  const portfolio = getPortfolio()
+
+  return ensureArray(portfolio.milestones ?? [])
 }
 
 export function getContactContent() {
+  const portfolio = getPortfolio()
+
   return {
-    profile: getProfileContent(),
-    socials: ensureArray(socials),
-    section: sectionContent.contact,
+    profile: withDefaults(portfolio.profile, defaultProfile),
+    socials: ensureArray(portfolio.socials),
+    section: portfolio.sections.contact,
   }
 }
 
 export function getCommandPaletteContent() {
+  const portfolio = getPortfolio()
+
   return {
     actions: ensureArray(commandActions),
-    profile: getProfileContent(),
-    projects: ensureArray(projects),
+    profile: withDefaults(portfolio.profile, defaultProfile),
+    projects: ensureArray(portfolio.projects),
     ui: uiContent.commandPalette,
   }
 }
@@ -126,8 +143,10 @@ export function getProjectCardContent() {
 }
 
 export function getNotFoundContent() {
+  const portfolio = getPortfolio()
+
   return {
     seoTitle: `Page Not Found${siteSeo.projectTitleSuffix}`,
-    section: sectionContent.notFound,
+    section: portfolio.sections.notFound,
   }
 }

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import Lenis from 'lenis'
 import { Route, Routes, useLocation } from 'react-router-dom'
@@ -10,12 +10,17 @@ import CommandPalette from './components/common/CommandPalette.jsx'
 import LoadingScreen from './components/common/LoadingScreen.jsx'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
+import ProtectedRoute from './components/admin/ProtectedRoute.jsx'
 
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin.jsx'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard.jsx'))
 
 function App() {
   const location = useLocation()
   const [loading, setLoading] = useState(true)
+  const lenisRef = useRef(null)
+  const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/dashboard')
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 900)
@@ -24,6 +29,7 @@ function App() {
 
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true })
+    lenisRef.current = lenis
     let rafId
     const raf = (time) => {
       lenis.raf(time)
@@ -33,28 +39,48 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (location.hash) {
+        const target = document.getElementById(decodeURIComponent(location.hash.slice(1)))
+        if (target) {
+          lenisRef.current?.scrollTo(target, { offset: -96, immediate: true })
+        }
+        return
+      }
+
+      lenisRef.current?.scrollTo(0, { immediate: true })
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }, 0)
+
+    return () => window.clearTimeout(timer)
+  }, [location.hash, location.pathname])
 
   return (
     <>
       <LoadingScreen show={loading} />
-      <ScrollProgress />
-      <CustomCursor />
-      <Navbar />
-      <CommandPalette />
+      {!isAdminRoute && <ScrollProgress />}
+      {!isAdminRoute && <CustomCursor />}
+      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && <CommandPalette />}
       <main id="main-content">
         <AnimatePresence mode="wait">
           <Suspense fallback={<LoadingScreen show />}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
               <Route path="/projects/:slug" element={<ProjectDetails />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </AnimatePresence>
       </main>
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </>
   )
 }

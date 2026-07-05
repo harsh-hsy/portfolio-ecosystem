@@ -10,8 +10,18 @@ export default function Services() {
     <section id="services" className="section compact-section">
       <div className="container">
         <SectionHeader eyebrow={section.eyebrow} title={section.title} />
+
         <div className="service-grid">
-          {services.map((service) => <Reveal as="article" className="service-card" key={service}><FiCheckCircle /><h3>{service}</h3></Reveal>)}
+          {services.map((service) => (
+  <Reveal
+  as="article"
+  className="service-card"
+  key={service}
+>
+  <FiCheckCircle />
+  <h3>{service}</h3>
+</Reveal>
+))}
         </div>
       </div>
     </section>
