@@ -103,8 +103,8 @@ export const sectionContent = {
     availability: 'Available for opportunities',
     panelTitle: 'Send a message and Harsh will get back soon.',
     errorMessage: 'Please complete every field.',
-    successMessage: 'Message flow opened successfully.',
-    failureMessage: 'Something went wrong. Please email Harsh directly.',
+    successMessage: 'Message sent successfully.',
+    failureMessage: 'Failed to send message.',
     submitLabel: 'Send Message',
     fields: {
       name: 'Name',

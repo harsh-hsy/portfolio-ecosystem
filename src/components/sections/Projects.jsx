@@ -16,6 +16,9 @@ export default function Projects() {
     [category, projects, query, section.allFilterLabel],
   )
 
+  console.log('Query:', query)
+console.log('Filtered:', filtered.length)
+
   return (
     <section id="projects" className="section projects-section">
       <div className="container">
@@ -26,7 +29,12 @@ export default function Projects() {
           </div>
           <label className="search-field"><FiSearch /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={section.searchPlaceholder} /></label>
         </div>
-        <motion.div className="projects-grid" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.08 }}>
+        <motion.div
+  className="projects-grid"
+  variants={stagger}
+  initial="hidden"
+  animate="visible"
+>
           {filtered.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </motion.div>
       </div>

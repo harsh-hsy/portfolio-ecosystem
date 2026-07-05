@@ -11,6 +11,7 @@ import LoadingScreen from './components/common/LoadingScreen.jsx'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 import ProtectedRoute from './components/admin/ProtectedRoute.jsx'
+import PublicRoute from './components/admin/PublicRoute.jsx'
 
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin.jsx'))
@@ -73,7 +74,7 @@ function App() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
               <Route path="/projects/:slug" element={<ProjectDetails />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/login" element={<PublicRoute><AdminLogin /></PublicRoute>} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
