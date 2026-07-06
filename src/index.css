@@ -130,7 +130,8 @@ p { margin: 0; line-height: 1.75; }
 .hero-visual { display: grid; place-items: center; }
 .portrait-shell { position: relative; width: min(420px, 100%); aspect-ratio: 1; border: 1px solid var(--border); border-radius: 32px; padding: 18px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.14)); box-shadow: var(--shadow); }
 .portrait-shell img { width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 24px; background: var(--surface); }
-.orbit-card { position: absolute; display: flex; align-items: center; gap: 8px; padding: 11px 13px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass); backdrop-filter: blur(18px); color: var(--heading); font-weight: 800; box-shadow: var(--shadow); }
+.orbit-card { position: absolute; display: flex; align-items: center; gap: 8px; padding: 12px 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--heading); font-weight: 800; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px rgba(255, 255, 255, 0.06); }
+:root[data-theme="dark"] .orbit-card { background: rgba(17, 24, 39, 0.82); border-color: rgba(255, 255, 255, 0.08); }
 .orbit-card.top { top: 12%; left: -28px; }
 .orbit-card.bottom { right: -18px; bottom: 14%; }
 .hero-strip { margin-top: 58px; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass); backdrop-filter: blur(18px); overflow: hidden; }
@@ -181,7 +182,7 @@ p { margin: 0; line-height: 1.75; }
 .project-actions a { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 11px; color: var(--heading); background: var(--surface); font-weight: 800; }
 .project-actions a:first-child { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border-color: transparent; }
 
-.timeline { position: relative; display: grid; gap: 16px; max-width: 860px; }
+.timeline { position: relative; display: grid; gap: 16px; width: 100%; }
 .timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 19px; width: 2px; background: linear-gradient(var(--primary), var(--accent)); }
 .timeline-item { position: relative; margin-left: 42px; padding: 22px; }
 .timeline-item::before { content: ""; position: absolute; left: -32px; top: 24px; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 7px rgba(59, 130, 246, 0.14); }
