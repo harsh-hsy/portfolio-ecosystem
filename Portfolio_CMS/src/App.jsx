@@ -1,5 +1,16 @@
-import AppRoutes from './routes/AppRoutes'
+import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
-export default function App() {
-  return <AppRoutes />
-}
+import AppRoutes from "./routes/AppRoutes";
+
+const App = () => {
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </HelmetProvider>
+  );
+};
+
+export default App;

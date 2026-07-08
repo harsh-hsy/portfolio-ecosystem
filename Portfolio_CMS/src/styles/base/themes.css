@@ -1,0 +1,41 @@
+/* ==========================================
+   Portfolio CMS v2
+   Theme Configuration
+========================================== */
+
+/* ---------- Light Theme ---------- */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --background: var(--bg-color);
+  --surface: var(--surface-color);
+  --card: var(--card-color);
+
+  --heading: var(--heading-color);
+  --text: var(--text-color);
+  --muted: var(--muted-color);
+
+  --border: var(--border-color);
+
+  --glass: rgba(255, 255, 255, 0.72);
+}
+
+/* ---------- Dark Theme ---------- */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #030712;
+  --surface: #111827;
+  --card: rgba(17, 24, 39, 0.72);
+
+  --heading: #f8fafc;
+  --text: #cbd5e1;
+  --muted: #94a3b8;
+
+  --border: rgba(148, 163, 184, 0.2);
+
+  --glass: rgba(255, 255, 255, 0.05);
+}

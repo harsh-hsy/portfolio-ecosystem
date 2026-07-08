@@ -1,19 +1,19 @@
 import { Outlet } from "react-router-dom";
 
-import Sidebar from "../components/layout/Sidebar";
-import Header from "../components/layout/Header";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
-import "../styles/layout.css";
+import "./DashboardLayout.css";
 
 const DashboardLayout = () => {
   return (
     <div className="dashboard-layout">
       <Sidebar />
 
-      <div className="dashboard-main">
+      <div className="dashboard-content">
         <Header />
 
-        <main className="dashboard-content">
+        <main className="dashboard-main">
           <Outlet />
         </main>
       </div>

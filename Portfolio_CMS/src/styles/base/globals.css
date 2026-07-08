@@ -1,0 +1,157 @@
+/* ==========================================
+   Portfolio CMS v2
+   Global Styles
+========================================== */
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  transition:
+    background var(--transition-normal),
+    color var(--transition-normal);
+  overflow-x: hidden;
+}
+
+/* ---------- Background Grid ---------- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+
+  background:
+    linear-gradient(rgba(37, 99, 235, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+
+  background-size: 44px 44px;
+}
+
+[data-theme="dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  background-image:
+    radial-gradient(rgba(255,255,255,.9) .7px, transparent .7px);
+
+  background-size: 42px 42px;
+
+  opacity: .06;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  width: min(var(--container-width), calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.page {
+  padding: var(--space-8);
+}
+
+.section {
+  padding-block: var(--space-16);
+}
+
+/* ---------- Utilities ---------- */
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- Glass ---------- */
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow-glass);
+}
+
+/* ---------- Card ---------- */
+
+.surface {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Animation ---------- */
+
+.fade-in {
+  animation: fadeIn .35s ease;
+}
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+
+  .container {
+    width: min(100% - 24px, var(--container-width));
+  }
+
+  .page {
+    padding: var(--space-5);
+  }
+
+}
