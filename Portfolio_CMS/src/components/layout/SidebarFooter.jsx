@@ -1,3 +1,5 @@
+import { FiExternalLink, FiLogOut } from "react-icons/fi";
+
 export default function SidebarFooter() {
   return (
     <div className="sidebar-footer">
@@ -7,11 +9,13 @@ export default function SidebarFooter() {
         rel="noopener noreferrer"
         className="sidebar-link"
       >
-        🌍 Back to Portfolio
+        <FiExternalLink size={18} />
+        <span>Back to Portfolio</span>
       </a>
 
       <button className="sidebar-link">
-        🚪 Logout
+        <FiLogOut size={18} />
+        <span>Logout</span>
       </button>
     </div>
   );

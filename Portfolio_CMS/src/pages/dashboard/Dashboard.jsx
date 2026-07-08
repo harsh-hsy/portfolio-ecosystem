@@ -1,3 +1,10 @@
-export default function Dashboard() {
-  return <h1>Dashboard</h1>
-}
+const Dashboard = () => {
+  return (
+    <>
+      <h2>Dashboard</h2>
+      <p>Welcome to your Portfolio CMS.</p>
+    </>
+  );
+};
+
+export default Dashboard;
