@@ -1,0 +1,164 @@
+.cms-sidebar {
+  width: 280px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width .25s ease;
+}
+
+.cms-sidebar.collapsed {
+  width: 76px;
+}
+
+/* ===========================
+   Top
+=========================== */
+
+.sidebar-top {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar-brand h2 {
+  font-size: 16px;
+  color: var(--heading);
+  white-space: nowrap;
+}
+
+.sidebar-toggle {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: .2s;
+}
+
+.sidebar-toggle:hover {
+  background: var(--background);
+}
+
+/* ===========================
+   Navigation
+=========================== */
+
+.sidebar-nav {
+  flex: 1;
+  padding: 18px 12px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  transition: .2s;
+  margin-bottom: 6px;
+}
+
+.sidebar-link:hover {
+  background: var(--background);
+}
+
+.sidebar-link.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.sidebar-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar-label {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* ===========================
+   Footer
+=========================== */
+
+.sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-footer-btn {
+  width: 100%;
+  height: 46px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  cursor: pointer;
+  color: var(--text);
+  transition: .2s;
+}
+
+.sidebar-footer-btn:hover {
+  background: var(--background);
+}
+
+/* ===========================
+   Collapsed
+=========================== */
+
+.cms-sidebar.collapsed .sidebar-brand,
+.cms-sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+.cms-sidebar.collapsed .sidebar-top {
+  justify-content: center;
+  padding: 0;
+}
+
+.cms-sidebar.collapsed .sidebar-nav {
+  padding: 18px 8px;
+}
+
+.cms-sidebar.collapsed .sidebar-link,
+.cms-sidebar.collapsed .sidebar-footer-btn {
+  justify-content: center;
+  padding: 0;
+}
+
+.cms-sidebar.collapsed .sidebar-toggle {
+  margin: 0;
+}

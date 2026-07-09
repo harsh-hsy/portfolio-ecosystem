@@ -4,14 +4,15 @@
   background: var(--background);
 }
 
-.dashboard-content {
+.dashboard-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-.dashboard-main {
+.dashboard-content {
   flex: 1;
-  padding: 24px;
+  padding: 32px;
+  overflow-y: auto;
 }

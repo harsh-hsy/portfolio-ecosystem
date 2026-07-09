@@ -1,9 +1,30 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* =========================
+   Base
+========================= */
 
-body {
-  font-family: Inter, Arial, sans-serif;
-}
+@import "./styles/base/reset.css";
+@import "./styles/base/variables.css";
+@import "./styles/base/themes.css";
+@import "./styles/base/typography.css";
+@import "./styles/base/globals.css";
+
+/* =========================
+   Components
+========================= */
+
+@import "./styles/components/button.css";
+@import "./styles/components/card.css";
+
+/* =========================
+   Layout
+========================= */
+
+@import "./layouts/DashboardLayout/DashboardLayout.css";
+@import "./layouts/DashboardLayout/Header.css";
+@import "./layouts/DashboardLayout/Sidebar.css";
+
+/* =========================
+   Pages
+========================= */
+
+@import "./styles/pages/dashboard.css";
