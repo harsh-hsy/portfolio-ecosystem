@@ -1,0 +1,65 @@
+/* ==========================================
+   Header
+========================================== */
+
+.header {
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: var(--header-bg);
+
+  border-bottom: 1px solid var(--border);
+
+  /* backdrop-filter: blur(16px); */
+  /* -webkit-backdrop-filter: blur(16px); */ 
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header__left {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ==========================================
+   Theme Toggle
+========================================== */
+
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  color: var(--heading);
+
+  transition: var(--transition);
+}
+
+.theme-toggle:hover {
+  background: var(--sidebar-hover);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

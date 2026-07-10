@@ -1,6 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
@@ -14,11 +14,13 @@ import Inbox from "../pages/Inbox";
 import Resume from "../pages/Resume";
 import Settings from "../pages/Settings";
 
-const AppRoutes = () => {
+function AppRoutes() {
   return (
     <Routes>
-      <Route element={<DashboardLayout />}>
-        <Route index element={<Dashboard />} />
+      <Route path="/" element={<DashboardLayout />}>
+        <Route index element={<Navigate to="/dashboard" replace />} />
+
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<Profile />} />
         <Route path="projects" element={<Projects />} />
         <Route path="skills" element={<Skills />} />
@@ -30,8 +32,10 @@ const AppRoutes = () => {
         <Route path="resume" element={<Resume />} />
         <Route path="settings" element={<Settings />} />
       </Route>
+
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
-};
+}
 
 export default AppRoutes;

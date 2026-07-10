@@ -1,30 +1,8 @@
-/* =========================
-   Base
-========================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
 
-@import "./styles/base/reset.css";
-@import "./styles/base/variables.css";
-@import "./styles/base/themes.css";
-@import "./styles/base/typography.css";
-@import "./styles/base/globals.css";
-
-/* =========================
-   Components
-========================= */
-
-@import "./styles/components/button.css";
-@import "./styles/components/card.css";
-
-/* =========================
-   Layout
-========================= */
-
-@import "./layouts/DashboardLayout/DashboardLayout.css";
-@import "./layouts/DashboardLayout/Header.css";
-@import "./layouts/DashboardLayout/Sidebar.css";
-
-/* =========================
-   Pages
-========================= */
-
-@import "./styles/pages/dashboard.css";
+@import "./styles/variables.css";
+@import "./styles/global.css";
+@import "./styles/layout.css";
+@import "./styles/sidebar.css";
+@import "./styles/header.css";
+@import "./styles/pages.css";
