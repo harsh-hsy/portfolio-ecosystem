@@ -13,6 +13,7 @@ import Achievements from "../pages/Achievements";
 import Inbox from "../pages/Inbox";
 import Resume from "../pages/Resume";
 import Settings from "../pages/Settings";
+import Account from "../pages/Account";
 
 function AppRoutes() {
   return (
@@ -31,6 +32,7 @@ function AppRoutes() {
         <Route path="inbox" element={<Inbox />} />
         <Route path="resume" element={<Resume />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="/account" element={<Account />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

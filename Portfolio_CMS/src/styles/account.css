@@ -1,0 +1,95 @@
+/* ==========================================
+   Account Page
+========================================== */
+
+.account-page {
+  display: flex;
+  flex-direction: column;
+
+  gap: 32px;
+}
+
+/* ==========================================
+   Page Header
+========================================== */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.page-title {
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+.page-description {
+  margin: 0;
+
+  color: var(--muted);
+
+  line-height: 1.7;
+}
+
+/* ==========================================
+   Account Card
+========================================== */
+
+.account-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+/* ==========================================
+   Account Layout
+========================================== */
+
+.account-page {
+  display: flex;
+  flex-direction: column;
+
+  gap: 32px;
+}
+
+/* ==========================================
+   Account Section
+========================================== */
+
+.account-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-section + .account-section {
+  margin-top: 28px;
+}
+
+.account-section__title {
+  margin: 0 0 24px;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+/* ==========================================
+   Account Actions
+========================================== */
+
+.account-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 16px;
+
+  margin-top: 12px;
+}

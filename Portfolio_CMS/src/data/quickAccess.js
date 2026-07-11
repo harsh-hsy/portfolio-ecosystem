@@ -10,7 +10,7 @@ const quickAccess = [
   title: "Account",
   description: "Manage your CMS account",
   icon: FiUser,
-  path: "/settings",
+  path: "/account",
 },
   {
     id: "inbox",
