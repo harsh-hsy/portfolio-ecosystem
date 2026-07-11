@@ -1,0 +1,415 @@
+/* ==========================================
+   Greeting Card
+========================================== */
+
+.greeting-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 32px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+}
+
+.greeting-card__title {
+  margin: 0;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+.greeting-card__description {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+/* ==========================================
+   Quick Access
+========================================== */
+
+.quick-access {
+  margin-top: 32px;
+}
+
+.section-heading {
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+/* ==========================================
+   Dashboard Widgets
+========================================== */
+
+.dashboard-widgets {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 24px;
+
+  margin-top: 32px;
+}
+
+
+/* ==========================================
+   Grid
+========================================== */
+
+.quick-access__grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+/* ==========================================
+   Card
+========================================== */
+
+.quick-access-card {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  padding: 24px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  box-shadow: var(--shadow);
+
+  color: inherit;
+
+  text-decoration: none;
+
+  transition: var(--transition);
+
+  min-height: 190px;
+}
+
+.quick-access-card:hover {
+  transform: translateY(-4px);
+
+  border-color: var(--primary);
+
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08);
+}
+
+/* ==========================================
+   Icon
+========================================== */
+
+.quick-access-card__icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: var(--sidebar-hover);
+
+  color: var(--primary);
+}
+
+/* ==========================================
+   Content
+========================================== */
+
+.quick-access-card__content {
+  flex: 1;
+}
+
+.quick-access-card__content h3 {
+  margin: 0 0 8px;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+.quick-access-card__content p {
+  margin: 0;
+
+  color: var(--muted);
+
+  line-height: 1.6;
+}
+
+/* ==========================================
+   Arrow
+========================================== */
+
+.quick-access-card__arrow {
+  align-self: flex-end;
+
+  color: var(--primary);
+
+  transition: var(--transition);
+}
+
+.quick-access-card:hover .quick-access-card__arrow {
+  transform: translateX(6px);
+}
+
+
+/* ==========================================
+   Section Heading
+========================================== */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+.section-heading--between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-link {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: var(--primary);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: var(--transition);
+}
+
+.section-link:hover {
+  gap: 10px;
+}
+
+/* ==========================================
+   Recent Messages
+========================================== */
+
+.dashboard-widget {
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================
+   Recent Messages
+========================================== */
+
+.dashboard-widget {
+  margin-top: 32px;
+
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+/* ==========================================
+   Message Card
+========================================== */
+
+.message-card {
+  padding: 18px 20px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  transition: var(--transition);
+
+  background: #ffffff;
+}
+
+.message-card:hover {
+  border-color: var(--primary);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
+}
+
+.message-card__header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+.message-card__name {
+  font-weight: 600;
+
+  color: var(--heading);
+}
+
+.message-card__email,
+.message-card__date {
+  font-size: 14px;
+
+  color: var(--muted);
+}
+
+.message-card__divider {
+  color: var(--border);
+}
+
+.message-card__subject {
+  margin: 0;
+
+  color: var(--heading);
+
+  font-size: 15px;
+
+  line-height: 1.5;
+}
+
+/* ==========================================
+   Recent Activity
+========================================== */
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.activity-card {
+  padding: 18px 20px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  transition: var(--transition);
+}
+
+.activity-card:hover {
+  border-color: var(--primary);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
+}
+
+.activity-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+.activity-card__title {
+  font-weight: 600;
+
+  color: var(--heading);
+}
+
+.activity-card__date {
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+.activity-card__divider {
+  color: var(--border);
+}
+
+.activity-card__description {
+  margin: 0;
+
+  color: var(--heading);
+
+  font-size: 15px;
+
+  line-height: 1.5;
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 992px) {
+  .quick-access__grid,
+  .dashboard-widgets {
+    grid-template-columns: 1fr;
+  }
+}
