@@ -1,16 +1,22 @@
 import { useState } from "react";
 
 import PanelActions from "../common/PanelActions";
+import PanelStatus from "../common/PanelStatus";
 
 const initialValues = {
   username: "harshsingh",
   email: "harsh@example.com",
 };
 
+
+
 function AccountInfoSection() {
   const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState(initialValues);
+
+  const [statusMessage, setStatusMessage] =
+  useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -22,22 +28,24 @@ function AccountInfoSection() {
   }
 
   function handleEdit() {
-    setIsEditing(true);
-  }
+  setStatusMessage("");
+  setIsEditing(true);
+}
 
   function handleReset() {
     setFormData(initialValues);
+    setStatusMessage("");
   }
 
   function handleCancel() {
   setFormData(initialValues);
-
+  setStatusMessage("");
   setIsEditing(false);
 }
 
 function handleSave() {
   // Backend integration later
-
+  setStatusMessage("Account information updated successfully.");
   setIsEditing(false);
 }
 
@@ -47,62 +55,73 @@ function handleSave() {
         Account Information
       </h2>
 
-      <div className="form-group">
-        <label
-          htmlFor="username"
-          className="form-label"
-        >
-          Username
-        </label>
+      <div className="form-grid">
+  <div className="form-group">
+    <label
+      htmlFor="username"
+      className="form-label"
+    >
+      Username
+    </label>
 
-        <input
-          id="username"
-          name="username"
-          className="form-input"
-          type="text"
-          value={formData.username}
-          onChange={handleChange}
-          disabled={!isEditing}
-        />
-      </div>
+    <input
+      id="username"
+      name="username"
+      className="form-input"
+      type="text"
+      value={formData.username}
+      onChange={handleChange}
+      disabled={!isEditing}
+    />
+  </div>
 
-      <div className="form-group">
-        <label
-          htmlFor="email"
-          className="form-label"
-        >
-          Email Address
-        </label>
+  <div className="form-group">
+    <label
+      htmlFor="email"
+      className="form-label"
+    >
+      Email Address
+    </label>
 
-        <input
-          id="email"
-          name="email"
-          className="form-input"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-          disabled={!isEditing}
-        />
-      </div>
+    <input
+      id="email"
+      name="email"
+      className="form-input"
+      type="email"
+      value={formData.email}
+      onChange={handleChange}
+      disabled={!isEditing}
+    />
+  </div>
+</div>
 
-      {isEditing ? (
-        <PanelActions
-          primaryLabel="Save Changes"
-          secondaryLabel="Reset"
-          cancelLabel="Cancel"
-          showCancel
-          onPrimaryClick={handleSave}
-          onSecondaryClick={handleReset}
-          onCancelClick={handleCancel}
-        />
-      ) : (
-        <PanelActions
-          primaryLabel="Edit"
-          primaryType="button"
-          showSecondary={false}
-          onPrimaryClick={handleEdit}
-        />
-      )}
+      <div className="panel-footer">
+
+  <PanelStatus
+    message={statusMessage}
+    type="success"
+  />
+
+  {isEditing ? (
+    <PanelActions
+      primaryLabel="Save Changes"
+      secondaryLabel="Reset"
+      cancelLabel="Cancel"
+      showCancel
+      onPrimaryClick={handleSave}
+      onSecondaryClick={handleReset}
+      onCancelClick={handleCancel}
+    />
+  ) : (
+    <PanelActions
+      primaryLabel="Edit"
+      primaryType="button"
+      showSecondary={false}
+      onPrimaryClick={handleEdit}
+    />
+  )}
+
+</div>
     </section>
   );
 }
