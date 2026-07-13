@@ -1,129 +1,125 @@
-import { useState } from "react";
-
-import PanelActions from "../common/PanelActions";
-import PanelStatus from "../common/PanelStatus";
-
-const initialValues = {
-  username: "harshsingh",
-  email: "harsh@example.com",
-};
-
+import {
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiCalendar,
+  FiShield,
+  FiEdit3,
+} from "react-icons/fi";
 
 
 function AccountInfoSection() {
-  const [isEditing, setIsEditing] = useState(false);
+  const accountDetails = [
+    {
+      id: "name",
+      label: "Name",
+      value: "Harsh Singh",
+      icon: FiUser,
+    },
+    {
+      id: "email",
+      label: "Email",
+      value: "admin@example.com",
+      icon: FiMail,
+    },
+    {
+      id: "phone",
+      label: "Contact Number",
+      value: "+91 98765 43210",
+      icon: FiPhone,
+    },
+    {
+      id: "dob",
+      label: "Date of Birth",
+      value: "01 January 2004",
+      icon: FiCalendar,
+    },
+    {
+      id: "role",
+      label: "Role",
+      value: "Administrator",
+      icon: FiShield,
+    },
+    {
+      id: "status",
+      label: "Account Status",
+      value: "Active",
+      icon: FiShield,
+      status: true,
+    },
+  ];
 
-  const [formData, setFormData] = useState(initialValues);
-
-  const [statusMessage, setStatusMessage] =
-  useState("");
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setFormData((previousData) => ({
-      ...previousData,
-      [name]: value,
-    }));
-  }
-
-  function handleEdit() {
-  setStatusMessage("");
-  setIsEditing(true);
-}
-
-  function handleReset() {
-    setFormData(initialValues);
-    setStatusMessage("");
-  }
-
-  function handleCancel() {
-  setFormData(initialValues);
-  setStatusMessage("");
-  setIsEditing(false);
-}
-
-function handleSave() {
-  // Backend integration later
-  setStatusMessage("Account information updated successfully.");
-  setIsEditing(false);
-}
 
   return (
     <section className="panel account-section">
-      <h2 className="account-section__title">
-        Account Information
-      </h2>
 
-      <div className="form-grid">
-  <div className="form-group">
-    <label
-      htmlFor="username"
-      className="form-label"
-    >
-      Username
-    </label>
+      <div className="account-section__header">
 
-    <input
-      id="username"
-      name="username"
-      className="form-input"
-      type="text"
-      value={formData.username}
-      onChange={handleChange}
-      disabled={!isEditing}
-    />
-  </div>
+        <h2 className="account-section__title">
+          Account Information
+        </h2>
 
-  <div className="form-group">
-    <label
-      htmlFor="email"
-      className="form-label"
-    >
-      Email Address
-    </label>
+      </div>
 
-    <input
-      id="email"
-      name="email"
-      className="form-input"
-      type="email"
-      value={formData.email}
-      onChange={handleChange}
-      disabled={!isEditing}
-    />
-  </div>
-</div>
 
-      <div className="panel-footer">
+      <div className="account-info-grid">
 
-  <PanelStatus
-    message={statusMessage}
-    type="success"
-  />
+        {accountDetails.map((item) => {
+          const Icon = item.icon;
 
-  {isEditing ? (
-    <PanelActions
-      primaryLabel="Save Changes"
-      secondaryLabel="Reset"
-      cancelLabel="Cancel"
-      showCancel
-      onPrimaryClick={handleSave}
-      onSecondaryClick={handleReset}
-      onCancelClick={handleCancel}
-    />
-  ) : (
-    <PanelActions
-      primaryLabel="Edit"
-      primaryType="button"
-      showSecondary={false}
-      onPrimaryClick={handleEdit}
-    />
-  )}
+          return (
+            <article
+              key={item.id}
+              className="account-info-card"
+            >
 
-</div>
+              <div className="account-info-card__icon">
+                <Icon size={20} />
+              </div>
+
+
+              <div className="account-info-card__content">
+
+                <span className="account-info-card__label">
+                  {item.label}
+                </span>
+
+
+                <span
+                  className={
+                    item.status
+                      ? "account-info-card__value account-info-card__value--success"
+                      : "account-info-card__value"
+                  }
+                >
+                  {item.value}
+                </span>
+
+              </div>
+
+            </article>
+          );
+        })}
+
+      </div>
+
+
+      <div className="account-info-actions">
+
+        <button
+          type="button"
+          className="btn btn-primary"
+        >
+          <FiEdit3 size={16} />
+
+          Edit Details
+        </button>
+
+      </div>
+
     </section>
   );
 }
+
 
 export default AccountInfoSection;

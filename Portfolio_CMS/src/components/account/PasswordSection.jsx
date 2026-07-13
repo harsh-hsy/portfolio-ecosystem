@@ -1,62 +1,297 @@
+import { useMemo, useState } from "react";
+import { FiLoader } from "react-icons/fi";
+
+import PasswordForm from "./PasswordForm";
+import PasswordInfoPanel from "./PasswordInfoPanel";
+
+import PanelStatus from "../common/PanelStatus";
+
+import {
+  PASSWORD_RULES,
+  SECURITY_TIPS,
+} from "../../data/password";
+
+
+const INITIAL_FORM_DATA = {
+  currentPassword: "",
+  newPassword: "",
+  confirmPassword: "",
+};
+
+
 function PasswordSection() {
+  const [isEditing, setIsEditing] =
+    useState(false);
+
+  const [isSaving, setIsSaving] =
+    useState(false);
+
+  const [status, setStatus] =
+    useState({
+      message: "",
+      type: "",
+    });
+
+  const [errors, setErrors] =
+    useState({});
+
+
+  const [formData, setFormData] =
+    useState(INITIAL_FORM_DATA);
+
+
+  const requirements = useMemo(() => {
+    return PASSWORD_RULES.map((rule) => ({
+      ...rule,
+      valid: rule.validator(
+        formData.newPassword
+      ),
+    }));
+  }, [formData.newPassword]);
+
+
+
+  const passwordsMatch =
+    formData.confirmPassword.length === 0
+      ? null
+      : formData.newPassword ===
+        formData.confirmPassword;
+
+
+  const canSave =
+  formData.currentPassword.trim().length > 0 &&
+  requirements.every(
+    (rule) => rule.valid
+  ) &&
+  passwordsMatch === true &&
+  !isSaving;
+    requirements.every(
+      (rule) => rule.valid
+    ) &&
+    passwordsMatch === true &&
+    !isSaving;
+
+
+  function handleChange(event) {
+    const { name, value } =
+      event.target;
+
+    setFormData((previousData) => ({
+      ...previousData,
+      [name]: value,
+    }));
+
+    setErrors((previousErrors) => ({
+      ...previousErrors,
+      [name]: "",
+    }));
+  }
+
+
+  function handleEdit() {
+    setStatus({
+      message: "",
+      type: "",
+    });
+
+    setIsEditing(true);
+  }
+
+
+  function resetForm() {
+    setFormData(INITIAL_FORM_DATA);
+    setErrors({});
+  }
+
+
+  function handleCancel() {
+    resetForm();
+
+    setStatus({
+      message: "",
+      type: "",
+    });
+
+    setIsEditing(false);
+  }
+
+
+  function validateForm() {
+    const newErrors = {};
+
+    if (!formData.currentPassword.trim()) {
+      newErrors.currentPassword =
+        "Current password is required.";
+    }
+
+
+    if (
+      formData.newPassword ===
+      formData.currentPassword
+    ) {
+      newErrors.newPassword =
+        "New password must be different from current password.";
+    }
+
+
+    if (
+      !requirements.every(
+        (rule) => rule.valid
+      )
+    ) {
+      newErrors.newPassword =
+        "Password does not meet requirements.";
+    }
+
+
+    if (
+      formData.newPassword !==
+      formData.confirmPassword
+    ) {
+      newErrors.confirmPassword =
+        "Passwords do not match.";
+    }
+
+
+    setErrors(newErrors);
+
+    return (
+      Object.keys(newErrors).length === 0
+    );
+  }
+
+
+  async function handleSave(event) {
+    event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+
+    setIsSaving(true);
+
+    setStatus({
+      message: "Updating password...",
+      type: "warning",
+    });
+
+
+    try {
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000)
+      );
+
+
+      setStatus({
+        message:
+          "Password updated successfully.",
+        type: "success",
+      });
+
+
+      resetForm();
+
+      setIsEditing(false);
+
+    } catch {
+      setStatus({
+        message:
+          "Unable to update password.",
+        type: "error",
+      });
+
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+
   return (
     <section className="panel account-section">
+
       <h2 className="account-section__title">
         Password & Security
       </h2>
 
-      <div className="form-group">
-        <label
-          htmlFor="current-password"
-          className="form-label"
-        >
-          Current Password
-        </label>
 
-        <input
-          id="current-password"
-          className="form-input"
-          type="password"
-          placeholder="Enter current password"
-          autoComplete="current-password"
+      <div className="password-layout">
+
+        <PasswordForm
+          formData={formData}
+          isEditing={isEditing}
+          onChange={handleChange}
+          onSubmit={handleSave}
+          errors={errors}
         />
+
+
+        <PasswordInfoPanel
+          isEditing={isEditing}
+          securityTips={SECURITY_TIPS}
+          requirements={requirements}
+          passwordsMatch={passwordsMatch}
+        />
+
       </div>
 
-      <div className="form-group">
-        <label
-          htmlFor="new-password"
-          className="form-label"
-        >
-          New Password
-        </label>
 
-        <input
-          id="new-password"
-          className="form-input"
-          type="password"
-          placeholder="Enter new password"
-          autoComplete="new-password"
-        />
+      {status.message && (
+  <PanelStatus
+    message={status.message}
+    type={status.type}
+  />
+)}
+
+
+      <div className="password-actions">
+
+        {isEditing ? (
+          <>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleCancel}
+              disabled={isSaving}
+            >
+              Cancel
+            </button>
+
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              form="password-security-form"
+              disabled={!canSave}
+            >
+              {isSaving ? (
+                <>
+                  <FiLoader className="spin" />
+
+                  <span>
+                    Saving...
+                  </span>
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleEdit}
+          >
+            Change Password
+          </button>
+        )}
+
       </div>
 
-      <div className="form-group">
-        <label
-          htmlFor="confirm-password"
-          className="form-label"
-        >
-          Confirm Password
-        </label>
-
-        <input
-          id="confirm-password"
-          className="form-input"
-          type="password"
-          placeholder="Confirm new password"
-          autoComplete="new-password"
-        />
-      </div>
     </section>
   );
 }
+
 
 export default PasswordSection;

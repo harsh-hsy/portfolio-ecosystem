@@ -104,4 +104,5 @@
 
   /* ========= Effects ========= */
   --shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
