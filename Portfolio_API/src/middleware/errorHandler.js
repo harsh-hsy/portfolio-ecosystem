@@ -3,7 +3,7 @@ export function notFound(req, res) {
 }
 
 export function errorHandler(error, req, res, next) {
-  const statusCode = res.statusCode >= 400 ? res.statusCode : 500
+  const statusCode = error.statusCode || (res.statusCode >= 400 ? res.statusCode : 500)
   res.status(statusCode).json({
     message: error.message || 'Server error',
   })

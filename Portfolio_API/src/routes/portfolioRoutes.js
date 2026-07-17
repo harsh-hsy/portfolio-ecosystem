@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { PortfolioContent } from '../models/PortfolioContent.js'
+import { getPublishedPortfolio } from '../services/portfolioContentService.js'
 
 const router = Router()
 
 router.get('/', async (req, res) => {
-  const content = await PortfolioContent.findOne({ status: 'published' }).lean()
+  const content = await getPublishedPortfolio()
   res.json({ content })
 })
 

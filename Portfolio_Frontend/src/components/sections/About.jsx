@@ -2,9 +2,11 @@ import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { getAboutContent } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function About() {
-  const { profile, section, stats } = getAboutContent()
+  const contentState = usePortfolioContent()
+  const { profile, section, stats } = getAboutContent(contentState?.portfolio)
 
   return (
     <section id="about" className="section about-section">

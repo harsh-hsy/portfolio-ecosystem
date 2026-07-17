@@ -5,9 +5,11 @@ import SectionHeader from '../common/SectionHeader.jsx'
 import ProjectCard from '../common/ProjectCard.jsx'
 import { getProjectsContent } from '../../lib/contentSelectors.js'
 import { stagger } from '../../animations/variants.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Projects() {
-  const { section, projects } = getProjectsContent()
+  const contentState = usePortfolioContent()
+  const { section, projects } = getProjectsContent(contentState?.portfolio)
   const [category, setCategory] = useState(section.allFilterLabel)
   const [query, setQuery] = useState('')
   const categories = [section.allFilterLabel, ...new Set(projects.map((project) => project.category))]

@@ -1,9 +1,13 @@
-import { projects } from '../content/projects.js'
+import { projects as defaultProjects } from '../content/projects.js'
 
-export function getProjectBySlug(slug) {
-  return projects.find((project) => project.slug === slug)
+function resolveProjects(projects) {
+  return projects ?? defaultProjects
 }
 
-export function getRelatedProjects(currentSlug, limit = 3) {
-  return projects.filter((project) => project.slug !== currentSlug).slice(0, limit)
+export function getProjectBySlug(slug, projects) {
+  return resolveProjects(projects).find((project) => project.slug === slug)
+}
+
+export function getRelatedProjects(currentSlug, limit = 3, projects) {
+  return resolveProjects(projects).filter((project) => project.slug !== currentSlug).slice(0, limit)
 }

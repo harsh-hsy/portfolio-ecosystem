@@ -5,13 +5,15 @@ import { motion } from 'framer-motion'
 import ThemeToggle from './ThemeToggle.jsx'
 import { getNavigationContent, getProfileContent, getSiteSettings } from '../../lib/contentSelectors.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const location = useLocation()
+  const contentState = usePortfolioContent()
   const navigation = getNavigationContent()
-  const profile = getProfileContent()
+  const profile = getProfileContent(contentState?.portfolio)
   const settings = getSiteSettings()
   const ids = useMemo(() => navigation.map((link) => link.id), [navigation])
   const active = useScrollSpy(ids)

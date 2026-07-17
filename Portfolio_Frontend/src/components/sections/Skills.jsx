@@ -4,9 +4,11 @@ import Reveal from '../common/Reveal.jsx'
 import { fadeUp, stagger } from '../../animations/variants.js'
 import { getSkillsContent } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Skills() {
-  const { profile, section, skills } = getSkillsContent()
+  const contentState = usePortfolioContent()
+  const { profile, section, skills } = getSkillsContent(contentState?.portfolio)
 
   return (
     <section id="skills" className="section skills-section">

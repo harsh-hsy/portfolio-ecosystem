@@ -2,9 +2,11 @@ import { FiAward } from 'react-icons/fi'
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { getAchievementsContent } from '../../lib/contentSelectors.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Achievements() {
-  const { section, achievements } = getAchievementsContent()
+  const contentState = usePortfolioContent()
+  const { section, achievements } = getAchievementsContent(contentState?.portfolio)
 
   return (
     <section id="achievements" className="section compact-section">

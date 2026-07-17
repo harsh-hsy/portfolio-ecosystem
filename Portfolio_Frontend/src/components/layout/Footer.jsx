@@ -1,9 +1,11 @@
 import { FiArrowUp } from 'react-icons/fi'
 import { getHomeContent, getSiteSettings } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Footer() {
-  const { profile, socials } = getHomeContent()
+  const contentState = usePortfolioContent()
+  const { profile, socials } = getHomeContent(contentState?.portfolio)
   const settings = getSiteSettings()
 
   return (

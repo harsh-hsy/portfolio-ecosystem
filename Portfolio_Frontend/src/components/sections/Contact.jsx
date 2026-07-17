@@ -4,6 +4,7 @@ import SectionHeader from '../common/SectionHeader.jsx'
 import MagneticButton from '../common/MagneticButton.jsx'
 import { getContactContent } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 const initialForm = {
   name: '',
@@ -17,7 +18,8 @@ export default function Contact() {
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
 
-  const { profile, socials, section } = getContactContent()
+  const contentState = usePortfolioContent()
+  const { profile, socials, section } = getContactContent(contentState?.portfolio)
 
   const update = (event) => {
     setForm((current) => ({

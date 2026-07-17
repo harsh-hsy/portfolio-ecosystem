@@ -7,13 +7,15 @@ import Reveal from '../components/common/Reveal.jsx'
 import ProjectCard from '../components/common/ProjectCard.jsx'
 import { getProjectDetailsContent } from '../lib/contentSelectors.js'
 import { getProjectBySlug, getRelatedProjects } from '../lib/projects.js'
+import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 
 export default function ProjectDetails() {
   const { slug } = useParams()
-  const selectedProject = getProjectBySlug(slug)
+  const contentState = usePortfolioContent()
+  const selectedProject = getProjectBySlug(slug, contentState?.portfolio?.projects)
   if (!selectedProject) return <Navigate to="/404" replace />
   const { project, seo, ui } = getProjectDetailsContent(selectedProject)
-  const related = getRelatedProjects(project.slug)
+  const related = getRelatedProjects(project.slug, 3, contentState?.portfolio?.projects)
 
   return (
     <motion.div className="project-page section" variants={pageTransition} initial="initial" animate="animate" exit="exit">

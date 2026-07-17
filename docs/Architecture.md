@@ -49,6 +49,11 @@ Implemented routes:
 - `GET /api/portfolio`
 - `GET /api/admin/me`
 - `GET /api/admin/portfolio`
+- `POST /api/admin/portfolio/initialize`
+- `PUT /api/admin/portfolio`
+- `PUT /api/admin/portfolio/:field`
+- `POST /api/admin/portfolio/reset`
+- `GET /api/admin/portfolio-fields`
 
 ## Data Source Direction
 

@@ -17,7 +17,7 @@ async function seedAdmin() {
       passwordHash,
       role: 'admin',
     },
-    { upsert: true, new: true },
+    { upsert: true, returnDocument: 'after' },
   )
 
   console.log(`Admin user ready: ${email}`)

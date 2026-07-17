@@ -7,58 +7,62 @@ import { defaultProfile, defaultProject, defaultSettings } from './contentDefaul
 import { ensureArray, withDefaults } from './contentValidation.js'
 import { getPortfolio } from '../services/storage/portfolioRepository.js'
 
+function resolvePortfolio(portfolio) {
+  return portfolio ?? getPortfolio()
+}
+
 export function getSiteSettings() {
   return withDefaults(siteSettings, defaultSettings)
 }
 
-export function getProfileContent() {
-  const portfolio = getPortfolio()
-  return withDefaults(portfolio.profile, defaultProfile)
+export function getProfileContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
+  return withDefaults(resolvedPortfolio.profile, defaultProfile)
 }
 
 export function getNavigationContent() {
   return ensureArray(publicNavigation)
 }
 
-export function getHomeContent() {
-  const portfolio = getPortfolio()
+export function getHomeContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    profile: withDefaults(portfolio.profile, defaultProfile),
-    socials: ensureArray(portfolio.socials),
+    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    socials: ensureArray(resolvedPortfolio.socials),
     seo: siteSeo,
     structuredData: getHomeStructuredData(),
-    sections: portfolio.sections,
-    stats: ensureArray(portfolio.stats),
+    sections: resolvedPortfolio.sections,
+    stats: ensureArray(resolvedPortfolio.stats),
   }
 }
 
-export function getAboutContent() {
-  const portfolio = getPortfolio()
+export function getAboutContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    profile: withDefaults(portfolio.profile, defaultProfile),
-    section: portfolio.sections.about,
-    stats: ensureArray(portfolio.stats),
+    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    section: resolvedPortfolio.sections.about,
+    stats: ensureArray(resolvedPortfolio.stats),
   }
 }
 
-export function getSkillsContent() {
-  const portfolio = getPortfolio()
+export function getSkillsContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    profile: withDefaults(portfolio.profile, defaultProfile),
-    section: portfolio.sections.skills,
-    skills: ensureArray(portfolio.skills),
+    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    section: resolvedPortfolio.sections.skills,
+    skills: ensureArray(resolvedPortfolio.skills),
   }
 }
 
-export function getProjectsContent() {
-  const portfolio = getPortfolio()
+export function getProjectsContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    section: portfolio.sections.projects,
-    projects: ensureArray(portfolio.projects).map((project) =>
+    section: resolvedPortfolio.sections.projects,
+    projects: ensureArray(resolvedPortfolio.projects).map((project) =>
       withDefaults(project, defaultProject),
     ),
     ui: uiContent.projectCard,
@@ -75,65 +79,65 @@ export function getProjectDetailsContent(project) {
   }
 }
 
-export function getExperienceContent() {
-  const portfolio = getPortfolio()
+export function getExperienceContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    section: portfolio.sections.experience,
-    timeline: ensureArray(portfolio.timeline),
+    section: resolvedPortfolio.sections.experience,
+    timeline: ensureArray(resolvedPortfolio.timeline),
   }
 }
 
-export function getCertificatesContent() {
-  const portfolio = getPortfolio()
+export function getCertificatesContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    section: portfolio.sections.certificates,
-    certificates: ensureArray(portfolio.certificates),
+    section: resolvedPortfolio.sections.certificates,
+    certificates: ensureArray(resolvedPortfolio.certificates),
   }
 }
 
-export function getServicesContent() {
-  const portfolio = getPortfolio()
+export function getServicesContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    section: portfolio.sections.services,
-    services: ensureArray(portfolio.services),
+    section: resolvedPortfolio.sections.services,
+    services: ensureArray(resolvedPortfolio.services),
   }
 }
 
-export function getAchievementsContent() {
-  const portfolio = getPortfolio()
+export function getAchievementsContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    section: portfolio.sections.achievements,
-    achievements: ensureArray(portfolio.achievements),
+    section: resolvedPortfolio.sections.achievements,
+    achievements: ensureArray(resolvedPortfolio.achievements),
   }
 }
 
-export function getMilestonesContent() {
-  const portfolio = getPortfolio()
+export function getMilestonesContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
-  return ensureArray(portfolio.milestones ?? [])
+  return ensureArray(resolvedPortfolio.milestones ?? [])
 }
 
-export function getContactContent() {
-  const portfolio = getPortfolio()
+export function getContactContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    profile: withDefaults(portfolio.profile, defaultProfile),
-    socials: ensureArray(portfolio.socials),
-    section: portfolio.sections.contact,
+    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    socials: ensureArray(resolvedPortfolio.socials),
+    section: resolvedPortfolio.sections.contact,
   }
 }
 
-export function getCommandPaletteContent() {
-  const portfolio = getPortfolio()
+export function getCommandPaletteContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
     actions: ensureArray(commandActions),
-    profile: withDefaults(portfolio.profile, defaultProfile),
-    projects: ensureArray(portfolio.projects),
+    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    projects: ensureArray(resolvedPortfolio.projects),
     ui: uiContent.commandPalette,
   }
 }
@@ -142,11 +146,11 @@ export function getProjectCardContent() {
   return uiContent.projectCard
 }
 
-export function getNotFoundContent() {
-  const portfolio = getPortfolio()
+export function getNotFoundContent(portfolio) {
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
     seoTitle: `Page Not Found${siteSeo.projectTitleSuffix}`,
-    section: portfolio.sections.notFound,
+    section: resolvedPortfolio.sections.notFound,
   }
 }

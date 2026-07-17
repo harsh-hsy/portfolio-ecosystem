@@ -6,10 +6,12 @@ import Reveal from '../common/Reveal.jsx'
 import { fadeUp, slideLeft, slideRight, stagger } from '../../animations/variants.js'
 import { getHomeContent } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
-  const { profile, socials, sections } = getHomeContent()
+  const contentState = usePortfolioContent()
+  const { profile, socials, sections } = getHomeContent(contentState?.portfolio)
   const content = sections.hero
   const rotatingRoleCount = profile.rotatingRoles.length
 

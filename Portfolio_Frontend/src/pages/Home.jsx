@@ -12,9 +12,11 @@ import Testimonials from '../components/sections/Testimonials.jsx'
 import Contact from '../components/sections/Contact.jsx'
 import { pageTransition } from '../animations/variants.js'
 import { getHomeContent } from '../lib/contentSelectors.js'
+import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 
 export default function Home() {
-  const { profile, seo, structuredData } = getHomeContent()
+  const contentState = usePortfolioContent()
+  const { profile, seo, structuredData } = getHomeContent(contentState?.portfolio)
 
   return (
     <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">

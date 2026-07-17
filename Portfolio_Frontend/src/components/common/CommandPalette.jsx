@@ -3,12 +3,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { FiArrowRight, FiCommand } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { getCommandPaletteContent } from '../../lib/contentSelectors.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
-  const { actions: configuredActions, profile, projects, ui } = getCommandPaletteContent()
+  const contentState = usePortfolioContent()
+  const { actions: configuredActions, profile, projects, ui } = getCommandPaletteContent(contentState?.portfolio)
 
   const actions = useMemo(
     () => [

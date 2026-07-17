@@ -1,9 +1,11 @@
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { getExperienceContent } from '../../lib/contentSelectors.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Experience() {
-  const { section, timeline } = getExperienceContent()
+  const contentState = usePortfolioContent()
+  const { section, timeline } = getExperienceContent(contentState?.portfolio)
 
   return (
     <section id="experience" className="section timeline-section">
