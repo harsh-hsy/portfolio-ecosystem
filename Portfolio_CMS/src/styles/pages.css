@@ -43,6 +43,18 @@
   color: var(--muted);
 }
 
+.page-kicker {
+  margin: 0;
+
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 /* ==========================================
    Panel
 ========================================== */
@@ -123,6 +135,18 @@
   color: var(--muted);
 
   cursor: default;
+}
+
+.form-textarea {
+  min-height: 118px;
+  height: auto;
+
+  padding-top: 14px;
+  padding-bottom: 14px;
+
+  line-height: 1.6;
+
+  resize: vertical;
 }
 
 
@@ -235,6 +259,10 @@
 
   column-gap: 24px;
 row-gap: 20px;
+}
+
+.form-group--wide {
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 768px) {
@@ -364,4 +392,101 @@ input[type="password"]::-webkit-textfield-decoration-container {
 .password-input-toggle svg {
   width: 18px;
   height: 18px;
+}
+
+/* ==========================================
+   Content Editor
+========================================== */
+
+.content-editor {
+  display: flex;
+  flex-direction: column;
+
+  gap: 30px;
+}
+
+.content-editor__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-bottom: 24px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.content-editor__header h2 {
+  margin: 4px 0 6px;
+
+  color: var(--heading);
+
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.content-editor__header p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 15px;
+}
+
+.content-editor__eyebrow {
+  color: var(--primary);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.content-editor__badge {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 34px;
+
+  padding: 0 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--sidebar-hover);
+
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.content-editor__section {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.content-editor__section h3 {
+  margin: 0;
+
+  color: var(--heading);
+
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+  .content-editor__header,
+  .panel-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .panel-actions {
+    justify-content: flex-end;
+  }
 }
