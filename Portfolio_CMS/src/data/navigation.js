@@ -86,15 +86,16 @@ export const footerNavigation = [
   {
     id: "portfolio",
     label: "Back to Portfolio",
-    path: "/",
+    path: "http://localhost:5173/",
     icon: FiExternalLink,
+    external: true,
   },
   {
     id: "logout",
     label: "Logout",
-    path: "/logout",
     icon: FiLogOut,
     danger: true,
+    action: "logout",
   },
 ];
 

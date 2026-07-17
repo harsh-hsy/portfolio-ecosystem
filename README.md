@@ -2,19 +2,15 @@
 
 A production-grade portfolio ecosystem built with modern web technologies.
 
----
-
 ## Workspace Structure
 
 ```text
 Portfolio_Website/
-
 ├── Portfolio_Frontend
 ├── Portfolio_CMS
-└── Portfolio_API
+├── Portfolio_API
+└── docs
 ```
-
----
 
 ## Projects
 
@@ -22,55 +18,46 @@ Portfolio_Website/
 
 Public portfolio website for visitors.
 
-Status:
-✅ Stable
+Status: Stable public experience
 
 Technology:
 
 - React
 - Vite
-
----
 
 ### Portfolio CMS
 
-Internal dashboard for managing portfolio content.
+Private dashboard for managing portfolio content.
 
-Status:
-🚧 In Development
+Status: In development
 
 Technology:
 
 - React
 - Vite
-
----
 
 ### Portfolio API
 
 Backend service powering the CMS and frontend.
 
-Status:
-⏳ Planned
+Status: Foundation phase
 
 Technology:
 
 - Express
 - MongoDB
-
----
+- Mongoose
+- JWT auth
 
 ## Current Development Phase
 
-Sprint 2
+Phase A: Architecture Realignment
 
 Building:
 
-- Dashboard Layout
-- Sidebar
-- Header
-
----
+- Dedicated API foundation
+- MongoDB-ready backend structure
+- Clean public frontend / private CMS separation
 
 ## Maintainer
 

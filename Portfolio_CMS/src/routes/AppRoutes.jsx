@@ -1,7 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+import PublicRoute from "../components/auth/PublicRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 
+import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Projects from "../pages/Projects";
@@ -18,7 +21,23 @@ import Account from "../pages/Account";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate to="/dashboard" replace />} />
 
         <Route path="dashboard" element={<Dashboard />} />

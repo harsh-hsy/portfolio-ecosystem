@@ -154,6 +154,11 @@
   transition: var(--transition);
 }
 
+button.sidebar-nav__link {
+  width: 100%;
+  text-align: left;
+}
+
 .sidebar-nav__link:hover {
   background: var(--sidebar-hover);
 }

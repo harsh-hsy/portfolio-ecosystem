@@ -10,18 +10,13 @@ import CommandPalette from './components/common/CommandPalette.jsx'
 import LoadingScreen from './components/common/LoadingScreen.jsx'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
-import ProtectedRoute from './components/admin/ProtectedRoute.jsx'
-import PublicRoute from './components/admin/PublicRoute.jsx'
 
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin.jsx'))
-const Dashboard = lazy(() => import('./pages/admin/Dashboard.jsx'))
 
 function App() {
   const location = useLocation()
   const [loading, setLoading] = useState(true)
   const lenisRef = useRef(null)
-  const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/dashboard')
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 900)
@@ -64,24 +59,22 @@ function App() {
   return (
     <>
       <LoadingScreen show={loading} />
-      {!isAdminRoute && <ScrollProgress />}
-      {!isAdminRoute && <CustomCursor />}
-      {!isAdminRoute && <Navbar />}
-      {!isAdminRoute && <CommandPalette />}
+      <ScrollProgress />
+      <CustomCursor />
+      <Navbar />
+      <CommandPalette />
       <main id="main-content">
         <AnimatePresence mode="wait">
           <Suspense fallback={<LoadingScreen show />}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
               <Route path="/projects/:slug" element={<ProjectDetails />} />
-              <Route path="/admin/login" element={<PublicRoute><AdminLogin /></PublicRoute>} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </AnimatePresence>
       </main>
-      {!isAdminRoute && <Footer />}
+      <Footer />
     </>
   )
 }
