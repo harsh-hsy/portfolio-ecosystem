@@ -10,6 +10,7 @@ import {
   PASSWORD_RULES,
   SECURITY_TIPS,
 } from "../../data/password";
+import { updatePassword } from "../../services/accountService";
 
 
 const INITIAL_FORM_DATA = {
@@ -19,7 +20,7 @@ const INITIAL_FORM_DATA = {
 };
 
 
-function PasswordSection() {
+function PasswordSection({ isLoading = false }) {
   const [isEditing, setIsEditing] =
     useState(false);
 
@@ -59,12 +60,7 @@ function PasswordSection() {
 
 
   const canSave =
-  formData.currentPassword.trim().length > 0 &&
-  requirements.every(
-    (rule) => rule.valid
-  ) &&
-  passwordsMatch === true &&
-  !isSaving;
+    formData.currentPassword.trim().length > 0 &&
     requirements.every(
       (rule) => rule.valid
     ) &&
@@ -178,9 +174,10 @@ function PasswordSection() {
 
 
     try {
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
+      await updatePassword({
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+      });
 
 
       setStatus({
@@ -194,10 +191,10 @@ function PasswordSection() {
 
       setIsEditing(false);
 
-    } catch {
+    } catch (error) {
       setStatus({
         message:
-          "Unable to update password.",
+          error.message || "Unable to update password.",
         type: "error",
       });
 
@@ -282,6 +279,7 @@ function PasswordSection() {
             type="button"
             className="btn btn-primary"
             onClick={handleEdit}
+            disabled={isLoading}
           >
             Change Password
           </button>

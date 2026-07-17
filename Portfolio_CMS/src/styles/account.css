@@ -146,7 +146,13 @@
 
   justify-content: flex-end;
 
+  gap: 16px;
+
   margin-top: 24px;
+}
+
+.account-edit-form {
+  padding-top: 4px;
 }
 
 
