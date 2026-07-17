@@ -1,8 +1,7 @@
-import { createContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getPublishedPortfolio } from '../services/portfolioApi.js'
 import { getPortfolio, updatePortfolio } from '../services/storage/portfolioRepository.js'
-
-export const PortfolioContentContext = createContext(null)
+import { PortfolioContentContext } from './portfolio-content-context.js'
 
 export function PortfolioContentProvider({ children }) {
   const [portfolio, setPortfolio] = useState(() => getPortfolio())
