@@ -2,26 +2,32 @@ import { useCallback } from "react";
 
 import EditorActions from "../components/common/EditorActions";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { parseJson, toPrettyJson, updateSection } from "../utils/contentFormUtils";
+import {
+  factsToLines,
+  linesToFacts,
+  updateSection,
+} from "../utils/contentFormUtils";
 
 const emptyForm = {
   eyebrow: "",
   title: "",
   copy: "",
-  skillsImage: "",
-  skillsJson: "[]",
+  bio: "",
+  aboutImage: "",
+  facts: "",
 };
 
 function formFromPortfolio(portfolio) {
   const profile = portfolio?.profile ?? {};
-  const skills = portfolio?.sections?.skills ?? {};
+  const about = portfolio?.sections?.about ?? {};
 
   return {
-    eyebrow: skills.eyebrow ?? "",
-    title: skills.title ?? "",
-    copy: skills.copy ?? "",
-    skillsImage: profile.skillsImage ?? "",
-    skillsJson: toPrettyJson(portfolio?.skills ?? []),
+    eyebrow: about.eyebrow ?? "",
+    title: about.title ?? "",
+    copy: about.copy ?? "",
+    bio: profile.about ?? "",
+    aboutImage: profile.aboutImage ?? "",
+    facts: factsToLines(about.facts ?? []),
   };
 }
 
@@ -31,71 +37,82 @@ function portfolioFromForm(portfolio, form) {
       ...portfolio,
       profile: {
         ...(portfolio.profile ?? {}),
-        skillsImage: form.skillsImage.trim(),
+        about: form.bio.trim(),
+        aboutImage: form.aboutImage.trim(),
       },
-      skills: parseJson(form.skillsJson, portfolio.skills ?? []),
     },
-    "skills",
+    "about",
     {
       eyebrow: form.eyebrow.trim(),
       title: form.title.trim(),
       copy: form.copy.trim(),
+      facts: linesToFacts(form.facts),
     },
   );
 }
 
-function Skills() {
+function About() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
 
   const editor = usePortfolioEditor({
     getForm,
     getPortfolio,
-    successMessage: "Skills content updated successfully.",
+    successMessage: "About content updated successfully.",
   });
 
   return (
     <section className="page">
       <div className="page-header">
         <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Skills</h1>
+        <h1 className="page-title">About</h1>
         <p className="page-description">
-          Manage skill section copy, skills image path, categories, skill names, and icons.
+          Manage the about section content, profile bio, facts, and about image path.
         </p>
       </div>
 
       <form className="panel content-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>
-            <span className="content-editor__eyebrow">Skills section</span>
-            <h2>{editor.form.title || "Skills title"}</h2>
+            <span className="content-editor__eyebrow">About section</span>
+            <h2>{editor.form.title || "About title"}</h2>
             <p>{editor.form.eyebrow || "Section eyebrow"}</p>
           </div>
           <span className="content-editor__badge">{editor.isLoading ? "Loading" : "Connected"}</span>
         </div>
 
         <div className="content-editor__section">
-          <h3>Section Content</h3>
+          <h3>Section Copy</h3>
           <div className="form-grid">
             <label className="form-group">
               <span className="form-label">Eyebrow</span>
               <input className="form-input" name="eyebrow" value={editor.form.eyebrow} onChange={editor.updateField} />
             </label>
             <label className="form-group">
-              <span className="form-label">Skills Image Path</span>
-              <input className="form-input" name="skillsImage" value={editor.form.skillsImage} onChange={editor.updateField} />
+              <span className="form-label">About Image Path</span>
+              <input className="form-input" name="aboutImage" value={editor.form.aboutImage} onChange={editor.updateField} />
             </label>
             <label className="form-group form-group--wide">
               <span className="form-label">Title</span>
               <input className="form-input" name="title" value={editor.form.title} onChange={editor.updateField} />
             </label>
             <label className="form-group form-group--wide">
-              <span className="form-label">Copy</span>
+              <span className="form-label">Section Copy</span>
               <textarea className="form-input form-textarea" name="copy" value={editor.form.copy} onChange={editor.updateField} />
             </label>
             <label className="form-group form-group--wide">
-              <span className="form-label">Skill Categories JSON</span>
-              <textarea className="form-input form-textarea form-textarea--code" name="skillsJson" value={editor.form.skillsJson} onChange={editor.updateField} />
+              <span className="form-label">Profile Bio</span>
+              <textarea className="form-input form-textarea" name="bio" value={editor.form.bio} onChange={editor.updateField} />
+            </label>
+            <label className="form-group form-group--wide">
+              <span className="form-label">Facts</span>
+              <textarea
+                className="form-input form-textarea form-textarea--tall"
+                name="facts"
+                value={editor.form.facts}
+                onChange={editor.updateField}
+                placeholder="Education | B.Tech in Computer Science & Engineering | user"
+              />
             </label>
           </div>
         </div>
@@ -106,4 +123,4 @@ function Skills() {
   );
 }
 
-export default Skills;
+export default About;

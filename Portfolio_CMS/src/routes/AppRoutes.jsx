@@ -6,15 +6,17 @@ import DashboardLayout from "../layouts/DashboardLayout";
 
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
-import Profile from "../pages/Profile";
+import Home from "../pages/Home";
+import About from "../pages/About";
 import Projects from "../pages/Projects";
 import Skills from "../pages/Skills";
 import Certificates from "../pages/Certificates";
 import Journey from "../pages/Journey";
 import Services from "../pages/Services";
 import Achievements from "../pages/Achievements";
+import Contact from "../pages/Contact";
 import Inbox from "../pages/Inbox";
-import Resume from "../pages/Resume";
+import Links from "../pages/Links";
 import Settings from "../pages/Settings";
 import Account from "../pages/Account";
 
@@ -41,15 +43,18 @@ function AppRoutes() {
         <Route index element={<Navigate to="/dashboard" replace />} />
 
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="projects" element={<Projects />} />
+        <Route path="home" element={<Home />} />
+        <Route path="profile" element={<Navigate to="/home" replace />} />
+        <Route path="about" element={<About />} />
         <Route path="skills" element={<Skills />} />
+        <Route path="projects" element={<Projects />} />
         <Route path="certificates" element={<Certificates />} />
         <Route path="journey" element={<Journey />} />
         <Route path="services" element={<Services />} />
         <Route path="achievements" element={<Achievements />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="links" element={<Links />} />
         <Route path="inbox" element={<Inbox />} />
-        <Route path="resume" element={<Resume />} />
         <Route path="settings" element={<Settings />} />
         <Route path="/account" element={<Account />} />
       </Route>

@@ -42,5 +42,5 @@ export const iconRegistry = {
 }
 
 export function getIcon(icon) {
-  return iconRegistry[icon]
+  return iconRegistry[icon] ?? FiUser
 }

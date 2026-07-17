@@ -149,6 +149,21 @@
   resize: vertical;
 }
 
+.form-textarea--tall {
+  min-height: 180px;
+}
+
+.form-textarea--code {
+  min-height: 360px;
+
+  font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+
+  white-space: pre;
+  overflow: auto;
+}
+
 
 /* ==========================================
    Buttons
