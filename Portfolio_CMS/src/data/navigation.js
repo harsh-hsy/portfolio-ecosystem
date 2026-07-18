@@ -46,16 +46,16 @@ const navigation = [
     icon: FiFolder,
   },
   {
-    id: "certificates",
-    label: "Certificates",
-    path: "/certificates",
-    icon: FiAward,
-  },
-  {
     id: "journey",
     label: "Journey",
     path: "/journey",
     icon: FiMap,
+  },
+  {
+    id: "certificates",
+    label: "Certificates",
+    path: "/certificates",
+    icon: FiAward,
   },
   {
     id: "services",
