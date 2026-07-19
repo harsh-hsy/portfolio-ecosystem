@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+@import "./styles/variables.css";
+@import "./styles/global.css";
+@import "./styles/layout.css";
+@import "./styles/sidebar.css";
+@import "./styles/header.css";
+@import "./styles/auth.css";
+@import "./styles/pages.css";
+@import "./styles/dashboard.css";
+@import "./styles/account.css";
+@import "./styles/password-cards.css";

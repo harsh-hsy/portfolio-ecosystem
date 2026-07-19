@@ -1,0 +1,292 @@
+/* ==========================================
+   Account Page
+========================================== */
+
+.account-page {
+  display: flex;
+  flex-direction: column;
+
+  gap: 32px;
+}
+
+
+/* ==========================================
+   Account Section
+========================================== */
+
+.account-section {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+
+.account-section__title {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+
+/* ==========================================
+   Account Information Cards
+========================================== */
+
+.account-section__header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+.account-info-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    3,
+    minmax(0, 1fr)
+  );
+
+  gap: 20px;
+}
+
+
+.account-info-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  background: var(--card-bg);
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  transition: var(--transition);
+}
+
+
+.account-info-card:hover {
+  border-color: var(--primary);
+
+  transform: translateY(-3px);
+}
+
+
+.account-info-card__icon {
+  width: 46px;
+
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: var(--sidebar-hover);
+
+  color: var(--primary);
+
+  flex-shrink: 0;
+}
+
+
+.account-info-card__content {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.account-info-card__label {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: var(--muted);
+}
+
+
+.account-info-card__value {
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: var(--heading);
+}
+
+
+.account-info-card__value--success {
+  color: var(--success);
+}
+
+
+/* ==========================================
+   Account Actions
+========================================== */
+
+.account-info-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 16px;
+
+  margin-top: 24px;
+}
+
+.account-edit-form {
+  padding-top: 4px;
+}
+
+
+.account-info-actions .btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+@media (max-width: 992px) {
+
+  .account-info-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .account-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* ==========================================
+   Password Layout
+========================================== */
+
+.password-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.2fr)
+    minmax(320px, 0.8fr);
+
+  gap: 32px;
+
+  align-items: start;
+}
+
+
+/* ==========================================
+   Password Form
+========================================== */
+
+.password-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+
+/* ==========================================
+   Password Sidebar
+========================================== */
+
+.password-sidebar {
+  display: flex;
+
+  height: 100%;
+
+  padding-left: 32px;
+
+  border-left: 1px solid var(--border);
+}
+
+
+/* ==========================================
+   Password Actions
+========================================== */
+
+.password-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 16px;
+
+  width: 100%;
+
+  margin-top: 20px;
+}
+
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 992px) {
+
+  .password-layout {
+    grid-template-columns: 1fr;
+  }
+
+
+  .password-sidebar {
+    padding-left: 0;
+
+    padding-top: 24px;
+
+    border-left: none;
+
+    border-top: 1px solid var(--border);
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .account-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .password-actions {
+    flex-direction: column-reverse;
+
+    width: 100%;
+  }
+
+
+  .password-actions .btn {
+    width: 100%;
+  }
+
+}

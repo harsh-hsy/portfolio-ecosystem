@@ -1,0 +1,28 @@
+/* ==========================================
+   Dashboard Layout
+========================================== */
+
+.dashboard-layout {
+  display: flex;
+
+  min-height: 100vh;
+
+  background: var(--bg);
+}
+
+.dashboard-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.dashboard-main {
+  flex: 1;
+
+  padding: 28px;
+
+  overflow-y: auto;
+}
