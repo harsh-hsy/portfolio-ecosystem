@@ -1,5 +1,5 @@
 {
-  "name": "portfolio_api",
+  "name": "portfolio-api",
   "version": "1.0.0",
   "description": "Backend API for the portfolio ecosystem.",
   "main": "src/server.js",
@@ -23,5 +23,6 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.5.0",
     "mongoose": "^9.7.4"
-  }
+  },
+  "private": true
 }

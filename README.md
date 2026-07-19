@@ -5,10 +5,10 @@ A production-grade portfolio ecosystem built with modern web technologies.
 ## Workspace Structure
 
 ```text
-Portfolio_Website/
-├── Portfolio_Frontend
-├── Portfolio_CMS
-├── Portfolio_API
+portfolio_ecosystem/
+├── frontend
+├── cms
+├── api
 └── docs
 ```
 
