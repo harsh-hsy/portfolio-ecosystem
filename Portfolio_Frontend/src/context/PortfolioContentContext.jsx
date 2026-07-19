@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getPublishedPortfolio } from '../services/portfolioApi.js'
-import { getPortfolio, updatePortfolio } from '../services/storage/portfolioRepository.js'
 import { PortfolioContentContext } from './portfolio-content-context.js'
 
 export function PortfolioContentProvider({ children }) {
-  const [portfolio, setPortfolio] = useState(() => getPortfolio())
+  const [portfolio, setPortfolio] = useState(null)
   const [status, setStatus] = useState('idle')
 
   useEffect(() => {
@@ -18,7 +17,6 @@ export function PortfolioContentProvider({ children }) {
           setStatus('fallback')
           return
         }
-        updatePortfolio(response.content)
         setPortfolio(response.content)
         setStatus('ready')
       })
@@ -38,6 +36,8 @@ export function PortfolioContentProvider({ children }) {
     }),
     [portfolio, status],
   )
+
+  if (!portfolio) return null
 
   return (
     <PortfolioContentContext.Provider value={value}>

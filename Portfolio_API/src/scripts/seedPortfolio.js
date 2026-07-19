@@ -1,18 +1,11 @@
 import { connectDatabase } from '../db/connect.js'
 import { defaultPortfolio } from '../data/defaultPortfolio.js'
-import { PortfolioContent } from '../models/PortfolioContent.js'
+import { replacePublishedPortfolio } from '../services/portfolioContentService.js'
 
 async function seedPortfolio() {
   await connectDatabase()
 
-  await PortfolioContent.findOneAndUpdate(
-    { status: 'published' },
-    {
-      ...defaultPortfolio,
-      status: 'published',
-    },
-    { upsert: true, returnDocument: 'after' },
-  )
+  await replacePublishedPortfolio(defaultPortfolio)
 
   console.log('Published portfolio content ready')
   process.exit(0)

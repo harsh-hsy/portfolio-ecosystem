@@ -1,5 +1,3 @@
-import { profile } from './profile.js'
-
 export const certificates = [
   {
     id: 'frontend-development-practice',
@@ -10,7 +8,7 @@ export const certificates = [
     featured: true,
 
     credentialId: null,
-    credentialUrl: profile.resume,
+    credentialUrl: '',
 
     thumbnail: '/assets/images/certificates/frontend-development-practice.jpg',
 
@@ -25,7 +23,7 @@ export const certificates = [
       'Frontend Development',
     ],
 
-    file: profile.resume,
+    file: '',
   },
 
   {
@@ -37,7 +35,7 @@ export const certificates = [
     featured: true,
 
     credentialId: null,
-    credentialUrl: profile.resume,
+    credentialUrl: '',
 
     thumbnail: '/assets/images/certificates/react-ui-engineering.jpg',
 
@@ -52,7 +50,7 @@ export const certificates = [
       'UI Engineering',
     ],
 
-    file: profile.resume,
+    file: '',
   },
 
   {
@@ -64,7 +62,7 @@ export const certificates = [
     featured: false,
 
     credentialId: null,
-    credentialUrl: profile.resume,
+    credentialUrl: '',
 
     thumbnail: '/assets/images/certificates/web-design-foundations.jpg',
 
@@ -79,6 +77,6 @@ export const certificates = [
       'Design Systems',
     ],
 
-    file: profile.resume,
+    file: '',
   },
 ]

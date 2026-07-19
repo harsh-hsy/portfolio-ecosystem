@@ -1,37 +1,77 @@
-import { commandActions } from '../config/commands.js'
-import { publicNavigation } from '../config/navigation.js'
-import { getHomeStructuredData, getProjectSeo, siteSeo } from '../config/seo.js'
-import { siteSettings } from '../content/settings.js'
-import { uiContent } from '../content/ui.js'
 import { defaultProfile, defaultProject, defaultSettings } from './contentDefaults.js'
 import { ensureArray, withDefaults } from './contentValidation.js'
-import { getPortfolio } from '../services/storage/portfolioRepository.js'
 
-function resolvePortfolio(portfolio) {
-  return portfolio ?? getPortfolio()
+const emptyPortfolio = {
+  profile: { ...defaultProfile, rotatingRoles: [''] },
+  socials: [],
+  skills: [],
+  projects: [],
+  certificates: [],
+  timeline: [],
+  achievements: [],
+  milestones: [],
+  services: [],
+  stats: [],
+  sections: {
+    hero: { strip: [] },
+    about: { facts: [] },
+    skills: {},
+    projects: {},
+    experience: {},
+    certificates: {},
+    services: {},
+    achievements: {},
+    contact: { fields: {} },
+    notFound: {},
+  },
+  settings: defaultSettings,
+  navigation: [],
+  commands: [],
+  ui: {
+    commandPalette: {},
+    projectCard: {},
+    projectDetails: { detailCards: [] },
+  },
+  seo: {},
 }
 
-export function getSiteSettings() {
-  return withDefaults(siteSettings, defaultSettings)
+function resolvePortfolio(portfolio) {
+  return portfolio ?? emptyPortfolio
+}
+
+function getStructuredData(profile) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.fullName,
+    jobTitle: profile.role,
+    email: profile.email,
+    address: profile.location,
+    sameAs: [profile.github, profile.linkedin].filter(Boolean),
+  }
+}
+
+export function getSiteSettings(portfolio) {
+  return withDefaults(resolvePortfolio(portfolio).settings, defaultSettings)
 }
 
 export function getProfileContent(portfolio) {
-  const resolvedPortfolio = resolvePortfolio(portfolio)
-  return withDefaults(resolvedPortfolio.profile, defaultProfile)
+  return withDefaults(resolvePortfolio(portfolio).profile, defaultProfile)
 }
 
-export function getNavigationContent() {
-  return ensureArray(publicNavigation)
+export function getNavigationContent(portfolio) {
+  return ensureArray(resolvePortfolio(portfolio).navigation)
 }
 
 export function getHomeContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
+  const profile = withDefaults(resolvedPortfolio.profile, defaultProfile)
 
   return {
-    profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
+    profile,
     socials: ensureArray(resolvedPortfolio.socials),
-    seo: siteSeo,
-    structuredData: getHomeStructuredData(),
+    seo: resolvedPortfolio.seo ?? {},
+    structuredData: getStructuredData(profile),
     sections: resolvedPortfolio.sections,
     stats: ensureArray(resolvedPortfolio.stats),
   }
@@ -65,17 +105,21 @@ export function getProjectsContent(portfolio) {
     projects: ensureArray(resolvedPortfolio.projects).map((project) =>
       withDefaults(project, defaultProject),
     ),
-    ui: uiContent.projectCard,
+    ui: resolvedPortfolio.ui?.projectCard ?? {},
   }
 }
 
-export function getProjectDetailsContent(project) {
+export function getProjectDetailsContent(project, portfolio) {
   const safeProject = withDefaults(project, defaultProject)
+  const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
     project: safeProject,
-    seo: getProjectSeo(safeProject),
-    ui: uiContent.projectDetails,
+    seo: {
+      title: `${safeProject.shortTitle}${resolvedPortfolio.seo?.projectTitleSuffix ?? ''}`,
+      description: safeProject.desc,
+    },
+    ui: resolvedPortfolio.ui?.projectDetails ?? emptyPortfolio.ui.projectDetails,
   }
 }
 
@@ -116,9 +160,7 @@ export function getAchievementsContent(portfolio) {
 }
 
 export function getMilestonesContent(portfolio) {
-  const resolvedPortfolio = resolvePortfolio(portfolio)
-
-  return ensureArray(resolvedPortfolio.milestones ?? [])
+  return ensureArray(resolvePortfolio(portfolio).milestones)
 }
 
 export function getContactContent(portfolio) {
@@ -135,22 +177,22 @@ export function getCommandPaletteContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    actions: ensureArray(commandActions),
+    actions: ensureArray(resolvedPortfolio.commands),
     profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
     projects: ensureArray(resolvedPortfolio.projects),
-    ui: uiContent.commandPalette,
+    ui: resolvedPortfolio.ui?.commandPalette ?? emptyPortfolio.ui.commandPalette,
   }
 }
 
-export function getProjectCardContent() {
-  return uiContent.projectCard
+export function getProjectCardContent(portfolio) {
+  return resolvePortfolio(portfolio).ui?.projectCard ?? emptyPortfolio.ui.projectCard
 }
 
 export function getNotFoundContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
 
   return {
-    seoTitle: `Page Not Found${siteSeo.projectTitleSuffix}`,
+    seoTitle: `Page Not Found${resolvedPortfolio.seo?.projectTitleSuffix ?? ''}`,
     section: resolvedPortfolio.sections.notFound,
   }
 }

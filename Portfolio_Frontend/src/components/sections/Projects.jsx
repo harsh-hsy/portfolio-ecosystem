@@ -18,9 +18,6 @@ export default function Projects() {
     [category, projects, query, section.allFilterLabel],
   )
 
-  console.log('Query:', query)
-console.log('Filtered:', filtered.length)
-
   return (
     <section id="projects" className="section projects-section">
       <div className="container">

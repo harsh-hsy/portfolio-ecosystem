@@ -6,6 +6,7 @@ import {
   ensurePublishedPortfolio,
   getEditableFields,
   getPublishedPortfolio,
+  updatePortfolioModule,
   replacePublishedPortfolio,
   resetPublishedPortfolio,
   updatePortfolioField,
@@ -107,6 +108,11 @@ router.post('/portfolio/initialize', async (req, res) => {
 
 router.put('/portfolio', async (req, res) => {
   const content = await replacePublishedPortfolio(req.body)
+  res.json({ content })
+})
+
+router.put('/portfolio/module/:module', async (req, res) => {
+  const content = await updatePortfolioModule(req.params.module, req.body)
   res.json({ content })
 })
 

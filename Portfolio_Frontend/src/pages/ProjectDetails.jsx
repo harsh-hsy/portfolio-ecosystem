@@ -14,7 +14,7 @@ export default function ProjectDetails() {
   const contentState = usePortfolioContent()
   const selectedProject = getProjectBySlug(slug, contentState?.portfolio?.projects)
   if (!selectedProject) return <Navigate to="/404" replace />
-  const { project, seo, ui } = getProjectDetailsContent(selectedProject)
+  const { project, seo, ui } = getProjectDetailsContent(selectedProject, contentState?.portfolio)
   const related = getRelatedProjects(project.slug, 3, contentState?.portfolio?.projects)
 
   return (

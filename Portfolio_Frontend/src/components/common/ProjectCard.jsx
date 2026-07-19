@@ -3,9 +3,11 @@ import { FiArrowUpRight, FiGithub } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { fadeUp } from '../../animations/variants.js'
 import { getProjectCardContent } from '../../lib/contentSelectors.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function ProjectCard({ project }) {
-  const ui = getProjectCardContent()
+  const contentState = usePortfolioContent()
+  const ui = getProjectCardContent(contentState?.portfolio)
 
   return (
     <motion.article

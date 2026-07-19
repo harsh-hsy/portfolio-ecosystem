@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { getSiteSettings } from '../../lib/contentSelectors.js'
+import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function LoadingScreen({ show }) {
-  const settings = getSiteSettings()
+  const contentState = usePortfolioContent()
+  const settings = getSiteSettings(contentState?.portfolio)
 
   return (
     <AnimatePresence>

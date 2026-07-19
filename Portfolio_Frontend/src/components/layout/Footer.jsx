@@ -6,7 +6,7 @@ import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 export default function Footer() {
   const contentState = usePortfolioContent()
   const { profile, socials } = getHomeContent(contentState?.portfolio)
-  const settings = getSiteSettings()
+  const settings = getSiteSettings(contentState?.portfolio)
 
   return (
     <footer className="footer">

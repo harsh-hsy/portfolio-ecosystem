@@ -12,9 +12,9 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false)
   const location = useLocation()
   const contentState = usePortfolioContent()
-  const navigation = getNavigationContent()
+  const navigation = getNavigationContent(contentState?.portfolio)
   const profile = getProfileContent(contentState?.portfolio)
-  const settings = getSiteSettings()
+  const settings = getSiteSettings(contentState?.portfolio)
   const ids = useMemo(() => navigation.map((link) => link.id), [navigation])
   const active = useScrollSpy(ids)
 

@@ -20,7 +20,7 @@ export const sectionContent = {
     eyebrow: 'About',
     title: "A frontend developer with a designer's eye.",
     copy:
-      'Harsh blends practical web development with polished visual systems and responsive UI thinking.',
+      'I build modern, responsive web experiences with frontend development and thoughtful design.',
     facts: [
       {
         label: 'Education',
@@ -29,7 +29,7 @@ export const sectionContent = {
       },
       {
         label: 'Internship',
-        value: 'Frontend Development',
+        value: 'Software Engineer Internship',
         icon: 'briefcase',
       },
       {
@@ -50,15 +50,15 @@ export const sectionContent = {
     eyebrow: 'Skills',
     title: 'Modern frontend toolkit, organized for product work.',
     copy:
-      'Progress bars are gone; the focus is on reusable capability groups and practical tools.',
+      'Skills, technologies, and tools I use to build modern and responsive web experiences.',
   },
 
   projects: {
     id: 'projects',
     eyebrow: 'Selected Projects',
-    title: 'Product-style case cards with real shipped work.',
+    title: 'Projects with real-world impact.',
     copy:
-      'Every existing project is preserved, upgraded with filters, search, live links, and detail pages.',
+      'Explore projects that reflect my skills, creativity, and passion for modern web experiences.',
     allFilterLabel: 'All',
     filterAriaLabel: 'Filter projects',
     searchPlaceholder: 'Search projects',
@@ -67,17 +67,17 @@ export const sectionContent = {
   experience: {
     id: 'experience',
     eyebrow: 'Journey',
-    title: 'Education, internship, learning, and next steps.',
+    title: 'My journey in frontend development.',
     copy:
-      'A compact timeline that keeps the recruiter scan fast while still showing momentum.',
+      'A timeline of my education, internship, continuous learning, and professional growth.',
   },
 
   certificates: {
     id: 'certificates',
     eyebrow: 'Certificates',
-    title: 'A reusable certificate showcase.',
+    title: 'Certifications that reflect my learning.',
     copy:
-      'Prepared as a responsive slider-style row and ready for real certificate files.',
+      'A collection of certifications showcasing my skills, continuous learning, and professional growth.',
     viewLabel: 'View',
     downloadLabel: 'Download',
   },
@@ -85,7 +85,7 @@ export const sectionContent = {
   services: {
     id: 'services',
     eyebrow: 'Services',
-    title: 'What Harsh can build.',
+    title: 'What I Build.',
   },
 
   achievements: {
@@ -101,7 +101,7 @@ export const sectionContent = {
     copy:
       'Open to frontend development, React applications, responsive websites, and polished UI work.',
     availability: 'Available for opportunities',
-    panelTitle: 'Send a message and Harsh will get back soon.',
+    panelTitle: "Send me a message and I'll get back to you soon.",
     errorMessage: 'Please complete every field.',
     successMessage: 'Message sent successfully.',
     failureMessage: 'Failed to send message.',

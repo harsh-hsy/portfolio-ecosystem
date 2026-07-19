@@ -1,6 +1,6 @@
 export const siteSettings = {
   brandInitials: 'HS',
-  copyrightPrefix: 'Copyright',
+  copyrightPrefix: '©',
   developedByLabel: 'Developed by',
   loadingMark: 'HS',
   footerBackToTopLabel: 'Back to top',

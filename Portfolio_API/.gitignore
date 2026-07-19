@@ -1,26 +1,30 @@
-# Environment and local overrides
+# Environment and secrets
 .env
 .env.*
 !.env.example
-*.local
+*.pem
+*.key
 
 # Dependencies
 node_modules/
 
-# Generated output
-dist/
-dist-ssr/
-build/
-coverage/
-
-# Logs and tool caches
+# Logs and runtime files
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.vite/
+
+# Generated output and temporary uploads
+dist/
+build/
+coverage/
+uploads/
+tmp/
+temp/
+
+# Tool caches
 .cache/
 .eslintcache
 
@@ -29,8 +33,6 @@ pnpm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Accidental local shell artifact
+/cd

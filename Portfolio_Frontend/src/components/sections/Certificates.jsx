@@ -19,8 +19,12 @@ export default function Certificates() {
               <h3>{certificate.title}</h3>
               <p>{certificate.issuer}</p>
               <div className="mini-actions">
-                <a href={certificate.file} target="_blank" rel="noreferrer"><FiEye /> {section.viewLabel}</a>
-                <a href={certificate.file} target="_blank" rel="noreferrer"><FiDownload /> {section.downloadLabel}</a>
+                {(certificate.credentialUrl || certificate.file) && (
+                  <a href={certificate.credentialUrl || certificate.file} target="_blank" rel="noreferrer"><FiEye /> {section.viewLabel}</a>
+                )}
+                {certificate.file && (
+                  <a href={certificate.file} target="_blank" rel="noreferrer"><FiDownload /> {section.downloadLabel}</a>
+                )}
               </div>
             </Reveal>
           ))}

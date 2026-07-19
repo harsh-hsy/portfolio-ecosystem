@@ -1,7 +1,5 @@
-import { projects as defaultProjects } from '../content/projects.js'
-
 function resolveProjects(projects) {
-  return projects ?? defaultProjects
+  return projects ?? []
 }
 
 export function getProjectBySlug(slug, projects) {
