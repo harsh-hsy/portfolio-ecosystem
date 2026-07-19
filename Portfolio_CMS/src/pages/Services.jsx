@@ -32,7 +32,7 @@ function portfolioFromForm(portfolio, form) {
 function Services() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
-  const editor = usePortfolioEditor({ getForm, getPortfolio, successMessage: "Services updated successfully." });
+  const editor = usePortfolioEditor({ moduleName: "services", getForm, getPortfolio, successMessage: "Services updated successfully." });
 
   return (
     <section className="page">

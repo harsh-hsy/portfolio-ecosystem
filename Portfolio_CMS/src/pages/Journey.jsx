@@ -42,7 +42,7 @@ function portfolioFromForm(portfolio, form) {
 function Journey() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
-  const editor = usePortfolioEditor({ getForm, getPortfolio, successMessage: "Journey content updated successfully." });
+  const editor = usePortfolioEditor({ moduleName: "journey", getForm, getPortfolio, successMessage: "Journey content updated successfully." });
 
   return (
     <section className="page">

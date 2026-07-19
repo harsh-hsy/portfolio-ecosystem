@@ -49,6 +49,7 @@ function Skills() {
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
 
   const editor = usePortfolioEditor({
+    moduleName: "skills",
     getForm,
     getPortfolio,
     successMessage: "Skills content updated successfully.",

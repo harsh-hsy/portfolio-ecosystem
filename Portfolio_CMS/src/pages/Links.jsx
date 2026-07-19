@@ -43,6 +43,7 @@ function Links() {
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
 
   const editor = usePortfolioEditor({
+    moduleName: "links",
     getForm,
     getPortfolio,
     successMessage: "Links updated successfully.",

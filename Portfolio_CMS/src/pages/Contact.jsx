@@ -80,7 +80,7 @@ function portfolioFromForm(portfolio, form) {
 function Contact() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
-  const editor = usePortfolioEditor({ getForm, getPortfolio, successMessage: "Contact content updated successfully." });
+  const editor = usePortfolioEditor({ moduleName: "contact", getForm, getPortfolio, successMessage: "Contact content updated successfully." });
 
   return (
     <section className="page">

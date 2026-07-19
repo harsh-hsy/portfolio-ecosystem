@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import {
   getAdminPortfolio,
   initializeAdminPortfolio,
-  replaceAdminPortfolio,
+  updateAdminPortfolioModule,
 } from "../services/portfolioService";
 
 export function usePortfolioEditor({
+  moduleName,
   getForm,
   getPortfolio,
   successMessage = "Content updated successfully.",
@@ -49,7 +50,7 @@ export function usePortfolioEditor({
     return () => {
       active = false;
     };
-  }, [getForm]);
+  }, [getForm, moduleName]);
 
   function updateField(event) {
     const { name, value } = event.target;
@@ -77,7 +78,7 @@ export function usePortfolioEditor({
 
     try {
       const nextPortfolio = getPortfolio(portfolio, form);
-      const response = await replaceAdminPortfolio(nextPortfolio);
+      const response = await updateAdminPortfolioModule(moduleName, nextPortfolio);
       setPortfolio(response.content);
       setForm(getForm(response.content));
       setStatus({ message: successMessage, type: "success" });

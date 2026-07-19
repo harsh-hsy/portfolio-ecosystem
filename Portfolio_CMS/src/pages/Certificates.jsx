@@ -45,7 +45,7 @@ function portfolioFromForm(portfolio, form) {
 function Certificates() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
-  const editor = usePortfolioEditor({ getForm, getPortfolio, successMessage: "Certificates updated successfully." });
+  const editor = usePortfolioEditor({ moduleName: "certificates", getForm, getPortfolio, successMessage: "Certificates updated successfully." });
 
   return (
     <section className="page">

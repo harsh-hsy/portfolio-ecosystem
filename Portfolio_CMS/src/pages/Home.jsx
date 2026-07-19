@@ -111,6 +111,7 @@ function Home() {
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
 
   const editor = usePortfolioEditor({
+    moduleName: "home",
     getForm,
     getPortfolio,
     successMessage: "Home content updated successfully.",

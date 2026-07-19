@@ -15,6 +15,13 @@ export function replaceAdminPortfolio(content) {
   })
 }
 
+export function updateAdminPortfolioModule(moduleName, content) {
+  return apiRequest(`/api/admin/portfolio/module/${moduleName}`, {
+    method: 'PUT',
+    body: JSON.stringify(content),
+  })
+}
+
 export function updateAdminPortfolioField(field, value) {
   return apiRequest(`/api/admin/portfolio/${field}`, {
     method: 'PUT',
