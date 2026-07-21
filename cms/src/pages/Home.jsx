@@ -1,128 +1,125 @@
-import { useCallback, useMemo } from "react";
+﻿import { useCallback, useMemo } from "react";
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
+import RepeaterField from "../components/editor/RepeaterField";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import {
-  createSocials,
-  csvToList,
-  listToCsv,
-  updateSection,
-} from "../utils/contentFormUtils";
+import { updateSection } from "../utils/contentFormUtils";
 import { validateForm, validators } from "../utils/validation";
 
 const emptyForm = {
   name: "",
-  fullName: "",
-  role: "",
-  rotatingRoles: "",
-  tagline: "",
-  location: "",
-  email: "",
-  heroImage: "",
-  heroAvailability: "",
-  heroIntro: "",
+  rotatingRoles: [],
   heroDescription: "",
-  heroPrimaryAction: "",
-  heroSecondaryAction: "",
-  heroContactAction: "",
+  showAvailability: true,
+  heroAvailability: "",
+  heroImage: "",
+  location: "",
   heroOrbitRole: "",
-  heroStrip: "",
-  projectCount: "",
-  technologyCount: "",
-  disciplineCount: "",
-  internshipCount: "",
+  heroStrip: [],
 };
+
+function cleanList(items = []) {
+  return items.map((item) => String(item).trim()).filter(Boolean);
+}
 
 function formFromPortfolio(portfolio) {
   const profile = portfolio?.profile ?? {};
   const hero = portfolio?.sections?.hero ?? {};
-  const stats = portfolio?.stats ?? [];
 
   return {
     name: profile.name ?? "",
-    fullName: profile.fullName ?? "",
-    role: profile.role ?? "",
-    rotatingRoles: listToCsv(profile.rotatingRoles ?? []),
-    tagline: profile.tagline ?? "",
-    location: profile.location ?? "",
-    email: profile.email ?? "",
-    heroImage: profile.image ?? "",
-    heroAvailability: hero.availability ?? "",
-    heroIntro: hero.intro ?? "",
+    rotatingRoles: [...(profile.rotatingRoles ?? [])],
     heroDescription: hero.description ?? "",
-    heroPrimaryAction: hero.primaryAction ?? "",
-    heroSecondaryAction: hero.secondaryAction ?? "",
-    heroContactAction: hero.contactAction ?? "",
+    showAvailability: hero.showAvailability !== false,
+    heroAvailability: hero.availability ?? "",
+    heroImage: profile.image ?? "",
+    location: profile.location ?? "",
     heroOrbitRole: hero.orbitRole ?? "",
-    heroStrip: listToCsv(hero.strip ?? []),
-    projectCount: String(stats.find((item) => item.id === "projects")?.value ?? ""),
-    technologyCount: String(stats.find((item) => item.id === "technologies")?.value ?? ""),
-    disciplineCount: String(stats.find((item) => item.id === "disciplines")?.value ?? ""),
-    internshipCount: String(stats.find((item) => item.id === "internship")?.value ?? ""),
+    heroStrip: [...(hero.strip ?? [])],
   };
-}
-
-function statValue(value) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 function portfolioFromForm(portfolio, form) {
-  const nextProfile = {
-    ...(portfolio.profile ?? {}),
-    name: form.name.trim(),
-    fullName: form.fullName.trim(),
-    role: form.role.trim(),
-    rotatingRoles: csvToList(form.rotatingRoles),
-    tagline: form.tagline.trim(),
-    location: form.location.trim(),
-    email: form.email.trim(),
-    image: form.heroImage.trim(),
-  };
+  const rotatingRoles = cleanList(form.rotatingRoles);
+  const highlights = cleanList(form.heroStrip);
+  const location = form.location.trim();
 
   return updateSection(
     {
       ...portfolio,
-      profile: nextProfile,
-      socials: createSocials(nextProfile),
-      stats: [
-        { id: "projects", value: statValue(form.projectCount), suffix: "+", label: "Projects Completed" },
-        { id: "technologies", value: statValue(form.technologyCount), suffix: "+", label: "Technologies Practiced" },
-        { id: "disciplines", value: statValue(form.disciplineCount), suffix: "+", label: "Core UI Disciplines" },
-        { id: "internship", value: statValue(form.internshipCount), suffix: "+", label: "Internship Experience" },
-      ],
+      profile: {
+        ...(portfolio.profile ?? {}),
+        name: form.name.trim(),
+        rotatingRoles,
+        image: form.heroImage.trim(),
+        location,
+      },
     },
     "hero",
     {
-      availability: form.heroAvailability.trim(),
-      intro: form.heroIntro.trim(),
       description: form.heroDescription.trim(),
-      primaryAction: form.heroPrimaryAction.trim(),
-      secondaryAction: form.heroSecondaryAction.trim(),
-      contactAction: form.heroContactAction.trim(),
-      orbitLocation: form.location.trim(),
+      showAvailability: form.showAvailability,
+      availability: form.heroAvailability.trim(),
+      orbitLocation: location,
       orbitRole: form.heroOrbitRole.trim(),
-      strip: csvToList(form.heroStrip),
+      strip: highlights,
     },
   );
 }
 
+function validateList(minimum, maximum, message) {
+  return (value) => {
+    const count = cleanList(value).length;
+    return count >= minimum && count <= maximum ? "" : message;
+  };
+}
+
 function validateHomeForm(form) {
   return validateForm(form, {
-    name: validators.required("Display name is required."),
-    fullName: validators.required("Full name is required."),
-    role: validators.required("Primary role is required."),
-    email: [
-      validators.required("Public email is required."),
-      validators.email(),
+    name: [validators.required("Display name is required."), validators.maxLength(60)],
+    rotatingRoles: validateList(1, 5, "Add between one and five job titles."),
+    heroDescription: [
+      validators.required("Hero description is required."),
+      validators.maxLength(280),
     ],
+    heroAvailability: (value, currentForm) =>
+      currentForm.showAvailability && !String(value ?? "").trim()
+        ? "Availability badge text is required while visible."
+        : validators.maxLength(60)(value),
+    heroImage: validators.required("Hero profile image is required."),
+    location: validators.required("Location badge is required."),
+    heroOrbitRole: [
+      validators.required("Image role badge is required."),
+      validators.maxLength(50),
+    ],
+    heroStrip: validateList(1, 6, "Add between one and six expertise highlights."),
   });
 }
 
+function resolvePreviewUrl(source) {
+  const value = String(source ?? "").trim();
+  if (!value) return "";
+  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+
+  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173";
+
+  try {
+    return new URL(value, `${portfolioUrl.replace(/\/$/, "")}/`).href;
+  } catch {
+    return value;
+  }
+}
+
 function Home() {
-  const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
+  const getForm = useCallback(
+    (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
+    [],
+  );
+  const getPortfolio = useCallback(
+    (portfolio, form) => portfolioFromForm(portfolio, form),
+    [],
+  );
 
   const editor = usePortfolioEditor({
     moduleName: "home",
@@ -132,9 +129,11 @@ function Home() {
     successMessage: "Home content updated successfully.",
   });
 
-  const previewName = useMemo(
-    () => editor.form.name || editor.form.fullName || "Portfolio owner",
-    [editor.form.fullName, editor.form.name],
+  const previewName = editor.form.name || "Portfolio owner";
+  const previewRole = editor.form.rotatingRoles[0] || "Job title will appear here";
+  const previewImage = useMemo(
+    () => resolvePreviewUrl(editor.form.heroImage),
+    [editor.form.heroImage],
   );
 
   return (
@@ -143,17 +142,17 @@ function Home() {
         <p className="page-kicker">Content Module</p>
         <h1 className="page-title">Home</h1>
         <p className="page-description">
-          Manage the public home hero, identity, headline, stats, image path,
-          and the hero strip shown on the frontend.
+          Manage the visible hero identity, profile image, badges, rotating titles,
+          and expertise highlights.
         </p>
       </div>
 
-      <form className="panel content-editor" onSubmit={editor.saveForm}>
+      <form className="panel content-editor home-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>
-            <span className="content-editor__eyebrow">Public preview</span>
+            <span className="content-editor__eyebrow">Hero preview</span>
             <h2>{previewName}</h2>
-            <p>{editor.form.role || "Role will appear here"}</p>
+            <p>{previewRole}</p>
           </div>
 
           <span className="content-editor__badge">
@@ -162,7 +161,8 @@ function Home() {
         </div>
 
         <div className="content-editor__section">
-          <h3>Identity</h3>
+          <h3>Hero Content</h3>
+
           <div className="form-grid">
             <FormField
               label="Display Name"
@@ -173,124 +173,125 @@ function Home() {
               required
             />
 
-            <FormField
-              label="Full Name"
-              name="fullName"
-              value={editor.form.fullName}
-              onChange={editor.updateField}
-              error={editor.errors.fullName}
-              required
-            />
+            <div className="availability-editor">
+              <FormField
+                label="Availability Badge"
+                name="heroAvailability"
+                value={editor.form.heroAvailability}
+                onChange={editor.updateField}
+                error={editor.errors.heroAvailability}
+                disabled={!editor.form.showAvailability}
+                required={editor.form.showAvailability}
+              />
+
+              <label className="toggle-field">
+                <input
+                  type="checkbox"
+                  checked={editor.form.showAvailability}
+                  onChange={(event) =>
+                    editor.updateForm((current) => ({
+                      ...current,
+                      showAvailability: event.target.checked,
+                    }))
+                  }
+                />
+                <span>
+                  <strong>Show Availability Badge</strong>
+                  <small>Display the availability badge in the hero.</small>
+                </span>
+              </label>
+            </div>
 
             <FormField
-              label="Primary Role"
-              name="role"
-              value={editor.form.role}
+              label="Hero Description"
+              name="heroDescription"
+              as="textarea"
+              className="form-group--wide"
+              value={editor.form.heroDescription}
               onChange={editor.updateField}
-              error={editor.errors.role}
+              error={editor.errors.heroDescription}
+              maxLength={280}
               required
             />
+          </div>
 
-            <label className="form-group">
-              <span className="form-label">Rotating Roles</span>
-              <input className="form-input" name="rotatingRoles" value={editor.form.rotatingRoles} onChange={editor.updateField} />
-            </label>
+          <RepeaterField
+            label="Rotating Job Titles"
+            items={editor.form.rotatingRoles}
+            onChange={(rotatingRoles) =>
+              editor.updateForm((current) => ({ ...current, rotatingRoles }))
+            }
+            createItem={() => ""}
+            addLabel="Add Job Title"
+            itemLabel="Job Title"
+            compact
+          />
+          {editor.errors.rotatingRoles ? (
+            <p className="form-error" role="alert">{editor.errors.rotatingRoles}</p>
+          ) : null}
+        </div>
 
-            <label className="form-group">
-              <span className="form-label">Location</span>
-              <input className="form-input" name="location" value={editor.form.location} onChange={editor.updateField} />
-            </label>
+        <div className="content-editor__section">
+          <h3>Hero Image and Badges</h3>
 
-            <FormField
-              label="Public Email"
-              name="email"
-              type="email"
-              value={editor.form.email}
-              onChange={editor.updateField}
-              error={editor.errors.email}
-              required
-            />
+          <div className="hero-image-editor">
+            <div className="hero-image-editor__preview">
+              {previewImage ? (
+                <img src={previewImage} alt={`${previewName} portrait`} />
+              ) : (
+                <span>Image preview</span>
+              )}
+            </div>
 
-            <label className="form-group form-group--wide">
-              <span className="form-label">Tagline</span>
-              <input className="form-input" name="tagline" value={editor.form.tagline} onChange={editor.updateField} />
-            </label>
+            <div className="form-grid">
+              <FormField
+                label="Hero Profile Image"
+                name="heroImage"
+                className="form-group--wide"
+                value={editor.form.heroImage}
+                onChange={editor.updateField}
+                error={editor.errors.heroImage}
+                helpText="Use an existing public image URL or frontend asset path."
+                required
+              />
+
+              <FormField
+                label="Location Badge"
+                name="location"
+                value={editor.form.location}
+                onChange={editor.updateField}
+                error={editor.errors.location}
+                required
+              />
+
+              <FormField
+                label="Image Role Badge"
+                name="heroOrbitRole"
+                value={editor.form.heroOrbitRole}
+                onChange={editor.updateField}
+                error={editor.errors.heroOrbitRole}
+                required
+              />
+            </div>
           </div>
         </div>
 
         <div className="content-editor__section">
-          <h3>Hero</h3>
-          <div className="form-grid">
-            <label className="form-group">
-              <span className="form-label">Hero Image Path</span>
-              <input className="form-input" name="heroImage" value={editor.form.heroImage} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Availability</span>
-              <input className="form-input" name="heroAvailability" value={editor.form.heroAvailability} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Intro Text</span>
-              <input className="form-input" name="heroIntro" value={editor.form.heroIntro} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Orbit Role</span>
-              <input className="form-input" name="heroOrbitRole" value={editor.form.heroOrbitRole} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Primary Button</span>
-              <input className="form-input" name="heroPrimaryAction" value={editor.form.heroPrimaryAction} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Secondary Button</span>
-              <input className="form-input" name="heroSecondaryAction" value={editor.form.heroSecondaryAction} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Contact Button</span>
-              <input className="form-input" name="heroContactAction" value={editor.form.heroContactAction} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Hero Strip Items</span>
-              <input className="form-input" name="heroStrip" value={editor.form.heroStrip} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group form-group--wide">
-              <span className="form-label">Hero Description</span>
-              <textarea className="form-input form-textarea" name="heroDescription" value={editor.form.heroDescription} onChange={editor.updateField} />
-            </label>
-          </div>
-        </div>
-
-        <div className="content-editor__section">
-          <h3>Stats</h3>
-          <div className="form-grid">
-            <label className="form-group">
-              <span className="form-label">Projects Completed</span>
-              <input className="form-input" name="projectCount" value={editor.form.projectCount} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Technologies Practiced</span>
-              <input className="form-input" name="technologyCount" value={editor.form.technologyCount} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Core UI Disciplines</span>
-              <input className="form-input" name="disciplineCount" value={editor.form.disciplineCount} onChange={editor.updateField} />
-            </label>
-
-            <label className="form-group">
-              <span className="form-label">Internship Experience</span>
-              <input className="form-input" name="internshipCount" value={editor.form.internshipCount} onChange={editor.updateField} />
-            </label>
-          </div>
+          <h3>Expertise Highlights</h3>
+          <RepeaterField
+            label="Highlights"
+            items={editor.form.heroStrip}
+            onChange={(heroStrip) =>
+              editor.updateForm((current) => ({ ...current, heroStrip }))
+            }
+            createItem={() => ""}
+            addLabel="Add Highlight"
+            itemLabel="Highlight"
+            compact
+          />
+          {editor.errors.heroStrip ? (
+            <p className="form-error" role="alert">{editor.errors.heroStrip}</p>
+          ) : null}
         </div>
 
         <EditorActions

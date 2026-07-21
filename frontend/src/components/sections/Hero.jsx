@@ -25,7 +25,9 @@ export default function Hero() {
       <div className="mesh-bg" aria-hidden="true" />
       <motion.div className="hero-grid container" variants={stagger} initial="hidden" animate="visible">
         <motion.div className="hero-copy" variants={slideRight}>
-          <span className="availability">{content.availability}</span>
+          {content.showAvailability !== false ? (
+            <span className="availability">{content.availability}</span>
+          ) : null}
           <h1>{content.intro} <span>{profile.name}</span></h1>
           <div className="typing-line" aria-live="polite">{profile.rotatingRoles[index]}</div>
           <p>{content.description}</p>
@@ -45,7 +47,7 @@ export default function Hero() {
           <div className="portrait-shell">
             <img src={profile.image} alt={`${profile.name} portrait`} />
             <motion.div className="orbit-card top" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }}>
-              <FiMapPin /> {content.orbitLocation}
+              <FiMapPin /> {profile.location}
             </motion.div>
             <motion.div className="orbit-card bottom" animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 4.5 }}>
               {content.orbitRole}

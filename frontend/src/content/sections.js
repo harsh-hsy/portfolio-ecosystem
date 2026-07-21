@@ -3,6 +3,7 @@ import { profile } from './profile.js'
 export const sectionContent = {
   hero: {
     id: 'hero',
+    showAvailability: true,
     availability: 'Available for frontend opportunities',
     intro: 'Hi, I am',
     description:

@@ -1,5 +1,6 @@
 import { defaultPortfolio } from '../data/defaultPortfolio.js'
 import { PortfolioContent } from '../models/PortfolioContent.js'
+import { validateHomeContent } from '../validation/homeContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import {
   AboutContent,
@@ -157,7 +158,7 @@ const fieldModules = {
 }
 
 const editorModules = {
-  home: ['home', 'links'],
+  home: ['home'],
   about: ['about'],
   skills: ['skills'],
   projects: ['projects'],
@@ -196,6 +197,7 @@ async function readModuleDocuments() {
 }
 
 async function writeModules(content, names = Object.keys(modules)) {
+  if (names.includes('home')) validateHomeContent(content)
   if (names.includes('projects')) validateProjectsContent(content)
 
   await Promise.all(

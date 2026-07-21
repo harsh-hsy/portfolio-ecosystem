@@ -17,6 +17,8 @@ function RepeaterField({
   getItemKey = (item, index) => item?.id || index,
   renderItem,
   addLabel = "Add item",
+  itemLabel = "Item",
+  compact = false,
   emptyMessage = "No items added yet.",
 }) {
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState(null);
@@ -52,7 +54,7 @@ function RepeaterField({
   }
 
   return (
-    <fieldset className="repeater-field">
+    <fieldset className={`repeater-field ${compact ? "repeater-field--compact" : ""}`}>
       <legend className="form-label">{label}</legend>
 
       <div className="repeater-field__list">
@@ -68,7 +70,7 @@ function RepeaterField({
                   })
                 ) : (
                   <FormField
-                    label={`Item ${index + 1}`}
+                    label={`${itemLabel} ${index + 1}`}
                     value={item}
                     onChange={(event) => updateItem(index, event.target.value)}
                   />
