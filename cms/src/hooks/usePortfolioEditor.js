@@ -92,6 +92,10 @@ export function usePortfolioEditor({
     setForm((current) =>
       typeof updater === "function" ? updater(current) : updater,
     );
+    setErrors({});
+    setStatus((current) =>
+      current.type === "error" ? { message: "", type: "success" } : current,
+    );
   }
 
   function resetForm() {

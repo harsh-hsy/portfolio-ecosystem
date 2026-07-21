@@ -1,5 +1,6 @@
 import { defaultPortfolio } from '../data/defaultPortfolio.js'
 import { PortfolioContent } from '../models/PortfolioContent.js'
+import { validateProjectsContent } from '../validation/projectContent.js'
 import {
   AboutContent,
   AchievementsContent,
@@ -195,6 +196,8 @@ async function readModuleDocuments() {
 }
 
 async function writeModules(content, names = Object.keys(modules)) {
+  if (names.includes('projects')) validateProjectsContent(content)
+
   await Promise.all(
     names.map((name) => {
       const definition = modules[name]
