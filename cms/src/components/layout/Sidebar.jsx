@@ -2,10 +2,10 @@ import SidebarBrand from "./SidebarBrand";
 import SidebarNav from "./SidebarNav";
 import SidebarFooter from "./SidebarFooter";
 
-function Sidebar() {
+function Sidebar({ isCollapsed, onToggle }) {
   return (
-    <aside className="sidebar">
-      <SidebarBrand />
+    <aside className={`sidebar ${isCollapsed ? "sidebar--collapsed" : ""}`}>
+      <SidebarBrand isCollapsed={isCollapsed} onToggle={onToggle} />
 
       <SidebarNav />
 

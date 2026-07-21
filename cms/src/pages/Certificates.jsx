@@ -74,7 +74,8 @@ function Certificates() {
             <label className="form-group form-group--wide"><span className="form-label">Certificates JSON</span><textarea className="form-input form-textarea form-textarea--code" name="certificatesJson" value={editor.form.certificatesJson} onChange={editor.updateField} /></label>
           </div>
         </div>
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );

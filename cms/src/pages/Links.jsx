@@ -104,6 +104,7 @@ function Links() {
 
         <EditorActions
           status={editor.status}
+          isDirty={editor.isDirty}
           isLoading={editor.isLoading}
           isSaving={editor.isSaving}
           onReset={editor.resetForm}

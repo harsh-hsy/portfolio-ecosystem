@@ -10,7 +10,7 @@
 
   padding: 32px;
 
-  background: #ffffff;
+  background: var(--card-bg);
 
   border: 1px solid var(--border);
 
@@ -98,7 +98,7 @@
 
   padding: 24px;
 
-  background: #ffffff;
+  background: var(--card-bg);
 
   border: 1px solid var(--border);
 
@@ -238,7 +238,7 @@
 .dashboard-widget {
   padding: 28px;
 
-  background: #ffffff;
+  background: var(--card-bg);
 
   border: 1px solid var(--border);
 
@@ -261,7 +261,7 @@
 
   padding: 28px;
 
-  background: #ffffff;
+  background: var(--card-bg);
 
   border: 1px solid var(--border);
 
@@ -290,7 +290,7 @@
 
   transition: var(--transition);
 
-  background: #ffffff;
+  background: var(--card-bg);
 }
 
 .message-card:hover {
@@ -356,7 +356,7 @@
 
   border-radius: 14px;
 
-  background: #ffffff;
+  background: var(--card-bg);
 
   transition: var(--transition);
 }
@@ -412,4 +412,48 @@
   .dashboard-widgets {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================
+   Dark Theme Refinements
+========================================== */
+
+:root[data-theme="dark"] .greeting-card,
+:root[data-theme="dark"] .quick-access-card,
+:root[data-theme="dark"] .dashboard-widget {
+  border-color: rgba(203, 213, 225, 0.11);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.025) inset,
+    0 14px 32px rgba(0, 0, 0, 0.16);
+}
+
+:root[data-theme="dark"] .greeting-card {
+  border-left: 3px solid var(--primary);
+}
+
+:root[data-theme="dark"] .quick-access-card {
+  min-height: 174px;
+}
+
+:root[data-theme="dark"] .quick-access-card:hover {
+  background: #1b1f28;
+  border-color: rgba(124, 140, 255, 0.48);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 38px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="dark"] .quick-access-card__icon {
+  background: rgba(124, 140, 255, 0.12);
+}
+
+:root[data-theme="dark"] .message-card,
+:root[data-theme="dark"] .activity-card {
+  background: #13161c;
+}
+
+:root[data-theme="dark"] .message-card:hover,
+:root[data-theme="dark"] .activity-card:hover {
+  background: #191d25;
+  border-color: rgba(124, 140, 255, 0.42);
 }

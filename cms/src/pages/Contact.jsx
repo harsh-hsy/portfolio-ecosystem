@@ -118,7 +118,8 @@ function Contact() {
             <label className="form-group form-group--wide"><span className="form-label">Failure Message</span><input className="form-input" name="failureMessage" value={editor.form.failureMessage} onChange={editor.updateField} /></label>
           </div>
         </div>
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );

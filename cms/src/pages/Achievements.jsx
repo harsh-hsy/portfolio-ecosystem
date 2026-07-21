@@ -54,7 +54,8 @@ function Achievements() {
             <label className="form-group form-group--wide"><span className="form-label">Achievements</span><textarea className="form-input form-textarea form-textarea--tall" name="achievements" value={editor.form.achievements} onChange={editor.updateField} /></label>
           </div>
         </div>
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );

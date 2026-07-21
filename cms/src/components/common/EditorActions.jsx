@@ -4,31 +4,40 @@ import PanelStatus from "./PanelStatus";
 
 function EditorActions({
   status,
+  isDirty,
   isLoading,
   isSaving,
   onReset,
 }) {
+  const displayStatus =
+    isDirty && !status.message
+      ? { message: "You have unsaved changes.", type: "warning" }
+      : status;
+
   return (
     <div className="panel-footer">
-      <PanelStatus message={status.message} type={status.type} />
+      <PanelStatus
+        message={displayStatus.message}
+        type={displayStatus.type}
+      />
 
       <div className="panel-actions">
         <button
           className="btn btn-secondary"
           type="button"
           onClick={onReset}
-          disabled={isLoading || isSaving}
+          disabled={isLoading || isSaving || !isDirty}
         >
-          <FiRefreshCw />
+          <FiRefreshCw aria-hidden="true" />
           Reset
         </button>
 
         <button
           className="btn btn-primary"
           type="submit"
-          disabled={isLoading || isSaving}
+          disabled={isLoading || isSaving || !isDirty}
         >
-          <FiSave />
+          <FiSave aria-hidden="true" />
           {isSaving ? "Saving" : "Save Changes"}
         </button>
       </div>

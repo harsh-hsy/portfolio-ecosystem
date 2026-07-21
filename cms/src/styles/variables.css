@@ -53,6 +53,7 @@
 
   /* ========= Effects ========= */
   --shadow: 0 22px 70px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
 
   --radius-sm: 6px;
   --radius: 8px;
@@ -67,42 +68,42 @@
 
 :root[data-theme="dark"] {
   /* ========= Brand ========= */
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
+  --primary: #7c8cff;
+  --primary-hover: #98a5ff;
 
-  --accent: #8b5cf6;
-  --accent-hover: #7c3aed;
+  --accent: #a855f7;
+  --accent-hover: #9333ea;
 
   /* ========= Background ========= */
-  --bg: #030712;
-  --surface: #111827;
+  --bg: #0d0f14;
+  --surface: #171a21;
   --glass: rgba(255, 255, 255, 0.05);
 
   /* ========= Text ========= */
-  --heading: #f8fafc;
-  --text: #cbd5e1;
-  --muted: #94a3b8;
+  --heading: #f4f6fb;
+  --text: #d2d6df;
+  --muted: #9299a8;
 
   /* ========= Border ========= */
-  --border: rgba(148, 163, 184, 0.22);
+  --border: rgba(203, 213, 225, 0.12);
 
   /* ========= Sidebar ========= */
-  --sidebar-bg: #111827;
-  --sidebar-hover: rgba(59, 130, 246, 0.12);
-  --sidebar-active: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  --sidebar-text: #cbd5e1;
+  --sidebar-bg: #12151b;
+  --sidebar-hover: rgba(124, 140, 255, 0.12);
+  --sidebar-active: linear-gradient(135deg, #6677f4, #8b5cf6);
+  --sidebar-text: #c6cbd5;
   --sidebar-text-active: #ffffff;
 
   /* ========= Header ========= */
-  --header-bg: rgba(17, 24, 39, 0.75);
+  --header-bg: #11141a;
 
   /* ========= Cards ========= */
-  --card-bg: #111827;
+  --card-bg: #171a21;
 
   /* ========= Inputs ========= */
-  --input-bg: #1f2937;
+  --input-bg: #11141a;
 
   /* ========= Effects ========= */
-  --shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
   --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
 }

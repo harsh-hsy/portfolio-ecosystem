@@ -54,7 +54,8 @@ function Services() {
             <label className="form-group form-group--wide"><span className="form-label">Services</span><textarea className="form-input form-textarea form-textarea--tall" name="services" value={editor.form.services} onChange={editor.updateField} /></label>
           </div>
         </div>
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );

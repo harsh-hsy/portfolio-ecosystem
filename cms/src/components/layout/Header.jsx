@@ -1,11 +1,11 @@
 import HeaderLeft from "./HeaderLeft";
 import HeaderRight from "./HeaderRight";
 
-function Header() {
+function Header({ theme, onToggleTheme }) {
   return (
     <header className="header">
       <HeaderLeft />
-      <HeaderRight />
+      <HeaderRight theme={theme} onToggleTheme={onToggleTheme} />
     </header>
   );
 }

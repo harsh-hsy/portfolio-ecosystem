@@ -118,7 +118,8 @@ function About() {
           </div>
         </div>
 
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );

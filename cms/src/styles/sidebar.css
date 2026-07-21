@@ -212,3 +212,60 @@ button.sidebar-nav__link {
   color: #f87171;
 }
 
+
+.sidebar--collapsed {
+  width: 88px;
+}
+
+.sidebar--collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar--collapsed .sidebar-brand__logo,
+.sidebar--collapsed .sidebar-brand__content,
+.sidebar--collapsed .sidebar-nav__link span {
+  display: none;
+}
+
+.sidebar--collapsed .sidebar-nav,
+.sidebar--collapsed .sidebar-footer {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.sidebar--collapsed .sidebar-nav__link {
+  justify-content: center;
+  padding: 0;
+}
+
+/* Keep the navigation scrollbar visually integrated with the sidebar. */
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.32) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.48);
+}
+
+:root[data-theme="dark"] .sidebar {
+  box-shadow: 12px 0 32px rgba(0, 0, 0, 0.14);
+}
+
+:root[data-theme="dark"] .sidebar-brand__logo {
+  box-shadow: 0 10px 24px rgba(102, 119, 244, 0.22);
+}

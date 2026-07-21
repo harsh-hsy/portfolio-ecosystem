@@ -1,6 +1,6 @@
-import { LuPanelLeftClose } from "react-icons/lu";
+import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
 
-function SidebarBrand() {
+function SidebarBrand({ isCollapsed, onToggle }) {
   return (
     <div className="sidebar-brand">
       <div className="sidebar-brand__logo">
@@ -15,9 +15,16 @@ function SidebarBrand() {
       <button
         type="button"
         className="sidebar-brand__toggle"
-        aria-label="Collapse Sidebar"
+        onClick={onToggle}
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-expanded={!isCollapsed}
       >
-        <LuPanelLeftClose size={20} />
+        {isCollapsed ? (
+          <LuPanelLeftOpen size={20} />
+        ) : (
+          <LuPanelLeftClose size={20} />
+        )}
       </button>
     </div>
   );

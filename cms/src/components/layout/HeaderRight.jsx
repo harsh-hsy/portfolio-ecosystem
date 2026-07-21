@@ -1,15 +1,19 @@
-import { FiMoon } from "react-icons/fi";
+import { FiMoon, FiSun } from "react-icons/fi";
 
-function HeaderRight() {
+function HeaderRight({ theme, onToggleTheme }) {
+  const isDark = theme === "dark";
+
   return (
     <div className="header__right">
       <button
         type="button"
         className="theme-toggle"
-        aria-label="Toggle Theme"
-        title="Toggle Theme"
+        onClick={onToggleTheme}
+        aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+        title={`Switch to ${isDark ? "light" : "dark"} theme`}
+        aria-pressed={isDark}
       >
-        <FiMoon size={20} />
+        {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
       </button>
     </div>
   );

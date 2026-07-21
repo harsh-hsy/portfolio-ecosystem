@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 
 import EditorActions from "../components/common/EditorActions";
+import FormField from "../components/editor/FormField";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import {
   createSocials,
@@ -8,6 +9,7 @@ import {
   listToCsv,
   updateSection,
 } from "../utils/contentFormUtils";
+import { validateForm, validators } from "../utils/validation";
 
 const emptyForm = {
   name: "",
@@ -106,6 +108,18 @@ function portfolioFromForm(portfolio, form) {
   );
 }
 
+function validateHomeForm(form) {
+  return validateForm(form, {
+    name: validators.required("Display name is required."),
+    fullName: validators.required("Full name is required."),
+    role: validators.required("Primary role is required."),
+    email: [
+      validators.required("Public email is required."),
+      validators.email(),
+    ],
+  });
+}
+
 function Home() {
   const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
@@ -114,6 +128,7 @@ function Home() {
     moduleName: "home",
     getForm,
     getPortfolio,
+    validate: validateHomeForm,
     successMessage: "Home content updated successfully.",
   });
 
@@ -149,20 +164,32 @@ function Home() {
         <div className="content-editor__section">
           <h3>Identity</h3>
           <div className="form-grid">
-            <label className="form-group">
-              <span className="form-label">Display Name</span>
-              <input className="form-input" name="name" value={editor.form.name} onChange={editor.updateField} />
-            </label>
+            <FormField
+              label="Display Name"
+              name="name"
+              value={editor.form.name}
+              onChange={editor.updateField}
+              error={editor.errors.name}
+              required
+            />
 
-            <label className="form-group">
-              <span className="form-label">Full Name</span>
-              <input className="form-input" name="fullName" value={editor.form.fullName} onChange={editor.updateField} />
-            </label>
+            <FormField
+              label="Full Name"
+              name="fullName"
+              value={editor.form.fullName}
+              onChange={editor.updateField}
+              error={editor.errors.fullName}
+              required
+            />
 
-            <label className="form-group">
-              <span className="form-label">Primary Role</span>
-              <input className="form-input" name="role" value={editor.form.role} onChange={editor.updateField} />
-            </label>
+            <FormField
+              label="Primary Role"
+              name="role"
+              value={editor.form.role}
+              onChange={editor.updateField}
+              error={editor.errors.role}
+              required
+            />
 
             <label className="form-group">
               <span className="form-label">Rotating Roles</span>
@@ -174,10 +201,15 @@ function Home() {
               <input className="form-input" name="location" value={editor.form.location} onChange={editor.updateField} />
             </label>
 
-            <label className="form-group">
-              <span className="form-label">Public Email</span>
-              <input className="form-input" name="email" type="email" value={editor.form.email} onChange={editor.updateField} />
-            </label>
+            <FormField
+              label="Public Email"
+              name="email"
+              type="email"
+              value={editor.form.email}
+              onChange={editor.updateField}
+              error={editor.errors.email}
+              required
+            />
 
             <label className="form-group form-group--wide">
               <span className="form-label">Tagline</span>
@@ -263,6 +295,7 @@ function Home() {
 
         <EditorActions
           status={editor.status}
+          isDirty={editor.isDirty}
           isLoading={editor.isLoading}
           isSaving={editor.isSaving}
           onReset={editor.resetForm}

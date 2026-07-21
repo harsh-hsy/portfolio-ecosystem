@@ -70,7 +70,8 @@ function Journey() {
             <label className="form-group form-group--wide"><span className="form-label">Milestones JSON</span><textarea className="form-input form-textarea form-textarea--code" name="milestonesJson" value={editor.form.milestonesJson} onChange={editor.updateField} /></label>
           </div>
         </div>
-        <EditorActions status={editor.status} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <EditorActions status={editor.status}
+          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
     </section>
   );
