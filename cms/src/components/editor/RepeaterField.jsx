@@ -19,6 +19,8 @@ function RepeaterField({
   addLabel = "Add item",
   itemLabel = "Item",
   compact = false,
+  className = "",
+  maxItems,
   emptyMessage = "No items added yet.",
 }) {
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState(null);
@@ -54,7 +56,15 @@ function RepeaterField({
   }
 
   return (
-    <fieldset className={`repeater-field ${compact ? "repeater-field--compact" : ""}`}>
+    <fieldset
+      className={[
+        "repeater-field",
+        compact ? "repeater-field--compact" : "",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <legend className="form-label">{label}</legend>
 
       <div className="repeater-field__list">
@@ -119,6 +129,7 @@ function RepeaterField({
         type="button"
         className="btn btn-secondary repeater-field__add"
         onClick={() => onChange([...items, createItem()])}
+        disabled={Number.isFinite(maxItems) && items.length >= maxItems}
       >
         <FiPlus aria-hidden="true" />
         {addLabel}

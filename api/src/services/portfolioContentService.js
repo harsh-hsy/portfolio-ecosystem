@@ -1,5 +1,6 @@
 import { defaultPortfolio } from '../data/defaultPortfolio.js'
 import { PortfolioContent } from '../models/PortfolioContent.js'
+import { validateAboutContent } from '../validation/aboutContent.js'
 import { validateHomeContent } from '../validation/homeContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import {
@@ -37,7 +38,6 @@ const modules = {
     extract: (content) => ({
       profile: pick(content.profile, profileFields.home),
       section: content.sections?.hero ?? {},
-      stats: content.stats ?? [],
     }),
   },
   about: {
@@ -45,6 +45,7 @@ const modules = {
     extract: (content) => ({
       profile: pick(content.profile, profileFields.about),
       section: content.sections?.about ?? {},
+      stats: content.stats ?? [],
     }),
   },
   skills: {
@@ -149,7 +150,7 @@ const fieldModules = {
   milestones: ['milestones'],
   services: ['services'],
   sections: ['home', 'about', 'skills', 'projects', 'certificates', 'journey', 'services', 'achievements', 'contact', 'settings'],
-  stats: ['home'],
+  stats: ['about'],
   settings: ['settings'],
   navigation: ['settings'],
   commands: ['settings'],
@@ -198,6 +199,7 @@ async function readModuleDocuments() {
 
 async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('home')) validateHomeContent(content)
+  if (names.includes('about')) validateAboutContent(content)
   if (names.includes('projects')) validateProjectsContent(content)
 
   await Promise.all(
@@ -263,7 +265,7 @@ function composePortfolio(documents) {
       contact: contact.section ?? {},
       notFound: settings.section ?? {},
     },
-    stats: home.stats ?? [],
+    stats: about.stats ?? home.stats ?? [],
     settings: settings.settings ?? {},
     navigation: settings.navigation ?? [],
     commands: settings.commands ?? [],

@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { FiChevronDown } from "react-icons/fi";
 
 function FormField({
   label,
@@ -47,13 +48,16 @@ function FormField({
       {as === "textarea" ? (
         <textarea {...sharedProps} />
       ) : as === "select" ? (
-        <select {...sharedProps}>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <span className="form-select-control">
+          <select {...sharedProps}>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <FiChevronDown aria-hidden="true" />
+        </span>
       ) : (
         <input {...sharedProps} />
       )}

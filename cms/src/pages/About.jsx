@@ -1,20 +1,52 @@
-import { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
+import {
+  FiBriefcase,
+  FiCode,
+  FiGlobe,
+  FiMail,
+  FiMapPin,
+  FiUser,
+} from "react-icons/fi";
 
 import EditorActions from "../components/common/EditorActions";
+import FormField from "../components/editor/FormField";
+import RepeaterField from "../components/editor/RepeaterField";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import {
-  factsToLines,
-  linesToFacts,
-  updateSection,
-} from "../utils/contentFormUtils";
+import { updateSection } from "../utils/contentFormUtils";
+import { validateForm, validators } from "../utils/validation";
+
+const factIconOptions = [
+  { value: "user", label: "Person" },
+  { value: "briefcase", label: "Briefcase" },
+  { value: "mapPin", label: "Location Pin" },
+  { value: "globe", label: "Globe" },
+  { value: "code", label: "Code" },
+  { value: "email", label: "Email" },
+];
+
+const factIconComponents = {
+  user: FiUser,
+  briefcase: FiBriefcase,
+  mapPin: FiMapPin,
+  globe: FiGlobe,
+  code: FiCode,
+  email: FiMail,
+};
+
+const suffixOptions = [
+  { value: "+", label: "+ (Plus)" },
+  { value: "", label: "None" },
+];
+
+const allowedFactIcons = new Set(factIconOptions.map((option) => option.value));
 
 const emptyForm = {
-  eyebrow: "",
   title: "",
   copy: "",
   bio: "",
   aboutImage: "",
-  facts: "",
+  facts: [],
+  stats: [],
 };
 
 function formFromPortfolio(portfolio) {
@@ -22,16 +54,52 @@ function formFromPortfolio(portfolio) {
   const about = portfolio?.sections?.about ?? {};
 
   return {
-    eyebrow: about.eyebrow ?? "",
     title: about.title ?? "",
     copy: about.copy ?? "",
     bio: profile.about ?? "",
     aboutImage: profile.aboutImage ?? "",
-    facts: factsToLines(about.facts ?? []),
+    facts: (about.facts ?? []).map((fact) => ({
+      label: fact?.label ?? "",
+      value:
+        String(fact?.label ?? "").trim().toLowerCase() === "location"
+          ? profile.location ?? fact?.value ?? ""
+          : fact?.value ?? "",
+      icon: allowedFactIcons.has(fact?.icon) ? fact.icon : "user",
+    })),
+    stats: (portfolio?.stats ?? []).map((stat) => ({
+      id: stat?.id ?? "",
+      value: String(stat?.value ?? ""),
+      suffix: suffixOptions.some((option) => option.value === stat?.suffix)
+        ? stat.suffix
+        : "",
+      label: stat?.label ?? "",
+    })),
   };
 }
 
+function createId(label, index) {
+  const slug = String(label ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return slug || `stat-${index + 1}`;
+}
+
 function portfolioFromForm(portfolio, form) {
+  const facts = form.facts.map((fact) => ({
+    label: fact.label.trim(),
+    value: fact.value.trim(),
+    icon: fact.icon,
+  }));
+  const stats = form.stats.map((stat, index) => ({
+    id: stat.id || createId(stat.label, index),
+    value: Number(stat.value),
+    suffix: stat.suffix,
+    label: stat.label.trim(),
+  }));
+
   return updateSection(
     {
       ...portfolio,
@@ -40,27 +108,105 @@ function portfolioFromForm(portfolio, form) {
         about: form.bio.trim(),
         aboutImage: form.aboutImage.trim(),
       },
+      stats,
     },
     "about",
     {
-      eyebrow: form.eyebrow.trim(),
       title: form.title.trim(),
       copy: form.copy.trim(),
-      facts: linesToFacts(form.facts),
+      facts,
     },
   );
 }
 
+function validateAboutForm(form) {
+  return validateForm(form, {
+    title: [validators.required("About title is required."), validators.maxLength(140)],
+    copy: [
+      validators.required("Short description is required."),
+      validators.maxLength(280),
+    ],
+    bio: [validators.required("Profile bio is required."), validators.maxLength(1200)],
+    aboutImage: validators.required("About image is required."),
+    facts: (facts) => {
+      if (!Array.isArray(facts) || facts.length < 1 || facts.length > 6) {
+        return "Add between one and six fact cards.";
+      }
+
+      return facts.every(
+        (fact) =>
+          fact.label.trim() &&
+          fact.value.trim() &&
+          allowedFactIcons.has(fact.icon),
+      )
+        ? ""
+        : "Complete the label, value, and icon for every fact card.";
+    },
+    stats: (stats) => {
+      if (!Array.isArray(stats) || stats.length < 1 || stats.length > 4) {
+        return "Add between one and four statistics.";
+      }
+
+      return stats.every(
+        (stat) =>
+          stat.label.trim() &&
+          Number.isFinite(Number(stat.value)) &&
+          Number(stat.value) >= 0 &&
+          suffixOptions.some((option) => option.value === stat.suffix),
+      )
+        ? ""
+        : "Every statistic needs a label, non-negative number, and valid suffix.";
+    },
+  });
+}
+
+function resolvePreviewUrl(source) {
+  const value = String(source ?? "").trim();
+  if (!value) return "";
+  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+
+  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173";
+
+  try {
+    return new URL(value, `${portfolioUrl.replace(/\/$/, "")}/`).href;
+  } catch {
+    return value;
+  }
+}
+
+function ImagePreview({ source, alt }) {
+  const [hasError, setHasError] = useState(false);
+
+
+  if (!source || hasError) {
+    return <span>{hasError ? "Image unavailable" : "Image preview"}</span>;
+  }
+
+  return <img src={source} alt={alt} onError={() => setHasError(true)} />;
+}
+
 function About() {
-  const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
+  const getForm = useCallback(
+    (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
+    [],
+  );
+  const getPortfolio = useCallback(
+    (portfolio, form) => portfolioFromForm(portfolio, form),
+    [],
+  );
 
   const editor = usePortfolioEditor({
     moduleName: "about",
     getForm,
     getPortfolio,
+    validate: validateAboutForm,
     successMessage: "About content updated successfully.",
   });
+
+  const previewImage = useMemo(
+    () => resolvePreviewUrl(editor.form.aboutImage),
+    [editor.form.aboutImage],
+  );
 
   return (
     <section className="page">
@@ -68,58 +214,232 @@ function About() {
         <p className="page-kicker">Content Module</p>
         <h1 className="page-title">About</h1>
         <p className="page-description">
-          Manage the about section content, profile bio, facts, and about image path.
+          Manage the visible About copy, profile image, fact cards, and statistics.
         </p>
       </div>
 
-      <form className="panel content-editor" onSubmit={editor.saveForm}>
+      <form className="panel content-editor about-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>
-            <span className="content-editor__eyebrow">About section</span>
+            <span className="content-editor__eyebrow">About preview</span>
             <h2>{editor.form.title || "About title"}</h2>
-            <p>{editor.form.eyebrow || "Section eyebrow"}</p>
+            <p>
+              {editor.form.facts.length} fact cards &middot; {editor.form.stats.length} statistics
+            </p>
           </div>
-          <span className="content-editor__badge">{editor.isLoading ? "Loading" : "Connected"}</span>
+          <span className="content-editor__badge">
+            {editor.isLoading ? "Loading" : "Connected"}
+          </span>
         </div>
 
         <div className="content-editor__section">
-          <h3>Section Copy</h3>
+          <h3>Section Content</h3>
           <div className="form-grid">
-            <label className="form-group">
-              <span className="form-label">Eyebrow</span>
-              <input className="form-input" name="eyebrow" value={editor.form.eyebrow} onChange={editor.updateField} />
-            </label>
-            <label className="form-group">
-              <span className="form-label">About Image Path</span>
-              <input className="form-input" name="aboutImage" value={editor.form.aboutImage} onChange={editor.updateField} />
-            </label>
-            <label className="form-group form-group--wide">
-              <span className="form-label">Title</span>
-              <input className="form-input" name="title" value={editor.form.title} onChange={editor.updateField} />
-            </label>
-            <label className="form-group form-group--wide">
-              <span className="form-label">Section Copy</span>
-              <textarea className="form-input form-textarea" name="copy" value={editor.form.copy} onChange={editor.updateField} />
-            </label>
-            <label className="form-group form-group--wide">
-              <span className="form-label">Profile Bio</span>
-              <textarea className="form-input form-textarea" name="bio" value={editor.form.bio} onChange={editor.updateField} />
-            </label>
-            <label className="form-group form-group--wide">
-              <span className="form-label">Facts</span>
-              <textarea
-                className="form-input form-textarea form-textarea--tall"
-                name="facts"
-                value={editor.form.facts}
-                onChange={editor.updateField}
-                placeholder="Education | B.Tech in Computer Science & Engineering | user"
-              />
-            </label>
+            <FormField
+              label="About Title"
+              name="title"
+              className="form-group--wide"
+              value={editor.form.title}
+              onChange={editor.updateField}
+              error={editor.errors.title}
+              maxLength={140}
+              required
+            />
+
+            <FormField
+              label="Short Description"
+              name="copy"
+              as="textarea"
+              className="form-group--wide about-copy-field"
+              value={editor.form.copy}
+              onChange={editor.updateField}
+              error={editor.errors.copy}
+              maxLength={280}
+              required
+            >
+              <span className="form-character-count">
+                {editor.form.copy.length}/280
+              </span>
+            </FormField>
+
+            <FormField
+              label="Profile Bio"
+              name="bio"
+              as="textarea"
+              className="form-group--wide about-bio-field"
+              value={editor.form.bio}
+              onChange={editor.updateField}
+              error={editor.errors.bio}
+              maxLength={1200}
+              required
+            >
+              <span className="form-character-count">
+                {editor.form.bio.length}/1200
+              </span>
+            </FormField>
           </div>
         </div>
 
-        <EditorActions status={editor.status}
-          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+        <div className="content-editor__section">
+          <h3>About Image</h3>
+          <div className="about-image-editor">
+            <div className="about-image-editor__preview">
+              <ImagePreview
+                source={previewImage}
+                alt={`${editor.form.title || "About"} preview`}
+              />
+            </div>
+
+            <div className="about-image-editor__control">
+              <FormField
+                label="About Image"
+                name="aboutImage"
+                value={editor.form.aboutImage}
+                onChange={editor.updateField}
+                error={editor.errors.aboutImage}
+                helpText="Use an existing public image URL or frontend asset path."
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="content-editor__section">
+          <div className="editor-section-heading">
+            <div>
+              <h3>Fact Cards</h3>
+              <p>Manage the information cards shown beside the About image.</p>
+            </div>
+          </div>
+
+          <RepeaterField
+            className="about-facts-editor"
+            label="About Facts"
+            items={editor.form.facts}
+            onChange={(facts) =>
+              editor.updateForm((current) => ({ ...current, facts }))
+            }
+            createItem={() => ({ label: "", value: "", icon: "user" })}
+            getItemKey={(_, index) => index}
+            addLabel={editor.form.facts.length >= 6 ? "Maximum 6 Fact Cards" : "Add Fact Card"}
+            itemLabel="Fact Card"
+            maxItems={6}
+            renderItem={({ item, updateItem }) => {
+              const Icon = factIconComponents[item.icon] ?? FiUser;
+              const usesSharedLocation = item.label.trim().toLowerCase() === "location";
+
+              return (
+                <div className="about-fact-fields">
+                  <FormField
+                    label="Label"
+                    value={item.label}
+                    onChange={(event) =>
+                      updateItem({ ...item, label: event.target.value })
+                    }
+                    required
+                  />
+                  <div className="about-icon-control">
+                    <span className="about-icon-preview" aria-hidden="true">
+                      <Icon />
+                    </span>
+                    <FormField
+                      label="Icon"
+                      as="select"
+                      options={factIconOptions}
+                      value={item.icon}
+                      onChange={(event) =>
+                        updateItem({ ...item, icon: event.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <FormField
+                    label="Value"
+                    className="about-fact-value"
+                    value={item.value}
+                    onChange={(event) =>
+                      updateItem({ ...item, value: event.target.value })
+                    }
+                    helpText={
+                      usesSharedLocation ? "Managed from Home location." : ""
+                    }
+                    disabled={usesSharedLocation}
+                    required
+                  />
+                </div>
+              );
+            }}
+          />
+          {editor.errors.facts ? (
+            <p className="form-error" role="alert">{editor.errors.facts}</p>
+          ) : null}
+        </div>
+
+        <div className="content-editor__section">
+          <div className="editor-section-heading">
+            <div>
+              <h3>Statistics</h3>
+              <p>Manage up to four numeric cards displayed below the About section.</p>
+            </div>
+          </div>
+
+          <RepeaterField
+            className="about-stats-editor"
+            label="About Statistics"
+            items={editor.form.stats}
+            onChange={(stats) =>
+              editor.updateForm((current) => ({ ...current, stats }))
+            }
+            createItem={() => ({ id: "", value: "0", suffix: "+", label: "" })}
+            getItemKey={(_, index) => index}
+            addLabel={editor.form.stats.length >= 4 ? "Maximum 4 Statistics" : "Add Statistic"}
+            itemLabel="Statistic"
+            maxItems={4}
+            renderItem={({ item, updateItem }) => (
+              <div className="about-stat-fields">
+                <FormField
+                  label="Number"
+                  type="number"
+                  min="0"
+                  value={item.value}
+                  onChange={(event) =>
+                    updateItem({ ...item, value: event.target.value })
+                  }
+                  required
+                />
+                <FormField
+                  label="Suffix"
+                  as="select"
+                  options={suffixOptions}
+                  value={item.suffix}
+                  onChange={(event) =>
+                    updateItem({ ...item, suffix: event.target.value })
+                  }
+                />
+                <FormField
+                  label="Label"
+                  className="about-stat-label"
+                  value={item.label}
+                  onChange={(event) =>
+                    updateItem({ ...item, label: event.target.value })
+                  }
+                  required
+                />
+              </div>
+            )}
+          />
+          {editor.errors.stats ? (
+            <p className="form-error" role="alert">{editor.errors.stats}</p>
+          ) : null}
+        </div>
+
+        <EditorActions
+          status={editor.status}
+          isDirty={editor.isDirty}
+          isLoading={editor.isLoading}
+          isSaving={editor.isSaving}
+          onReset={editor.resetForm}
+        />
       </form>
     </section>
   );
