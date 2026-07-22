@@ -51,4 +51,6 @@ export const defaultProject = {
   solution: '',
   challenges: [],
   lessons: [],
+  visible: true,
+  featured: false,
 }

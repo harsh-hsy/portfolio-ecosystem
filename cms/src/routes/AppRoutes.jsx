@@ -9,6 +9,7 @@ import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Projects from "../pages/Projects";
+import ProjectEditor from "../pages/ProjectEditor";
 import Skills from "../pages/Skills";
 import Certificates from "../pages/Certificates";
 import Journey from "../pages/Journey";
@@ -48,6 +49,7 @@ function AppRoutes() {
         <Route path="about" element={<About />} />
         <Route path="skills" element={<Skills />} />
         <Route path="projects" element={<Projects />} />
+        <Route path="projects/:slug" element={<ProjectEditor />} />
         <Route path="certificates" element={<Certificates />} />
         <Route path="journey" element={<Journey />} />
         <Route path="services" element={<Services />} />

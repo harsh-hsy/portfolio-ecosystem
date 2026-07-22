@@ -12,6 +12,7 @@ import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
+const ProjectsPage = lazy(() => import('./pages/Projects.jsx'))
 
 function App() {
   const location = useLocation()
@@ -68,6 +69,7 @@ function App() {
           <Suspense fallback={<LoadingScreen show />}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
+              <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:slug" element={<ProjectDetails />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

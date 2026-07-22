@@ -33,10 +33,14 @@ export default function ProjectCard({ project }) {
         </div>
         <div className="project-actions">
           <Link to={`/projects/${project.slug}`}>{ui.caseStudyLabel} <FiArrowUpRight /></Link>
-          <a href={project.github} target="_blank" rel="noreferrer" aria-label={`${project.shortTitle} ${ui.githubLabel}`}>
-            <FiGithub />
-          </a>
-          <a href={project.live} target="_blank" rel="noreferrer">{ui.liveDemoLabel}</a>
+          {project.github ? (
+            <a href={project.github} target="_blank" rel="noreferrer" aria-label={`${project.shortTitle} ${ui.githubLabel}`}>
+              <FiGithub />
+            </a>
+          ) : null}
+          {project.live ? (
+            <a href={project.live} target="_blank" rel="noreferrer">{ui.liveDemoLabel}</a>
+          ) : null}
         </div>
       </div>
     </motion.article>

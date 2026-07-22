@@ -40,6 +40,16 @@ body {
     color var(--transition);
 }
 
+body.cms-dashboard-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.cms-dashboard-open #root {
+  height: 100%;
+  overflow: hidden;
+}
+
 /* ==========================================
    Typography
 ========================================== */

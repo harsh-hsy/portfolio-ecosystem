@@ -36,3 +36,31 @@ export function resetAdminPortfolio() {
 export function getEditablePortfolioFields() {
   return apiRequest('/api/admin/portfolio-fields')
 }
+
+export function getAdminProjects() {
+  return apiRequest('/api/admin/projects')
+}
+
+export function createAdminProject(name) {
+  return apiRequest('/api/admin/projects', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  })
+}
+
+export function getAdminProject(slug) {
+  return apiRequest(`/api/admin/projects/${encodeURIComponent(slug)}`)
+}
+
+export function updateAdminProject(slug, project) {
+  return apiRequest(`/api/admin/projects/${encodeURIComponent(slug)}`, {
+    method: 'PUT',
+    body: JSON.stringify(project),
+  })
+}
+
+export function deleteAdminProject(slug) {
+  return apiRequest(`/api/admin/projects/${encodeURIComponent(slug)}`, {
+    method: 'DELETE',
+  })
+}

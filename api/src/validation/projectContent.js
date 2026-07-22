@@ -25,6 +25,7 @@ export function validateProjectsContent(content) {
   }
 
   const slugs = new Set()
+  let featuredCount = 0
 
   content.projects.forEach((project, index) => {
     const label = project?.title?.trim() || `Project ${index + 1}`
@@ -83,7 +84,17 @@ export function validateProjectsContent(content) {
     if (project.featured !== undefined && typeof project.featured !== 'boolean') {
       throw validationError(`${label}: featured must be true or false`)
     }
+
+    if (project.featured) featuredCount += 1
+
+    if (project.visible === false && project.featured) {
+      throw validationError(`${label}: a hidden project cannot be featured`)
+    }
   })
+
+  if (featuredCount > 6) {
+    throw validationError('A maximum of 6 projects can be featured on the homepage')
+  }
 
   return content
 }

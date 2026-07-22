@@ -31,8 +31,8 @@ export default function ProjectDetails() {
             <h1>{project.title}</h1>
             <p>{project.desc}</p>
             <div className="project-actions detail-actions">
-              <a href={project.live} target="_blank" rel="noreferrer"><FiExternalLink /> {ui.liveDemoLabel}</a>
-              <a href={project.github} target="_blank" rel="noreferrer"><FiGithub /> {ui.githubLabel}</a>
+              {project.live ? <a href={project.live} target="_blank" rel="noreferrer"><FiExternalLink /> {ui.liveDemoLabel}</a> : null}
+              {project.github ? <a href={project.github} target="_blank" rel="noreferrer"><FiGithub /> {ui.githubLabel}</a> : null}
             </div>
           </Reveal>
           <Reveal className="detail-preview">

@@ -11,6 +11,13 @@ import {
   resetPublishedPortfolio,
   updatePortfolioField,
 } from '../services/portfolioContentService.js'
+import {
+  createDraftProject,
+  deleteAdminProject,
+  getAdminProject,
+  listAdminProjects,
+  updateAdminProject,
+} from '../services/projectService.js'
 
 const router = Router()
 
@@ -99,6 +106,29 @@ router.put('/account/password', async (req, res) => {
 router.get('/portfolio', async (req, res) => {
   const content = await getPublishedPortfolio()
   res.json({ content })
+})
+
+router.get('/projects', async (req, res) => {
+  res.json({ projects: await listAdminProjects() })
+})
+
+router.post('/projects', async (req, res) => {
+  const project = await createDraftProject(req.body.name)
+  res.status(201).json({ project })
+})
+
+router.get('/projects/:slug', async (req, res) => {
+  res.json({ project: await getAdminProject(req.params.slug) })
+})
+
+router.put('/projects/:slug', async (req, res) => {
+  const project = await updateAdminProject(req.params.slug, req.body)
+  res.json({ project })
+})
+
+router.delete('/projects/:slug', async (req, res) => {
+  const project = await deleteAdminProject(req.params.slug)
+  res.json({ project })
 })
 
 router.post('/portfolio/initialize', async (req, res) => {

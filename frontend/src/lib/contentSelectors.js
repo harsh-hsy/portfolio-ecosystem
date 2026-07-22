@@ -99,12 +99,15 @@ export function getSkillsContent(portfolio) {
 
 export function getProjectsContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
+  const projects = ensureArray(resolvedPortfolio.projects).map((project) =>
+    withDefaults(project, defaultProject),
+  )
+  const visibleProjects = projects.filter((project) => project.visible !== false)
 
   return {
     section: resolvedPortfolio.sections.projects,
-    projects: ensureArray(resolvedPortfolio.projects).map((project) =>
-      withDefaults(project, defaultProject),
-    ),
+    projects: visibleProjects,
+    featuredProjects: visibleProjects.filter((project) => project.featured).slice(0, 6),
     ui: resolvedPortfolio.ui?.projectCard ?? {},
   }
 }
@@ -179,7 +182,9 @@ export function getCommandPaletteContent(portfolio) {
   return {
     actions: ensureArray(resolvedPortfolio.commands),
     profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
-    projects: ensureArray(resolvedPortfolio.projects),
+    projects: ensureArray(resolvedPortfolio.projects).filter(
+      (project) => project.visible !== false,
+    ),
     ui: resolvedPortfolio.ui?.commandPalette ?? emptyPortfolio.ui.commandPalette,
   }
 }

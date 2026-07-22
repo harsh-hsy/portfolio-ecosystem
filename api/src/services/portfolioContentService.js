@@ -5,6 +5,11 @@ import { validateHomeContent } from '../validation/homeContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
 import {
+  ensureProjectResources,
+  listPublishedProjects,
+  replaceProjectResources,
+} from './projectService.js'
+import {
   AboutContent,
   AchievementsContent,
   CertificatesContent,
@@ -301,7 +306,13 @@ export function isEditorModule(moduleName) {
 }
 
 export async function getPublishedPortfolio() {
-  return composePortfolio(await ensureModuleDocuments())
+  const content = composePortfolio(await ensureModuleDocuments())
+  await ensureProjectResources(content.projects)
+
+  return {
+    ...content,
+    projects: await listPublishedProjects(),
+  }
 }
 
 export async function ensurePublishedPortfolio() {
@@ -318,6 +329,7 @@ export async function updatePortfolioModule(moduleName, content) {
 
   await ensureModuleDocuments()
   await writeModules(content, names)
+  if (moduleName === 'projects') await replaceProjectResources(content.projects)
   return getPublishedPortfolio()
 }
 
@@ -331,15 +343,18 @@ export async function updatePortfolioField(field, value) {
   const content = await getPublishedPortfolio()
   const nextContent = { ...content, [field]: value }
   await writeModules(nextContent, fieldModules[field])
+  if (field === 'projects') await replaceProjectResources(value)
   return getPublishedPortfolio()
 }
 
 export async function replacePublishedPortfolio(content) {
   await writeModules(content)
+  await replaceProjectResources(content.projects)
   return getPublishedPortfolio()
 }
 
 export async function resetPublishedPortfolio() {
   await writeModules(defaultPortfolio)
+  await replaceProjectResources(defaultPortfolio.projects)
   return getPublishedPortfolio()
 }

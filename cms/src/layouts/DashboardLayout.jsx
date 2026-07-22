@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 
 function DashboardLayout() {
+  const location = useLocation();
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("cms-theme");
 
@@ -32,6 +33,12 @@ function DashboardLayout() {
     );
   }, [isSidebarCollapsed]);
 
+  useEffect(() => {
+    document.body.classList.add("cms-dashboard-open");
+
+    return () => document.body.classList.remove("cms-dashboard-open");
+  }, []);
+
   function toggleTheme() {
     setTheme((currentTheme) =>
       currentTheme === "dark" ? "light" : "dark",
@@ -48,7 +55,9 @@ function DashboardLayout() {
       <div className="dashboard-content">
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
-        <main className="dashboard-main">
+        <main
+          className={`dashboard-main${location.pathname.startsWith("/projects") ? " dashboard-main--projects" : ""}`}
+        >
           <Outlet />
         </main>
       </div>

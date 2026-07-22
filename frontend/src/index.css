@@ -108,7 +108,7 @@ p { margin: 0; line-height: 1.75; }
 
 .section-header { max-width: 760px; margin-bottom: 34px; }
 .eyebrow, .availability { display: inline-flex; width: fit-content; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 11px; border: 1px solid var(--border); border-radius: 999px; color: var(--primary); background: rgba(59, 130, 246, 0.09); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; }
-.section-header h2 { font-size: clamp(2rem, 4vw, 4.25rem); line-height: 1.02; max-width: 780px; }
+.section-header h1, .section-header h2 { font-size: clamp(2rem, 4vw, 4.25rem); line-height: 1.02; max-width: 780px; }
 .section-header p { margin-top: 14px; color: var(--muted); font-size: 1.04rem; }
 
 .hero-section { min-height: 100svh; display: grid; align-items: center; padding-top: 132px; overflow: hidden; }
@@ -168,6 +168,9 @@ p { margin: 0; line-height: 1.75; }
 .search-field { display: flex; align-items: center; gap: 10px; min-width: min(320px, 100%); border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 0 12px; color: var(--muted); }
 .search-field input { width: 100%; height: 44px; border: 0; outline: 0; background: transparent; color: var(--heading); }
 .projects-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.projects-more { display: flex; justify-content: center; margin-top: 28px; }
+.projects-page { min-height: 80vh; padding-top: 132px; }
+.projects-empty { padding: 48px 0; color: var(--muted); text-align: center; }
 .project-card { overflow: hidden; transform-style: preserve-3d; }
 .project-image { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface); }
 .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }

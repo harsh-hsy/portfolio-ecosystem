@@ -1,5 +1,5 @@
 function resolveProjects(projects) {
-  return projects ?? []
+  return (projects ?? []).filter((project) => project.visible !== false)
 }
 
 export function getProjectBySlug(slug, projects) {
