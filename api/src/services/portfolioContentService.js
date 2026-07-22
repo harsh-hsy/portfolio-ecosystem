@@ -3,6 +3,7 @@ import { PortfolioContent } from '../models/PortfolioContent.js'
 import { validateAboutContent } from '../validation/aboutContent.js'
 import { validateHomeContent } from '../validation/homeContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
+import { validateSkillsContent } from '../validation/skillsContent.js'
 import {
   AboutContent,
   AchievementsContent,
@@ -201,6 +202,7 @@ async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('home')) validateHomeContent(content)
   if (names.includes('about')) validateAboutContent(content)
   if (names.includes('projects')) validateProjectsContent(content)
+  if (names.includes('skills')) validateSkillsContent(content)
 
   await Promise.all(
     names.map((name) => {

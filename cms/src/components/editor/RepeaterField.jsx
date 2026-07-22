@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   FiArrowDown,
   FiArrowUp,
+  FiCopy,
   FiPlus,
   FiTrash2,
 } from "react-icons/fi";
@@ -14,6 +15,7 @@ function RepeaterField({
   items = [],
   onChange,
   createItem = () => "",
+  duplicateItem,
   getItemKey = (item, index) => item?.id || index,
   renderItem,
   addLabel = "Add item",
@@ -47,6 +49,14 @@ function RepeaterField({
       nextItems[nextIndex],
       nextItems[index],
     ];
+    onChange(nextItems);
+  }
+
+  function copyItem(index) {
+    if (!duplicateItem || (Number.isFinite(maxItems) && items.length >= maxItems)) return;
+
+    const nextItems = [...items];
+    nextItems.splice(index + 1, 0, duplicateItem(items[index], index));
     onChange(nextItems);
   }
 
@@ -108,6 +118,18 @@ function RepeaterField({
                 >
                   <FiArrowDown aria-hidden="true" />
                 </button>
+                {duplicateItem ? (
+                  <button
+                    type="button"
+                    className="icon-button"
+                    onClick={() => copyItem(index)}
+                    disabled={Number.isFinite(maxItems) && items.length >= maxItems}
+                    aria-label={`Duplicate item ${index + 1}`}
+                    title="Duplicate item"
+                  >
+                    <FiCopy aria-hidden="true" />
+                  </button>
+                ) : null}
                 <button
                   type="button"
                   className="icon-button icon-button--danger"
