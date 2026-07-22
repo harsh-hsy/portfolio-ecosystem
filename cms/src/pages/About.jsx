@@ -1,44 +1,18 @@
 import { useCallback, useMemo, useState } from "react";
-import {
-  FiBriefcase,
-  FiCode,
-  FiGlobe,
-  FiMail,
-  FiMapPin,
-  FiUser,
-} from "react-icons/fi";
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
+import IconPicker from "../components/editor/IconPicker";
 import RepeaterField from "../components/editor/RepeaterField";
+import { isSupportedIcon } from "../data/iconCatalog";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { updateSection } from "../utils/contentFormUtils";
 import { validateForm, validators } from "../utils/validation";
-
-const factIconOptions = [
-  { value: "user", label: "Person" },
-  { value: "briefcase", label: "Briefcase" },
-  { value: "mapPin", label: "Location Pin" },
-  { value: "globe", label: "Globe" },
-  { value: "code", label: "Code" },
-  { value: "email", label: "Email" },
-];
-
-const factIconComponents = {
-  user: FiUser,
-  briefcase: FiBriefcase,
-  mapPin: FiMapPin,
-  globe: FiGlobe,
-  code: FiCode,
-  email: FiMail,
-};
 
 const suffixOptions = [
   { value: "+", label: "+ (Plus)" },
   { value: "", label: "None" },
 ];
-
-const allowedFactIcons = new Set(factIconOptions.map((option) => option.value));
 
 const emptyForm = {
   title: "",
@@ -58,14 +32,19 @@ function formFromPortfolio(portfolio) {
     copy: about.copy ?? "",
     bio: profile.about ?? "",
     aboutImage: profile.aboutImage ?? "",
-    facts: (about.facts ?? []).map((fact) => ({
-      label: fact?.label ?? "",
-      value:
-        String(fact?.label ?? "").trim().toLowerCase() === "location"
+    facts: (about.facts ?? []).map((fact) => {
+      const isLocation = String(fact?.label ?? "").trim().toLowerCase() === "location";
+      const useProfileLocation = fact?.useProfileLocation ?? isLocation;
+
+      return {
+        label: fact?.label ?? "",
+        value: useProfileLocation
           ? profile.location ?? fact?.value ?? ""
           : fact?.value ?? "",
-      icon: allowedFactIcons.has(fact?.icon) ? fact.icon : "user",
-    })),
+        icon: isSupportedIcon(fact?.icon) ? fact.icon : "user",
+        useProfileLocation,
+      };
+    }),
     stats: (portfolio?.stats ?? []).map((stat) => ({
       id: stat?.id ?? "",
       value: String(stat?.value ?? ""),
@@ -92,6 +71,7 @@ function portfolioFromForm(portfolio, form) {
     label: fact.label.trim(),
     value: fact.value.trim(),
     icon: fact.icon,
+    useProfileLocation: Boolean(fact.useProfileLocation),
   }));
   const stats = form.stats.map((stat, index) => ({
     id: stat.id || createId(stat.label, index),
@@ -137,7 +117,7 @@ function validateAboutForm(form) {
         (fact) =>
           fact.label.trim() &&
           fact.value.trim() &&
-          allowedFactIcons.has(fact.icon),
+          isSupportedIcon(fact.icon) && typeof fact.useProfileLocation === "boolean",
       )
         ? ""
         : "Complete the label, value, and icon for every fact card.";
@@ -319,14 +299,13 @@ function About() {
             onChange={(facts) =>
               editor.updateForm((current) => ({ ...current, facts }))
             }
-            createItem={() => ({ label: "", value: "", icon: "user" })}
+            createItem={() => ({ label: "", value: "", icon: "user", useProfileLocation: false })}
             getItemKey={(_, index) => index}
             addLabel={editor.form.facts.length >= 6 ? "Maximum 6 Fact Cards" : "Add Fact Card"}
             itemLabel="Fact Card"
             maxItems={6}
             renderItem={({ item, updateItem }) => {
-              const Icon = factIconComponents[item.icon] ?? FiUser;
-              const usesSharedLocation = item.label.trim().toLowerCase() === "location";
+              const isLocation = item.label.trim().toLowerCase() === "location";
 
               return (
                 <div className="about-fact-fields">
@@ -338,21 +317,12 @@ function About() {
                     }
                     required
                   />
-                  <div className="about-icon-control">
-                    <span className="about-icon-preview" aria-hidden="true">
-                      <Icon />
-                    </span>
-                    <FormField
-                      label="Icon"
-                      as="select"
-                      options={factIconOptions}
-                      value={item.icon}
-                      onChange={(event) =>
-                        updateItem({ ...item, icon: event.target.value })
-                      }
-                      required
-                    />
-                  </div>
+                  <IconPicker
+                    label="Icon"
+                    value={item.icon}
+                    onChange={(icon) => updateItem({ ...item, icon })}
+                    required
+                  />
                   <FormField
                     label="Value"
                     className="about-fact-value"
@@ -360,12 +330,30 @@ function About() {
                     onChange={(event) =>
                       updateItem({ ...item, value: event.target.value })
                     }
-                    helpText={
-                      usesSharedLocation ? "Managed from Home location." : ""
-                    }
-                    disabled={usesSharedLocation}
+                    disabled={isLocation && item.useProfileLocation}
                     required
                   />
+                  {isLocation ? (
+                    <label className="about-location-source">
+                      <input
+                        type="checkbox"
+                        checked={item.useProfileLocation}
+                        onChange={(event) =>
+                          updateItem({
+                            ...item,
+                            useProfileLocation: event.target.checked,
+                            value: event.target.checked
+                              ? editor.portfolio?.profile?.location ?? item.value
+                              : item.value,
+                          })
+                        }
+                      />
+                      <span>
+                        <strong>Use Home location</strong>
+                        <small>Keep this value synchronized with the Home location badge.</small>
+                      </span>
+                    </label>
+                  ) : null}
                 </div>
               );
             }}

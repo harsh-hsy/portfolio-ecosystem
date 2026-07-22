@@ -2,7 +2,9 @@
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
+import IconPicker from "../components/editor/IconPicker";
 import RepeaterField from "../components/editor/RepeaterField";
+import { isSupportedIcon } from "../data/iconCatalog";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { updateSection } from "../utils/contentFormUtils";
 import { validateForm, validators } from "../utils/validation";
@@ -15,6 +17,7 @@ const emptyForm = {
   heroAvailability: "",
   heroImage: "",
   location: "",
+  heroLocationIcon: "mapPin",
   heroOrbitRole: "",
   heroStrip: [],
 };
@@ -35,6 +38,7 @@ function formFromPortfolio(portfolio) {
     heroAvailability: hero.availability ?? "",
     heroImage: profile.image ?? "",
     location: profile.location ?? "",
+    heroLocationIcon: isSupportedIcon(hero.orbitLocationIcon) ? hero.orbitLocationIcon : "mapPin",
     heroOrbitRole: hero.orbitRole ?? "",
     heroStrip: [...(hero.strip ?? [])],
   };
@@ -62,6 +66,7 @@ function portfolioFromForm(portfolio, form) {
       showAvailability: form.showAvailability,
       availability: form.heroAvailability.trim(),
       orbitLocation: location,
+      orbitLocationIcon: form.heroLocationIcon,
       orbitRole: form.heroOrbitRole.trim(),
       strip: highlights,
     },
@@ -89,6 +94,7 @@ function validateHomeForm(form) {
         : validators.maxLength(60)(value),
     heroImage: validators.required("Hero profile image is required."),
     location: validators.required("Location badge is required."),
+    heroLocationIcon: (value) => isSupportedIcon(value) ? "" : "Select a supported location badge icon.",
     heroOrbitRole: [
       validators.required("Image role badge is required."),
       validators.maxLength(50),
@@ -264,9 +270,20 @@ function Home() {
                 required
               />
 
+              <IconPicker
+                label="Location Badge Icon"
+                value={editor.form.heroLocationIcon}
+                onChange={(heroLocationIcon) =>
+                  editor.updateForm((current) => ({ ...current, heroLocationIcon }))
+                }
+                error={editor.errors.heroLocationIcon}
+                required
+              />
+
               <FormField
                 label="Image Role Badge"
                 name="heroOrbitRole"
+                className="form-group--wide"
                 value={editor.form.heroOrbitRole}
                 onChange={editor.updateField}
                 error={editor.errors.heroOrbitRole}

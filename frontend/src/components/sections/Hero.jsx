@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FiArrowDown, FiDownload, FiMapPin, FiSend } from 'react-icons/fi'
+import { FiArrowDown, FiDownload, FiSend } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 import MagneticButton from '../common/MagneticButton.jsx'
 import Reveal from '../common/Reveal.jsx'
@@ -13,6 +13,7 @@ export default function Hero() {
   const contentState = usePortfolioContent()
   const { profile, socials, sections } = getHomeContent(contentState?.portfolio)
   const content = sections.hero
+  const LocationIcon = getIcon(content.orbitLocationIcon || 'mapPin')
   const rotatingRoleCount = profile.rotatingRoles.length
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function Hero() {
           <div className="portrait-shell">
             <img src={profile.image} alt={`${profile.name} portrait`} />
             <motion.div className="orbit-card top" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }}>
-              <FiMapPin /> {profile.location}
+              <LocationIcon /> {profile.location}
             </motion.div>
             <motion.div className="orbit-card bottom" animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 4.5 }}>
               {content.orbitRole}

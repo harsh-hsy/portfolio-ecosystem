@@ -12,6 +12,7 @@ export const sectionContent = {
     secondaryAction: 'View Projects',
     contactAction: "Let's Connect",
     orbitLocation: profile.location,
+    orbitLocationIcon: 'mapPin',
     orbitRole: 'React UI Engineer',
     strip: ['React', 'Accessible UI', 'Responsive Design', 'Performance'],
   },
@@ -37,6 +38,7 @@ export const sectionContent = {
         label: 'Location',
         value: profile.location,
         icon: 'mapPin',
+        useProfileLocation: true,
       },
       {
         label: 'Languages',

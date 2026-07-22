@@ -1,3 +1,5 @@
+import { isSupportedIconKey } from './iconContent.js'
+
 function validationError(message) {
   const error = new Error(message)
   error.statusCode = 400
@@ -37,6 +39,10 @@ export function validateHomeContent(content) {
 
   if (!profile.location?.trim()) {
     throw validationError('Location badge is required')
+  }
+
+  if (!isSupportedIconKey(hero.orbitLocationIcon ?? 'mapPin')) {
+    throw validationError('Select a supported location badge icon')
   }
 
   if (!hero.description?.trim() || hero.description.trim().length > 280) {

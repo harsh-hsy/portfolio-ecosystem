@@ -19,9 +19,9 @@ export default function About() {
             <div className="fact-grid">
               {section.facts.map((fact) => {
                 const Icon = getIcon(fact.icon)
-                const value = fact.label?.trim().toLowerCase() === 'location'
-                  ? profile.location
-                  : fact.value
+                const isLocation = fact.label?.trim().toLowerCase() === 'location'
+                const useProfileLocation = fact.useProfileLocation ?? isLocation
+                const value = useProfileLocation ? profile.location : fact.value
                 return <article key={fact.label}><Icon /><span>{fact.label}</span><strong>{value}</strong></article>
               })}
             </div>

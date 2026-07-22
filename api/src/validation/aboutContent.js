@@ -1,3 +1,5 @@
+import { isSupportedIconKey } from './iconContent.js'
+
 function validationError(message) {
   const error = new Error(message)
   error.statusCode = 400
@@ -7,15 +9,6 @@ function validationError(message) {
 function cleanText(value) {
   return String(value ?? '').trim()
 }
-
-const allowedFactIcons = new Set([
-  'briefcase',
-  'code',
-  'email',
-  'globe',
-  'mapPin',
-  'user',
-])
 
 export function validateAboutContent(content) {
   const profile = content?.profile
@@ -52,8 +45,12 @@ export function validateAboutContent(content) {
       throw validationError('Every About fact needs a label and value')
     }
 
-    if (!allowedFactIcons.has(fact?.icon)) {
+    if (!isSupportedIconKey(fact?.icon)) {
       throw validationError('Select a supported icon for every About fact')
+    }
+
+    if (fact?.useProfileLocation !== undefined && typeof fact.useProfileLocation !== 'boolean') {
+      throw validationError('About location source must be true or false')
     }
   }
 
