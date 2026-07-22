@@ -271,10 +271,6 @@ function Skills() {
                   items={group.items}
                   onChange={(items) => updateGroup({ ...group, items })}
                   createItem={() => ({ name: "New Skill", icon: "code" })}
-                  duplicateItem={(skill) => ({
-                    ...skill,
-                    name: `${skill.name} Copy`,
-                  })}
                   getItemKey={(_, index) => index}
                   addLabel={group.items.length >= 16 ? "Maximum 16 Skills" : "Add Skill"}
                   itemLabel="Skill"
@@ -292,6 +288,7 @@ function Skills() {
                       <IconPicker
                         label="Icon"
                         value={skill.icon}
+                        compact
                         onChange={(icon) => updateSkill({ ...skill, icon })}
                         required
                       />

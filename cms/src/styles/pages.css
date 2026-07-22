@@ -175,12 +175,10 @@
 }
 
 .icon-picker__popover {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  z-index: 80;
+  position: fixed;
+  z-index: 1200;
 
-  width: min(540px, calc(100vw - 48px));
+  max-width: calc(100vw - 32px);
 
   padding: 12px;
 
@@ -235,6 +233,30 @@
   overflow-y: auto;
 
   margin-top: 10px;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--input-bg);
+}
+
+.icon-picker__grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.icon-picker__grid::-webkit-scrollbar-track {
+  border-radius: 8px;
+
+  background: var(--input-bg);
+}
+
+.icon-picker__grid::-webkit-scrollbar-thumb {
+  border: 1px solid var(--input-bg);
+  border-radius: 8px;
+
+  background: var(--primary);
+}
+
+.icon-picker__grid::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
 }
 
 .icon-picker__option {
@@ -292,6 +314,17 @@
 
   color: var(--muted);
   font-size: 11px;
+}
+
+.icon-picker__popover--compact .icon-picker__grid {
+  max-height: 260px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 6px;
+}
+
+.icon-picker__popover--compact .icon-picker__option {
+  min-height: 64px;
 }
 
 .icon-picker__empty {
@@ -1839,6 +1872,11 @@ input[type="password"]::-webkit-textfield-decoration-container {
   align-items: end;
 }
 
+.skills-items-editor .icon-button {
+  width: 46px;
+  height: 46px;
+}
+
 .skill-item-fields {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(170px, 0.8fr);
@@ -1851,10 +1889,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
   margin-top: 0;
 }
 
-.skills-items-editor .icon-picker__popover {
-  right: 0;
-  left: auto;
-}
 
 .skills-editor .panel-footer {
   position: sticky;
