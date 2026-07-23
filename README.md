@@ -1,64 +1,180 @@
 # Portfolio Website Ecosystem
 
-A production-grade portfolio ecosystem built with modern web technologies.
+A production portfolio workspace built around three separate apps:
+
+- `frontend` for the public portfolio
+- `cms` for the private content editor
+- `api` for the Express and MongoDB backend
+
+The backend is the source of truth. The CMS writes content to MongoDB through the API, and the public frontend reads the published portfolio from the API.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  CMS["CMS Admin Dashboard"] --> API["API / Express"]
+  API --> DB["MongoDB"]
+  DB --> API
+  API --> Frontend["Public Frontend"]
+  Frontend --> Visitors["Portfolio Visitors"]
+```
 
 ## Workspace Structure
 
 ```text
 portfolio_ecosystem/
-├── frontend
-├── cms
-├── api
-└── docs
+|-- api/
+|-- cms/
+|-- frontend/
+|-- docs/
+|-- README.md
 ```
 
-## Projects
+## Apps
 
-### Portfolio Frontend
+### Public Frontend
 
-Public portfolio website for visitors.
+The visitor-facing portfolio site.
 
-Status: Stable public experience
+Highlights:
 
-Technology:
+- responsive hero, about, skills, projects, journey, milestones, certificates, services, achievements, and contact sections
+- dark and light theme support
+- smooth scrolling and custom cursor
+- motion and interaction polish with Framer Motion
+- command palette
+- SEO support with `react-helmet-async`
+- content selectors and validation helpers so the UI can safely read CMS data
 
-- React
-- Vite
+### CMS
 
-### Portfolio CMS
+The private admin dashboard for editing portfolio content.
 
-Private dashboard for managing portfolio content.
+Highlights:
 
-Status: In development
+- authenticated admin access
+- editable modules for Home, About, Skills, Projects, Certificates, Journey, Milestones, Services, Achievements, Contact, Links, Settings, Account, Resume, and Inbox
+- reusable form patterns for repeaters, structured entries, and icon selection
+- validation, unsaved-change protection, confirmation dialogs, and toast feedback
+- content synchronization with the API and MongoDB
 
-Technology:
+### API
 
-- React
-- Vite
+The backend service that stores and serves portfolio data.
 
-### Portfolio API
+Highlights:
 
-Backend service powering the CMS and frontend.
+- Express server with MongoDB and Mongoose
+- JWT-based admin authentication
+- public portfolio endpoint
+- admin endpoints for portfolio modules, projects, certificates, account settings, and reset flows
+- validation layers for module content
+- seed scripts for admin and portfolio data
 
-Status: Foundation phase
+## Local Setup
 
-Technology:
+Install dependencies separately in each app folder:
 
-- Express
-- MongoDB
-- Mongoose
-- JWT auth
+```bash
+cd api
+npm install
 
-## Current Development Phase
+cd ../cms
+npm install
 
-Phase A: Architecture Realignment
+cd ../frontend
+npm install
+```
 
-Building:
+Start the apps in this order:
 
-- Dedicated API foundation
-- MongoDB-ready backend structure
-- Clean public frontend / private CMS separation
+```bash
+cd api
+npm run dev
 
-## Maintainer
+cd ../cms
+npm run dev
 
-Harsh Kumar Singh
+cd ../frontend
+npm run dev
+```
+
+Default local ports:
+
+- API: `http://localhost:4174`
+- CMS: `http://localhost:5174`
+- Frontend: `http://localhost:5173`
+
+## Environment Variables
+
+### API
+
+Create `api/.env` with values like:
+
+```env
+PORT=4174
+CLIENT_ORIGIN=http://localhost:5173
+CMS_ORIGIN=http://localhost:5174
+MONGODB_URI=mongodb://127.0.0.1:27017/portfolio_cms
+JWT_SECRET=your-secret
+JWT_EXPIRES_IN=8h
+ADMIN_NAME=Harsh Kumar Singh
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=your-password
+```
+
+### CMS
+
+Create `cms/.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:4174
+```
+
+### Frontend
+
+Create `frontend/.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:4174
+```
+
+## Useful Scripts
+
+### API
+
+```bash
+npm run dev
+npm run start
+npm run lint
+npm run seed:admin
+npm run seed:portfolio
+```
+
+### CMS
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+### Frontend
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+## Documentation
+
+- [API README](./api/README.md)
+- [CMS README](./cms/README.md)
+- [Frontend README](./frontend/README.md)
+
+## Current Focus
+
+The ecosystem is actively evolving toward a CMS-first workflow where all public portfolio content is edited in the dashboard, stored in MongoDB, and consumed by the frontend without hardcoded page content.
