@@ -174,11 +174,18 @@ export function getMilestonesContent(portfolio) {
 
 export function getContactContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
+  const section = resolvedPortfolio.sections.contact
+  const hero = resolvedPortfolio.sections.hero
 
   return {
     profile: withDefaults(resolvedPortfolio.profile, defaultProfile),
     socials: ensureArray(resolvedPortfolio.socials),
-    section: resolvedPortfolio.sections.contact,
+    section: {
+      ...section,
+      availability: section?.useHomeAvailability
+        ? hero?.availability ?? section.availability
+        : section?.availability,
+    },
   }
 }
 

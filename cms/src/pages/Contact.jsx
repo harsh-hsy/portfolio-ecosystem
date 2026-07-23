@@ -10,6 +10,7 @@ const emptyForm = {
   eyebrow: "",
   title: "",
   copy: "",
+  useHomeAvailability: false,
   availability: "",
   panelTitle: "",
   submitLabel: "",
@@ -32,6 +33,7 @@ function formFromPortfolio(portfolio) {
     eyebrow: section.eyebrow ?? "",
     title: section.title ?? "",
     copy: section.copy ?? "",
+    useHomeAvailability: Boolean(section.useHomeAvailability),
     availability: section.availability ?? "",
     panelTitle: section.panelTitle ?? "",
     submitLabel: section.submitLabel ?? "",
@@ -63,6 +65,7 @@ function portfolioFromForm(portfolio, form) {
       eyebrow: form.eyebrow.trim(),
       title: form.title.trim(),
       copy: form.copy.trim(),
+      useHomeAvailability: form.useHomeAvailability,
       availability: form.availability.trim(),
       panelTitle: form.panelTitle.trim(),
       submitLabel: form.submitLabel.trim(),
@@ -85,7 +88,11 @@ function validateContactForm(form) {
       validators.required("Public email is required."),
       validators.email("Enter a valid public email address."),
     ],
-    availability: [validators.required("Availability text is required."), validators.maxLength(80)],
+    availability: (value, currentForm) =>
+      currentForm.useHomeAvailability
+        ? ""
+        : validators.required("Availability text is required.")(value) ||
+          validators.maxLength(80)(value),
     title: [validators.required("Contact title is required."), validators.maxLength(110)],
     copy: [validators.required("Contact copy is required."), validators.maxLength(280)],
     panelTitle: [validators.required("Panel title is required."), validators.maxLength(120)],
@@ -110,6 +117,10 @@ function Contact() {
     validate: validateContactForm,
     successMessage: "Contact content updated successfully.",
   });
+  const homeAvailability = editor.portfolio?.sections?.hero?.availability ?? "";
+  const previewAvailability = editor.form.useHomeAvailability
+    ? homeAvailability
+    : editor.form.availability;
 
   return (
     <section className="page">
@@ -120,24 +131,49 @@ function Contact() {
       </div>
       <form className="panel content-editor structured-content-editor contact-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
-          <div><span className="content-editor__eyebrow">Contact section</span><h2>{editor.form.title || "Contact title"}</h2><p>{editor.form.availability || "Availability"}</p></div>
+          <div><span className="content-editor__eyebrow">Contact section</span><h2>{editor.form.title || "Contact title"}</h2><p>{previewAvailability || "Availability"}</p></div>
           <span className="content-editor__badge">{editor.isLoading ? "Loading" : "Connected"}</span>
         </div>
-        <div className="content-editor__section">
-          <h3>Contact Details</h3>
-          <div className="form-grid">
-            <FormField label="Public Email" name="publicEmail" type="email" value={editor.form.publicEmail} onChange={editor.updateField} error={editor.errors.publicEmail} required />
-            <FormField label="Availability" name="availability" value={editor.form.availability} onChange={editor.updateField} error={editor.errors.availability} required />
-            <FormField label="Submit Label" name="submitLabel" value={editor.form.submitLabel} onChange={editor.updateField} error={editor.errors.submitLabel} required />
-          </div>
-        </div>
-
         <div className="content-editor__section">
           <h3>Section Content</h3>
           <div className="form-grid">
             <FormField label="Title" name="title" className="form-group--wide" value={editor.form.title} onChange={editor.updateField} error={editor.errors.title} required />
             <FormField label="Copy" name="copy" as="textarea" className="form-group--wide structured-section-copy" value={editor.form.copy} onChange={editor.updateField} error={editor.errors.copy} maxLength={280} required />
-            <FormField label="Panel Title" name="panelTitle" className="form-group--wide" value={editor.form.panelTitle} onChange={editor.updateField} error={editor.errors.panelTitle} required />
+          </div>
+        </div>
+
+        <div className="content-editor__section">
+          <h3>Contact Panel</h3>
+          <div className="form-grid">
+            <div className="availability-editor contact-availability-editor">
+              <FormField
+                label="Availability Badge"
+                name="availability"
+                value={editor.form.useHomeAvailability ? homeAvailability : editor.form.availability}
+                onChange={editor.updateField}
+                error={editor.errors.availability}
+                disabled={editor.form.useHomeAvailability}
+                required={!editor.form.useHomeAvailability}
+              />
+
+              <label className="toggle-field contact-availability-source">
+                <input
+                  type="checkbox"
+                  checked={editor.form.useHomeAvailability}
+                  onChange={(event) =>
+                    editor.updateForm((current) => ({
+                      ...current,
+                      useHomeAvailability: event.target.checked,
+                    }))
+                  }
+                />
+                <span>
+                  <strong>Fetch from Home page</strong>
+                </span>
+              </label>
+            </div>
+            <FormField label="Panel Title" name="panelTitle" value={editor.form.panelTitle} onChange={editor.updateField} error={editor.errors.panelTitle} required />
+            <FormField label="Public Email" name="publicEmail" type="email" className="form-group--wide" value={editor.form.publicEmail} onChange={editor.updateField} error={editor.errors.publicEmail} helpText="Location, social links, resume, and portfolio URL are managed from the Links page." required />
           </div>
         </div>
 
@@ -148,6 +184,7 @@ function Contact() {
             <FormField label="Email Field" name="emailLabel" value={editor.form.emailLabel} onChange={editor.updateField} error={editor.errors.emailLabel} required />
             <FormField label="Subject Field" name="subjectLabel" value={editor.form.subjectLabel} onChange={editor.updateField} error={editor.errors.subjectLabel} required />
             <FormField label="Message Field" name="messageLabel" value={editor.form.messageLabel} onChange={editor.updateField} error={editor.errors.messageLabel} required />
+            <FormField label="Submit Label" name="submitLabel" className="form-group--wide" value={editor.form.submitLabel} onChange={editor.updateField} error={editor.errors.submitLabel} required />
           </div>
         </div>
 
