@@ -671,6 +671,18 @@ input[type="password"]::-webkit-textfield-decoration-container {
   gap: 30px;
 }
 
+.content-editor > .panel-footer {
+  position: static;
+
+  margin: 0 -28px -28px;
+  padding: 18px 28px;
+
+  border-top: 1px solid var(--border);
+
+  background: var(--card-bg);
+  box-shadow: none;
+}
+
 .content-editor__header {
   display: flex;
   align-items: flex-start;
@@ -2132,23 +2144,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
   width: 220px;
 }
 
-.home-editor .panel-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
-
-  margin: 0 -28px -28px;
-  padding: 16px 28px;
-
-  border-top: 1px solid var(--border);
-
-  background: var(--card-bg);
-}
-
-:root[data-theme="dark"] .home-editor .panel-footer {
-  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.16);
-}
-
 @media (max-width: 1100px) {
   .repeater-field--compact .repeater-field__list {
     grid-template-columns: 1fr;
@@ -2164,12 +2159,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
     width: min(220px, 100%);
   }
 
-  .home-editor .panel-footer {
-    margin-right: -20px;
-    margin-left: -20px;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
 }
 
 @media (max-width: 520px) {
@@ -2374,23 +2363,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
   padding: 0 16px;
 }
 
-.about-editor .panel-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
-
-  margin: 0 -28px -28px;
-  padding: 16px 28px;
-
-  border-top: 1px solid var(--border);
-
-  background: var(--card-bg);
-}
-
-:root[data-theme="dark"] .about-editor .panel-footer {
-  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.16);
-}
-
 @media (max-width: 1180px) {
   .about-facts-editor .repeater-field__list,
   .about-stats-editor .repeater-field__list {
@@ -2407,12 +2379,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
     width: min(190px, 100%);
   }
 
-  .about-editor .panel-footer {
-    margin-right: -20px;
-    margin-left: -20px;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -2510,17 +2476,102 @@ input[type="password"]::-webkit-textfield-decoration-container {
 }
 
 
-.skills-editor .panel-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
+/* ==========================================
+   Journey and Milestones Editors
+========================================== */
 
-  margin: 0 -28px -28px;
-  padding: 16px 28px;
+.structured-content-editor {
+  gap: 0;
+}
 
+.structured-content-editor .content-editor__header {
+  margin-bottom: 0;
+  padding-bottom: 22px;
+}
+
+.structured-content-editor .content-editor__section {
+  padding: 26px 0;
+}
+
+.structured-content-editor .content-editor__section + .content-editor__section {
   border-top: 1px solid var(--border);
+}
 
-  background: var(--card-bg);
+.structured-content-editor .content-editor__section h3 {
+  margin-bottom: 2px;
+}
+
+.structured-section-copy .form-textarea {
+  min-height: 92px;
+}
+
+.structured-entries-editor .repeater-field__list {
+  display: grid;
+  gap: 12px;
+}
+
+.milestone-entries-editor .repeater-field__list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.structured-entries-editor .repeater-item {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 58px 14px 14px;
+}
+
+.structured-entries-editor .repeater-item__actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.structured-entries-editor .icon-button {
+  width: 34px;
+  height: 34px;
+}
+
+.structured-entry-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.structured-entry-fields .form-group + .form-group {
+  margin-top: 0;
+}
+
+.structured-entry-title,
+.structured-entry-description {
+  grid-column: 1 / -1;
+}
+
+.structured-entry-description .form-textarea {
+  min-height: 96px;
+}
+
+.structured-entries-editor .repeater-field__add {
+  height: 42px;
+  padding: 0 16px;
+}
+
+@media (max-width: 1180px) {
+  .milestone-entries-editor .repeater-field__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .structured-entry-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .structured-entry-title,
+  .structured-entry-description {
+    grid-column: auto;
+  }
+
 }
 
 @media (max-width: 1180px) {
@@ -2542,7 +2593,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
     grid-template-columns: 1fr;
   }
 
-  .skills-editor .panel-footer {
+  .content-editor > .panel-footer {
     margin-right: -20px;
     margin-left: -20px;
     padding-right: 20px;

@@ -171,6 +171,7 @@ export const defaultPortfolio = {
     skills: { id: 'skills', eyebrow: 'Skills', title: 'Modern frontend toolkit, organized for product work.', copy: 'Skills, technologies, and tools I use to build modern and responsive web experiences.' },
     projects: { id: 'projects', eyebrow: 'Selected Projects', title: 'Projects with real-world impact.', copy: 'Explore projects that reflect my skills, creativity, and passion for modern web experiences.', allFilterLabel: 'All', filterAriaLabel: 'Filter projects', searchPlaceholder: 'Search projects' },
     experience: { id: 'experience', eyebrow: 'Journey', title: 'My journey in frontend development.', copy: 'A timeline of my education, internship, continuous learning, and professional growth.' },
+    milestones: { id: 'milestones', eyebrow: 'Milestones', title: 'Milestones from my development journey.', copy: 'Key stages, shipped work, and architectural progress across my portfolio.' },
     certificates: { id: 'certificates', eyebrow: 'Certificates', title: 'Certifications that reflect my learning.', copy: 'A collection of certifications showcasing my skills, continuous learning, and professional growth.', viewLabel: 'View', downloadLabel: 'Download' },
     services: { id: 'services', eyebrow: 'Services', title: 'What I Build.' },
     achievements: { id: 'achievements', eyebrow: 'Achievements', title: 'Milestones from the coding journey.' },

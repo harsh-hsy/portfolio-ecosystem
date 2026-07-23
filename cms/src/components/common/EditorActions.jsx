@@ -15,7 +15,7 @@ function EditorActions({
       : status;
 
   return (
-    <div className="panel-footer">
+    <footer className="panel-footer">
       <PanelStatus
         message={displayStatus.message}
         type={displayStatus.type}
@@ -41,7 +41,7 @@ function EditorActions({
           {isSaving ? "Saving" : "Save Changes"}
         </button>
       </div>
-    </div>
+    </footer>
   );
 }
 

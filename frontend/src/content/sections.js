@@ -75,6 +75,14 @@ export const sectionContent = {
       'A timeline of my education, internship, continuous learning, and professional growth.',
   },
 
+  milestones: {
+    id: 'milestones',
+    eyebrow: 'Milestones',
+    title: 'Milestones from my development journey.',
+    copy:
+      'Key stages, shipped work, and architectural progress across my portfolio.',
+  },
+
   certificates: {
     id: 'certificates',
     eyebrow: 'Certificates',

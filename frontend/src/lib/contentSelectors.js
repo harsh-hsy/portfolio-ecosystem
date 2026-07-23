@@ -18,6 +18,7 @@ const emptyPortfolio = {
     skills: {},
     projects: {},
     experience: {},
+    milestones: {},
     certificates: {},
     services: {},
     achievements: {},
@@ -163,7 +164,12 @@ export function getAchievementsContent(portfolio) {
 }
 
 export function getMilestonesContent(portfolio) {
-  return ensureArray(resolvePortfolio(portfolio).milestones)
+  const resolvedPortfolio = resolvePortfolio(portfolio)
+
+  return {
+    section: resolvedPortfolio.sections.milestones,
+    milestones: ensureArray(resolvedPortfolio.milestones),
+  }
 }
 
 export function getContactContent(portfolio) {

@@ -64,3 +64,31 @@ export function deleteAdminProject(slug) {
     method: 'DELETE',
   })
 }
+
+export function getAdminCertificates() {
+  return apiRequest('/api/admin/certificates')
+}
+
+export function createAdminCertificate(name) {
+  return apiRequest('/api/admin/certificates', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  })
+}
+
+export function getAdminCertificate(slug) {
+  return apiRequest(`/api/admin/certificates/${encodeURIComponent(slug)}`)
+}
+
+export function updateAdminCertificate(slug, certificate) {
+  return apiRequest(`/api/admin/certificates/${encodeURIComponent(slug)}`, {
+    method: 'PUT',
+    body: JSON.stringify(certificate),
+  })
+}
+
+export function deleteAdminCertificate(slug) {
+  return apiRequest(`/api/admin/certificates/${encodeURIComponent(slug)}`, {
+    method: 'DELETE',
+  })
+}

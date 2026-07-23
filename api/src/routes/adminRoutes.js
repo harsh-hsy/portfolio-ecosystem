@@ -12,6 +12,13 @@ import {
   updatePortfolioField,
 } from '../services/portfolioContentService.js'
 import {
+  createDraftCertificate,
+  deleteAdminCertificate,
+  getAdminCertificate,
+  listAdminCertificates,
+  updateAdminCertificate,
+} from '../services/certificateService.js'
+import {
   createDraftProject,
   deleteAdminProject,
   getAdminProject,
@@ -129,6 +136,31 @@ router.put('/projects/:slug', async (req, res) => {
 router.delete('/projects/:slug', async (req, res) => {
   const project = await deleteAdminProject(req.params.slug)
   res.json({ project })
+})
+
+router.get('/certificates', async (req, res) => {
+  await ensurePublishedPortfolio()
+  res.json({ certificates: await listAdminCertificates() })
+})
+
+router.post('/certificates', async (req, res) => {
+  const certificate = await createDraftCertificate(req.body.name)
+  res.status(201).json({ certificate })
+})
+
+router.get('/certificates/:slug', async (req, res) => {
+  await ensurePublishedPortfolio()
+  res.json({ certificate: await getAdminCertificate(req.params.slug) })
+})
+
+router.put('/certificates/:slug', async (req, res) => {
+  const certificate = await updateAdminCertificate(req.params.slug, req.body)
+  res.json({ certificate })
+})
+
+router.delete('/certificates/:slug', async (req, res) => {
+  const certificate = await deleteAdminCertificate(req.params.slug)
+  res.json({ certificate })
 })
 
 router.post('/portfolio/initialize', async (req, res) => {

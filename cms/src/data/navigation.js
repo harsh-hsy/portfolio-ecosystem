@@ -10,6 +10,7 @@ import {
   FiMail,
   FiLink,
   FiSettings,
+  FiFlag,
   FiExternalLink,
   FiLogOut,
 } from "react-icons/fi";
@@ -50,6 +51,12 @@ const navigation = [
     label: "Journey",
     path: "/journey",
     icon: FiMap,
+  },
+  {
+    id: "milestones",
+    label: "Milestones",
+    path: "/milestones",
+    icon: FiFlag,
   },
   {
     id: "certificates",

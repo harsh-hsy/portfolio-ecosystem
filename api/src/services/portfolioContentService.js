@@ -1,9 +1,19 @@
 import { defaultPortfolio } from '../data/defaultPortfolio.js'
 import { PortfolioContent } from '../models/PortfolioContent.js'
 import { validateAboutContent } from '../validation/aboutContent.js'
+import { validateCertificatesContent } from '../validation/certificateContent.js'
 import { validateHomeContent } from '../validation/homeContent.js'
+import {
+  validateJourneyContent,
+  validateMilestonesContent,
+} from '../validation/journeyContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
+import {
+  ensureCertificateResources,
+  listPublishedCertificates,
+  replaceCertificateResources,
+} from './certificateService.js'
 import {
   ensureProjectResources,
   listPublishedProjects,
@@ -85,7 +95,10 @@ const modules = {
   },
   milestones: {
     model: MilestonesContent,
-    extract: (content) => ({ items: content.milestones ?? [] }),
+    extract: (content) => ({
+      section: content.sections?.milestones ?? {},
+      items: content.milestones ?? [],
+    }),
   },
   services: {
     model: ServicesContent,
@@ -155,7 +168,7 @@ const fieldModules = {
   achievements: ['achievements'],
   milestones: ['milestones'],
   services: ['services'],
-  sections: ['home', 'about', 'skills', 'projects', 'certificates', 'journey', 'services', 'achievements', 'contact', 'settings'],
+  sections: ['home', 'about', 'skills', 'projects', 'certificates', 'journey', 'milestones', 'services', 'achievements', 'contact', 'settings'],
   stats: ['about'],
   settings: ['settings'],
   navigation: ['settings'],
@@ -170,7 +183,8 @@ const editorModules = {
   skills: ['skills'],
   projects: ['projects'],
   certificates: ['certificates'],
-  journey: ['journey', 'milestones'],
+  journey: ['journey'],
+  milestones: ['milestones'],
   services: ['services'],
   achievements: ['achievements'],
   contact: ['contact', 'links'],
@@ -204,10 +218,21 @@ async function readModuleDocuments() {
 }
 
 async function writeModules(content, names = Object.keys(modules)) {
-  if (names.includes('home')) validateHomeContent(content)
-  if (names.includes('about')) validateAboutContent(content)
-  if (names.includes('projects')) validateProjectsContent(content)
-  if (names.includes('skills')) validateSkillsContent(content)
+  const normalizedContent = {
+    ...content,
+    sections: {
+      ...defaultPortfolio.sections,
+      ...(content.sections ?? {}),
+    },
+  }
+
+  if (names.includes('home')) validateHomeContent(normalizedContent)
+  if (names.includes('about')) validateAboutContent(normalizedContent)
+  if (names.includes('journey')) validateJourneyContent(normalizedContent)
+  if (names.includes('milestones')) validateMilestonesContent(normalizedContent)
+  if (names.includes('projects')) validateProjectsContent(normalizedContent)
+  if (names.includes('certificates')) validateCertificatesContent(normalizedContent)
+  if (names.includes('skills')) validateSkillsContent(normalizedContent)
 
   await Promise.all(
     names.map((name) => {
@@ -220,7 +245,7 @@ async function writeModules(content, names = Object.keys(modules)) {
 
       return definition.model.findOneAndUpdate(
         { status: 'published' },
-        { $set: { data: definition.extract(content), status: 'published' } },
+        { $set: { data: definition.extract(normalizedContent), status: 'published' } },
         { upsert: true, returnDocument: 'after', runValidators: true },
       )
     }),
@@ -267,6 +292,7 @@ function composePortfolio(documents) {
       projects: projects.section ?? {},
       certificates: certificates.section ?? {},
       experience: journey.section ?? {},
+      milestones: milestones.section ?? defaultPortfolio.sections.milestones,
       services: services.section ?? {},
       achievements: achievements.section ?? {},
       contact: contact.section ?? {},
@@ -308,10 +334,12 @@ export function isEditorModule(moduleName) {
 export async function getPublishedPortfolio() {
   const content = composePortfolio(await ensureModuleDocuments())
   await ensureProjectResources(content.projects)
+  await ensureCertificateResources(content.certificates)
 
   return {
     ...content,
     projects: await listPublishedProjects(),
+    certificates: await listPublishedCertificates(),
   }
 }
 
@@ -344,17 +372,20 @@ export async function updatePortfolioField(field, value) {
   const nextContent = { ...content, [field]: value }
   await writeModules(nextContent, fieldModules[field])
   if (field === 'projects') await replaceProjectResources(value)
+  if (field === 'certificates') await replaceCertificateResources(value)
   return getPublishedPortfolio()
 }
 
 export async function replacePublishedPortfolio(content) {
   await writeModules(content)
   await replaceProjectResources(content.projects)
+  await replaceCertificateResources(content.certificates)
   return getPublishedPortfolio()
 }
 
 export async function resetPublishedPortfolio() {
   await writeModules(defaultPortfolio)
   await replaceProjectResources(defaultPortfolio.projects)
+  await replaceCertificateResources(defaultPortfolio.certificates)
   return getPublishedPortfolio()
 }

@@ -5,6 +5,7 @@ import About from '../components/sections/About.jsx'
 import Skills from '../components/sections/Skills.jsx'
 import Projects from '../components/sections/Projects.jsx'
 import Experience from '../components/sections/Experience.jsx'
+import Milestones from '../components/sections/Milestones.jsx'
 import Certificates from '../components/sections/Certificates.jsx'
 import Services from '../components/sections/Services.jsx'
 import Achievements from '../components/sections/Achievements.jsx'
@@ -33,6 +34,7 @@ export default function Home() {
       <Skills />
       <Projects />
       <Experience />
+      <Milestones />
       <Certificates />
       <Services />
       <Achievements />

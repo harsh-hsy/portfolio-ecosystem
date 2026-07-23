@@ -12,7 +12,9 @@ import Projects from "../pages/Projects";
 import ProjectEditor from "../pages/ProjectEditor";
 import Skills from "../pages/Skills";
 import Certificates from "../pages/Certificates";
+import CertificateEditor from "../pages/CertificateEditor";
 import Journey from "../pages/Journey";
+import Milestones from "../pages/Milestones";
 import Services from "../pages/Services";
 import Achievements from "../pages/Achievements";
 import Contact from "../pages/Contact";
@@ -51,7 +53,9 @@ function AppRoutes() {
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:slug" element={<ProjectEditor />} />
         <Route path="certificates" element={<Certificates />} />
+        <Route path="certificates/:slug" element={<CertificateEditor />} />
         <Route path="journey" element={<Journey />} />
+        <Route path="milestones" element={<Milestones />} />
         <Route path="services" element={<Services />} />
         <Route path="achievements" element={<Achievements />} />
         <Route path="contact" element={<Contact />} />

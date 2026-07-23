@@ -14,16 +14,16 @@ import { validateForm, validators } from "../utils/validation";
 const emptyForm = {
   title: "",
   copy: "",
-  timeline: [],
+  milestones: [],
 };
 
 function formFromPortfolio(portfolio) {
-  const section = portfolio?.sections?.experience ?? {};
+  const section = portfolio?.sections?.milestones ?? {};
 
   return {
     title: section.title ?? "",
     copy: section.copy ?? "",
-    timeline: cleanStructuredEntries(portfolio?.timeline ?? []),
+    milestones: cleanStructuredEntries(portfolio?.milestones ?? []),
   };
 }
 
@@ -31,9 +31,9 @@ function portfolioFromForm(portfolio, form) {
   return updateSection(
     {
       ...portfolio,
-      timeline: cleanStructuredEntries(form.timeline),
+      milestones: cleanStructuredEntries(form.milestones),
     },
-    "experience",
+    "milestones",
     {
       title: form.title.trim(),
       copy: form.copy.trim(),
@@ -41,22 +41,22 @@ function portfolioFromForm(portfolio, form) {
   );
 }
 
-function validateJourneyForm(form) {
+function validateMilestonesForm(form) {
   return validateForm(form, {
-    title: [validators.required("Journey title is required."), validators.maxLength(140)],
+    title: [validators.required("Milestones title is required."), validators.maxLength(140)],
     copy: [
-      validators.required("Journey description is required."),
+      validators.required("Milestones description is required."),
       validators.maxLength(280),
     ],
-    timeline: (entries) =>
+    milestones: (entries) =>
       validateStructuredEntries(entries, {
-        collectionLabel: "timeline entries",
-        itemLabel: "timeline entry",
+        collectionLabel: "milestones",
+        itemLabel: "milestone",
       }),
   });
 }
 
-function Journey() {
+function Milestones() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
@@ -66,32 +66,32 @@ function Journey() {
     [],
   );
   const editor = usePortfolioEditor({
-    moduleName: "journey",
+    moduleName: "milestones",
     getForm,
     getPortfolio,
-    validate: validateJourneyForm,
-    successMessage: "Journey content updated successfully.",
+    validate: validateMilestonesForm,
+    successMessage: "Milestones updated successfully.",
   });
 
   return (
     <section className="page">
       <div className="page-header">
         <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Journey</h1>
+        <h1 className="page-title">Milestones</h1>
         <p className="page-description">
-          Manage the education, internship, learning, and future-goal timeline.
+          Manage the key stages and shipped outcomes shown after the Journey section.
         </p>
       </div>
 
       <form
-        className="panel content-editor structured-content-editor journey-editor"
+        className="panel content-editor structured-content-editor milestones-editor"
         onSubmit={editor.saveForm}
       >
         <div className="content-editor__header">
           <div>
-            <span className="content-editor__eyebrow">Journey preview</span>
-            <h2>{editor.form.title || "Journey title"}</h2>
-            <p>{editor.form.timeline?.length ?? 0} timeline entries</p>
+            <span className="content-editor__eyebrow">Milestones preview</span>
+            <h2>{editor.form.title || "Milestones title"}</h2>
+            <p>{editor.form.milestones?.length ?? 0} milestone cards</p>
           </div>
           <span className="content-editor__badge">
             {editor.isLoading ? "Loading" : "Connected"}
@@ -102,7 +102,7 @@ function Journey() {
           <h3>Section Content</h3>
           <div className="form-grid">
             <FormField
-              label="Journey Title"
+              label="Milestones Title"
               name="title"
               className="form-group--wide"
               value={editor.form.title}
@@ -112,7 +112,7 @@ function Journey() {
               required
             />
             <FormField
-              label="Journey Description"
+              label="Milestones Description"
               name="copy"
               as="textarea"
               className="form-group--wide structured-section-copy"
@@ -128,23 +128,23 @@ function Journey() {
         <div className="content-editor__section">
           <div className="editor-section-heading">
             <div>
-              <h3>Timeline Entries</h3>
+              <h3>Milestone Cards</h3>
               <p>Arrange the cards in the same order used on the public portfolio.</p>
             </div>
           </div>
 
           <StructuredEntriesEditor
-            className="journey-entries-editor"
-            label="Journey Timeline"
-            items={editor.form.timeline ?? []}
-            onChange={(timeline) =>
-              editor.updateForm((current) => ({ ...current, timeline }))
+            className="milestone-entries-editor"
+            label="Portfolio Milestones"
+            items={editor.form.milestones ?? []}
+            onChange={(milestones) =>
+              editor.updateForm((current) => ({ ...current, milestones }))
             }
-            addLabel="Add Timeline Entry"
-            itemName="Timeline Entry"
+            addLabel="Add Milestone"
+            itemName="Milestone"
           />
-          {editor.errors.timeline ? (
-            <p className="form-error" role="alert">{editor.errors.timeline}</p>
+          {editor.errors.milestones ? (
+            <p className="form-error" role="alert">{editor.errors.milestones}</p>
           ) : null}
         </div>
 
@@ -160,4 +160,4 @@ function Journey() {
   );
 }
 
-export default Journey;
+export default Milestones;

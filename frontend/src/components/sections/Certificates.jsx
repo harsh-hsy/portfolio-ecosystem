@@ -4,6 +4,14 @@ import Reveal from '../common/Reveal.jsx'
 import { getCertificatesContent } from '../../lib/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
+const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || ''
+
+function resolveImageUrl(path) {
+  if (!path) return ''
+  if (/^(https?:|data:|blob:)/i.test(path)) return path
+  return `${portfolioUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+}
+
 export default function Certificates() {
   const contentState = usePortfolioContent()
   const { section, certificates } = getCertificatesContent(contentState?.portfolio)
@@ -14,7 +22,16 @@ export default function Certificates() {
         <SectionHeader eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
         <div className="horizontal-cards">
           {certificates.map((certificate) => (
-            <Reveal as="article" className="mini-card" key={certificate.title}>
+            <Reveal as="article" className="mini-card" key={certificate.slug || certificate.title}>
+              {certificate.thumbnail && (
+                <img
+                  className="certificate-card-image"
+                  src={resolveImageUrl(certificate.thumbnail)}
+                  alt={`${certificate.title} certificate`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
               <span>{certificate.date}</span>
               <h3>{certificate.title}</h3>
               <p>{certificate.issuer}</p>
