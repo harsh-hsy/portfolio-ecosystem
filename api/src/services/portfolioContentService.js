@@ -7,6 +7,10 @@ import {
   validateJourneyContent,
   validateMilestonesContent,
 } from '../validation/journeyContent.js'
+import {
+  validateAchievementsContent,
+  validateServicesContent,
+} from '../validation/listContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
 import {
@@ -233,6 +237,8 @@ async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('projects')) validateProjectsContent(normalizedContent)
   if (names.includes('certificates')) validateCertificatesContent(normalizedContent)
   if (names.includes('skills')) validateSkillsContent(normalizedContent)
+  if (names.includes('services')) validateServicesContent(normalizedContent)
+  if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
 
   await Promise.all(
     names.map((name) => {

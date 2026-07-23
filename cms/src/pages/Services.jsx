@@ -1,17 +1,28 @@
 import { useCallback } from "react";
 
 import EditorActions from "../components/common/EditorActions";
+import FormField from "../components/editor/FormField";
+import RepeaterField from "../components/editor/RepeaterField";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { linesToList, listToLines, updateSection } from "../utils/contentFormUtils";
+import { updateSection } from "../utils/contentFormUtils";
+import { validateForm, validators } from "../utils/validation";
 
-const emptyForm = { eyebrow: "", title: "", services: "" };
+const emptyForm = {
+  title: "",
+  services: [],
+};
+
+function cleanList(items) {
+  return (Array.isArray(items) ? items : [])
+    .map((item) => String(item ?? "").trim())
+    .filter(Boolean);
+}
 
 function formFromPortfolio(portfolio) {
   const section = portfolio?.sections?.services ?? {};
   return {
-    eyebrow: section.eyebrow ?? "",
     title: section.title ?? "",
-    services: listToLines(portfolio?.services ?? []),
+    services: cleanList(portfolio?.services ?? []),
   };
 }
 
@@ -19,43 +30,127 @@ function portfolioFromForm(portfolio, form) {
   return updateSection(
     {
       ...portfolio,
-      services: linesToList(form.services),
+      services: cleanList(form.services),
     },
     "services",
     {
-      eyebrow: form.eyebrow.trim(),
+      ...(portfolio.sections?.services ?? {}),
       title: form.title.trim(),
     },
   );
 }
 
+function validateList(items, label) {
+  const cleaned = cleanList(items);
+  if (!cleaned.length) return `Add at least one ${label}.`;
+  if (cleaned.length > 12) return `Use 12 ${label}s or fewer.`;
+  if (cleaned.some((item) => item.length > 70)) return `Each ${label} must use 70 characters or fewer.`;
+  return "";
+}
+
+function validateServicesForm(form) {
+  return validateForm(form, {
+    title: [validators.required("Services title is required."), validators.maxLength(90)],
+    services: (items) => validateList(items, "service"),
+  });
+}
+
 function Services() {
-  const getForm = useCallback((portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm, []);
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
-  const editor = usePortfolioEditor({ moduleName: "services", getForm, getPortfolio, successMessage: "Services updated successfully." });
+  const getForm = useCallback(
+    (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
+    [],
+  );
+  const getPortfolio = useCallback(
+    (portfolio, form) => portfolioFromForm(portfolio, form),
+    [],
+  );
+  const editor = usePortfolioEditor({
+    moduleName: "services",
+    getForm,
+    getPortfolio,
+    validate: validateServicesForm,
+    successMessage: "Services updated successfully.",
+  });
 
   return (
     <section className="page">
       <div className="page-header">
         <p className="page-kicker">Content Module</p>
         <h1 className="page-title">Services</h1>
-        <p className="page-description">Manage frontend service offerings shown on the portfolio.</p>
+        <p className="page-description">
+          Manage the service cards shown on the portfolio.
+        </p>
       </div>
-      <form className="panel content-editor" onSubmit={editor.saveForm}>
+
+      <form className="panel content-editor list-content-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
-          <div><span className="content-editor__eyebrow">Services</span><h2>{editor.form.title || "Services title"}</h2><p>One service per line.</p></div>
-          <span className="content-editor__badge">{editor.isLoading ? "Loading" : "Connected"}</span>
+          <div>
+            <span className="content-editor__eyebrow">Services preview</span>
+            <h2>{editor.form.title || "Services title"}</h2>
+            <p>{editor.form.services?.length ?? 0} service cards</p>
+          </div>
+          <span className="content-editor__badge">
+            {editor.isLoading ? "Loading" : "Connected"}
+          </span>
         </div>
+
         <div className="content-editor__section">
           <h3>Section Content</h3>
           <div className="form-grid">
-            <label className="form-group"><span className="form-label">Eyebrow</span><input className="form-input" name="eyebrow" value={editor.form.eyebrow} onChange={editor.updateField} /></label>
-            <label className="form-group form-group--wide"><span className="form-label">Title</span><input className="form-input" name="title" value={editor.form.title} onChange={editor.updateField} /></label>
-            <label className="form-group form-group--wide"><span className="form-label">Services</span><textarea className="form-input form-textarea form-textarea--tall" name="services" value={editor.form.services} onChange={editor.updateField} /></label>
+            <FormField
+              label="Services Title"
+              name="title"
+              className="form-group--wide"
+              value={editor.form.title}
+              onChange={editor.updateField}
+              error={editor.errors.title}
+              maxLength={90}
+              required
+            />
           </div>
         </div>
-        <EditorActions status={editor.status}
-          isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+
+        <div className="content-editor__section">
+          <div className="editor-section-heading">
+            <div>
+              <h3>Service Cards</h3>
+              <p>Arrange the services in the same order used on the public portfolio.</p>
+            </div>
+          </div>
+
+          <RepeaterField
+            className="content-list-repeater"
+            label="Services"
+            items={editor.form.services ?? []}
+            onChange={(services) =>
+              editor.updateForm((current) => ({ ...current, services }))
+            }
+            createItem={() => ""}
+            addLabel="Add Service"
+            itemLabel="Service"
+            maxItems={12}
+            renderItem={({ item, index, updateItem }) => (
+              <FormField
+                label={`Service ${index + 1}`}
+                value={item}
+                onChange={(event) => updateItem(event.target.value)}
+                maxLength={70}
+                required
+              />
+            )}
+          />
+          {editor.errors.services ? (
+            <p className="form-error" role="alert">{editor.errors.services}</p>
+          ) : null}
+        </div>
+
+        <EditorActions
+          status={editor.status}
+          isDirty={editor.isDirty}
+          isLoading={editor.isLoading}
+          isSaving={editor.isSaving}
+          onReset={editor.resetForm}
+        />
       </form>
     </section>
   );

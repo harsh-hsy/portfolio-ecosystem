@@ -2556,8 +2556,49 @@ input[type="password"]::-webkit-textfield-decoration-container {
   padding: 0 16px;
 }
 
+.content-list-repeater .repeater-field__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.content-list-repeater .repeater-item {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 18px;
+}
+
+.content-list-repeater .repeater-item__actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.content-list-repeater .repeater-item__content {
+  padding-right: 168px;
+}
+
+.content-list-repeater .icon-button {
+  width: 42px;
+  height: 42px;
+}
+
+.content-list-repeater .repeater-field__add {
+  height: 42px;
+  padding: 0 16px;
+}
+
+.achievement-list-repeater .form-textarea {
+  min-height: 92px;
+}
+
 @media (max-width: 1180px) {
   .milestone-entries-editor .repeater-field__list {
+    grid-template-columns: 1fr;
+  }
+
+  .content-list-repeater .repeater-field__list {
     grid-template-columns: 1fr;
   }
 }
@@ -2572,6 +2613,15 @@ input[type="password"]::-webkit-textfield-decoration-container {
     grid-column: auto;
   }
 
+  .content-list-repeater .repeater-item__actions {
+    position: static;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+
+  .content-list-repeater .repeater-item__content {
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 1180px) {
