@@ -1,37 +1,52 @@
 # Portfolio Frontend
 
-Public-facing portfolio website for visitors, recruiters, and hiring managers.
+This is the public portfolio website that visitors see.
 
-## What this app does
+It shows the live portfolio content, keeps the design polished, and reads published data from the API instead of depending on hardcoded page content.
 
-- renders the visitor portfolio experience
-- consumes published content from the backend API
-- keeps the public UI polished, responsive, and fast
-- stays visually aligned with the CMS-managed content model
+## What this frontend is responsible for
 
-## Main Features
+- showing the public portfolio
+- loading published content from the API
+- rendering the main sections of the site
+- keeping the UI responsive and smooth
+- supporting dark and light themes
+- handling animations and interaction details
 
-- hero, about, skills, projects, journey, milestones, certificates, services, achievements, and contact sections
+## Main sections
+
+- Hero
+- About
+- Skills
+- Projects
+- Journey
+- Milestones
+- Certificates
+- Services
+- Achievements
+- Contact
+
+## How it fits in the ecosystem
+
+```mermaid
+flowchart LR
+  API["API /api/portfolio"] --> Frontend["Frontend"]
+  Frontend --> Visitor["Visitor"]
+```
+
+The frontend asks the API for the latest published portfolio data. It only uses safe defaults when a field is missing.
+
+## Main features
+
 - dark and light theme toggle
 - smooth scrolling
 - custom cursor
 - command palette
-- animated UI with Framer Motion
-- SEO support using `react-helmet-async`
+- animated sections with Framer Motion
+- SEO support with `react-helmet-async`
 - content selectors, defaults, and validation helpers
 
-## Content Flow
-
-The frontend should not rely on hardcoded content for the main portfolio sections.
-It reads published data from the API and falls back to safe defaults only when necessary.
-
-```mermaid
-flowchart LR
-  API["API /api/portfolio"] --> Frontend["Public Frontend"]
-  Frontend --> Visitor["Visitor Browser"]
-```
-
-## Local Development
+## Local setup
 
 Install dependencies:
 
@@ -39,7 +54,7 @@ Install dependencies:
 npm install
 ```
 
-Run the app:
+Run the frontend in development:
 
 ```bash
 npm run dev
@@ -53,7 +68,7 @@ npm run lint
 npm run preview
 ```
 
-## Environment
+## Environment variables
 
 Create `frontend/.env`:
 
@@ -61,12 +76,20 @@ Create `frontend/.env`:
 VITE_API_BASE_URL=http://localhost:4174
 ```
 
-## API Dependency
+## API dependency
 
-The frontend reads portfolio content from the backend through:
+The frontend reads the published portfolio from:
 
 ```text
 GET /api/portfolio
 ```
 
-Make sure the API is running before opening the public site so the latest published content loads correctly.
+Make sure the API is running before opening the public site.
+
+## Current status
+
+The public experience is already connected to the CMS-driven content flow. The remaining work is mostly about refinement and keeping the data model clean.
+
+## Future goal
+
+Keep the public site aligned with new CMS modules, including the inbox-related workflow when it is added later.

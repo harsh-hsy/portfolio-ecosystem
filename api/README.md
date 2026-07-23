@@ -1,30 +1,44 @@
 # Portfolio API
 
-Backend service for the portfolio ecosystem. This service stores content in MongoDB, serves published portfolio data, and protects CMS updates with JWT authentication.
+This is the backend for the portfolio ecosystem.
 
-## What this API does
+It connects the CMS and the public frontend to MongoDB, keeps the portfolio data in sync, and protects admin updates with authentication.
 
-- serves the public portfolio payload
-- accepts authenticated CMS updates
-- manages separate portfolio modules in MongoDB
-- handles project and certificate records
-- manages admin sessions and account updates
-- seeds initial admin and portfolio data
+## What this API is responsible for
 
-## Core Endpoints
+- saving and serving portfolio content
+- handling admin login and session checks
+- managing projects and certificates
+- storing account updates
+- providing the published portfolio data to the public frontend
+- seeding the first admin user and default portfolio data
 
-### Public
+## How it fits in the ecosystem
+
+```mermaid
+flowchart LR
+  CMS["CMS"] --> API["API"]
+  API --> DB["MongoDB"]
+  DB --> API
+  API --> Frontend["Frontend"]
+```
+
+The API is the source of truth for CMS-managed content. The CMS writes to it, MongoDB stores it, and the frontend reads the published version from it.
+
+## Main routes
+
+### Public routes
 
 - `GET /api/health`
 - `GET /api/portfolio`
 
-### Authentication
+### Auth routes
 
 - `POST /api/auth/login`
 - `GET /api/auth/session`
 - `POST /api/auth/logout`
 
-### Admin
+### Admin routes
 
 - `GET /api/admin/me`
 - `GET /api/admin/account`
@@ -48,9 +62,9 @@ Backend service for the portfolio ecosystem. This service stores content in Mong
 - `PUT /api/admin/certificates/:slug`
 - `DELETE /api/admin/certificates/:slug`
 
-## Data Model Overview
+## Data model overview
 
-The backend uses separate MongoDB collections and models for:
+The API uses separate MongoDB models for:
 
 - portfolio content
 - portfolio modules
@@ -60,9 +74,9 @@ The backend uses separate MongoDB collections and models for:
 - contact messages
 - admin users
 
-Validation is split by content area so the CMS and frontend can safely consume structured data.
+This makes each content area easier to manage and update without mixing everything into one document.
 
-## Local Development
+## Local setup
 
 Install dependencies:
 
@@ -70,7 +84,7 @@ Install dependencies:
 npm install
 ```
 
-Start the API:
+Run the API in development:
 
 ```bash
 npm run dev
@@ -85,7 +99,7 @@ npm run seed:admin
 npm run seed:portfolio
 ```
 
-## Environment
+## Environment variables
 
 Create `api/.env`:
 
@@ -101,8 +115,10 @@ ADMIN_EMAIL=you@example.com
 ADMIN_PASSWORD=your-password
 ```
 
-## Implementation Notes
+## Current status
 
-- MongoDB is the source of truth for CMS-managed content.
-- The API exposes published portfolio data to the frontend and authenticated editing routes to the CMS.
-- Cookie-based admin sessions are used for dashboard auth.
+The backend foundation is already in place. The main work now is content completeness, editor improvements, and deployment setup.
+
+## Future goal
+
+Build the inbox page and connect it properly to the contact messages stored in the API.

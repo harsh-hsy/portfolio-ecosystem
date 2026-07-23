@@ -1,17 +1,22 @@
 # Portfolio CMS
 
-Private admin dashboard for managing the portfolio content that powers the public website.
+This is the private dashboard for managing the portfolio.
 
-## What this app does
+It is used to edit content, update projects and certificates, manage links and settings, and keep the public frontend in sync with MongoDB data.
 
-- authenticates admin users
-- edits portfolio modules through a shared content-editing system
-- sends updates to the API, which persists them in MongoDB
-- keeps the public frontend in sync with the latest published content
+## What this CMS is responsible for
 
-## Editable Areas
+- admin login and private access
+- editing portfolio content through forms
+- managing repeatable lists and structured data
+- picking icons from the shared icon catalog
+- validating data before saving
+- showing save states, errors, and confirmations
+- sending updates to the API
 
-The CMS currently covers these areas:
+## Editable areas
+
+The CMS currently covers:
 
 - Dashboard
 - Home
@@ -30,31 +35,30 @@ The CMS currently covers these areas:
 - Resume
 - Inbox
 
-## Key Editing Features
-
-- reusable structured editors for lists and grouped data
-- repeaters for adding, reordering, duplicating, and deleting items
-- shared icon catalog and icon picker
-- validation and safe defaults to protect the UI from bad data
-- loading, saving, error, and success states
-- unsaved-change warnings
-- delete confirmations
-- toast notifications
-
-## Current Content Flow
-
-The CMS does not store content locally as the main source of truth.
-It loads and saves content through the API, and the API persists the data in MongoDB.
+## How it fits in the ecosystem
 
 ```mermaid
 flowchart LR
-  Editor["CMS Editor"] --> API["API"]
+  CMS["CMS"] --> API["API"]
   API --> DB["MongoDB"]
   DB --> API
-  API --> Frontend["Public Frontend"]
+  API --> Frontend["Frontend"]
 ```
 
-## Local Development
+The CMS does not keep content as the main source of truth. It sends changes to the API, and the API stores them in MongoDB.
+
+## Key editor features
+
+- reusable form fields
+- repeater controls for lists
+- icon picker with a shared icon catalog
+- unsaved changes warning
+- delete confirmation
+- toast feedback
+- validation and safe defaults
+- loading and saving states
+
+## Local setup
 
 Install dependencies:
 
@@ -62,7 +66,7 @@ Install dependencies:
 npm install
 ```
 
-Run the dev server:
+Run the CMS in development:
 
 ```bash
 npm run dev
@@ -76,7 +80,7 @@ npm run lint
 npm run preview
 ```
 
-## Environment
+## Environment variables
 
 Create `cms/.env`:
 
@@ -84,7 +88,10 @@ Create `cms/.env`:
 VITE_API_BASE_URL=http://localhost:4174
 ```
 
-## Notes
+## Current status
 
-- This app is private and should not expose admin access points on the public portfolio.
-- Form layouts, reusable controls, and content modules are designed to stay consistent with the public frontend.
+Most of the CMS foundation is already built. The focus now is on polishing the editor experience, keeping the layout consistent, and finishing the remaining module work.
+
+## Future goal
+
+Build the inbox page so contact messages can be reviewed and managed from the dashboard.
