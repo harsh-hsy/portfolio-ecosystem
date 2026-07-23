@@ -4,6 +4,7 @@ const profile = {
   role: 'Frontend Developer',
   rotatingRoles: ['Frontend Developer', 'React Developer', 'UI Engineer', 'Web Designer'],
   location: 'Kanpur, India',
+  mapUrl: 'https://www.google.com/maps/place/Kanpur',
   email: 'mr.harshsingh.contact@gmail.com',
   github: 'https://github.com/harsh-hsy',
   linkedin: 'https://www.linkedin.com/in/harsh-hsy/',

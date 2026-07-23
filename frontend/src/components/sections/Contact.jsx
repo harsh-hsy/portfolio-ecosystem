@@ -87,7 +87,7 @@ export default function Contact() {
             </a>
 
             <a
-              href="https://www.google.com/maps/place/Kanpur"
+              href={profile.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.location)}`}
               target="_blank"
               rel="noreferrer"
             >

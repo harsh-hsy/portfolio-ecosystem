@@ -11,6 +11,10 @@ import {
   validateAchievementsContent,
   validateServicesContent,
 } from '../validation/listContent.js'
+import {
+  validateContactContent,
+  validateLinksContent,
+} from '../validation/contactContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
 import {
@@ -39,7 +43,7 @@ import {
 } from '../models/PortfolioModule.js'
 
 const profileFields = {
-  home: ['name', 'fullName', 'role', 'rotatingRoles', 'location', 'image', 'tagline'],
+  home: ['name', 'fullName', 'role', 'rotatingRoles', 'location', 'mapUrl', 'image', 'tagline'],
   about: ['about', 'aboutImage'],
   skills: ['skillsImage'],
   links: ['github', 'linkedin', 'email', 'resume'],
@@ -192,7 +196,7 @@ const editorModules = {
   services: ['services'],
   achievements: ['achievements'],
   contact: ['contact', 'links'],
-  links: ['links'],
+  links: ['links', 'home', 'settings'],
   settings: ['settings'],
 }
 
@@ -239,6 +243,8 @@ async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('skills')) validateSkillsContent(normalizedContent)
   if (names.includes('services')) validateServicesContent(normalizedContent)
   if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
+  if (names.includes('contact')) validateContactContent(normalizedContent)
+  if (names.includes('links')) validateLinksContent(normalizedContent)
 
   await Promise.all(
     names.map((name) => {
