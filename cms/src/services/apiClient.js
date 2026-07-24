@@ -6,8 +6,8 @@ function buildUrl(path) {
 
 export async function apiRequest(path, options = {}) {
   const response = await fetch(buildUrl(path), {
-    credentials: 'include',
     ...options,
+    credentials: 'include',
     headers: {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
