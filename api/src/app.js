@@ -10,6 +10,7 @@ import { errorHandler, notFound } from './middleware/errorHandler.js'
 
 const app = express()
 
+app.set('trust proxy', 1)
 app.use(cors(corsOptions))
 app.use(express.json({ limit: '1mb' }))
 app.use(cookieParser())

@@ -9,7 +9,7 @@ const router = Router()
 function cookieOptions() {
   return {
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: env.nodeEnv === 'production' ? 'none' : 'strict',
     secure: env.nodeEnv === 'production',
     maxAge: 1000 * 60 * 60 * 8,
     path: '/',
@@ -41,7 +41,7 @@ router.get('/session', requireAuth, (req, res) => {
 })
 
 router.post('/logout', (req, res) => {
-  res.clearCookie('admin_token', { path: '/' })
+  res.clearCookie('admin_token', cookieOptions())
   res.json({ authenticated: false })
 })
 
