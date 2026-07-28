@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "harsh-hsy",
+  "compatibility_date": "2026-07-28",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "cms"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
