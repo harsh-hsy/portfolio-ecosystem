@@ -15,6 +15,15 @@ app.use(cors(corsOptions))
 app.use(express.json({ limit: '1mb' }))
 app.use(cookieParser())
 
+app.get('/', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'portfolio-api',
+    health: '/api/health',
+    portfolio: '/api/portfolio',
+  })
+})
+
 app.use('/api/health', healthRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/portfolio', portfolioRoutes)
