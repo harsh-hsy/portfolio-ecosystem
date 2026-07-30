@@ -28,7 +28,21 @@ export default function Projects() {
           <div className="filter-tabs" role="tablist" aria-label="Filter projects">
             {categories.map((item) => <button type="button" className={category === item ? 'active' : ''} key={item} onClick={() => setCategory(item)}>{item}</button>)}
           </div>
-          <label className="search-field"><FiSearch /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search projects" /></label>
+          <label className="search-field" htmlFor="home-project-search">
+  <FiSearch aria-hidden="true" />
+
+  <span className="sr-only">Search projects</span>
+
+  <input
+    id="home-project-search"
+    name="homeProjectSearch"
+    type="search"
+    autoComplete="off"
+    value={query}
+    onChange={(event) => setQuery(event.target.value)}
+    placeholder="Search projects"
+  />
+</label>
         </div>
         <motion.div
   className="projects-grid"

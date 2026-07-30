@@ -59,15 +59,21 @@ export default function ProjectsPage() {
               </button>
             ))}
           </div>
-          <label className="search-field">
-            <FiSearch aria-hidden="true" />
-            <span className="sr-only">Search projects</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search projects"
-            />
-          </label>
+          <label className="search-field" htmlFor="projects-page-search">
+  <FiSearch aria-hidden="true" />
+
+  <span className="sr-only">Search projects</span>
+
+  <input
+    id="projects-page-search"
+    name="projectsPageSearch"
+    type="search"
+    autoComplete="off"
+    value={query}
+    onChange={(event) => setQuery(event.target.value)}
+    placeholder="Search projects"
+  />
+</label>
         </div>
 
         <motion.div className="projects-grid" variants={stagger} initial="hidden" animate="visible">
