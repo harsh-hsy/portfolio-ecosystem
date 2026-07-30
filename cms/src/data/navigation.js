@@ -102,11 +102,15 @@ const navigation = [
   },
 ];
 
+const portfolioUrl = (
+  import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
+).replace(/\/$/, "");
+
 export const footerNavigation = [
   {
     id: "portfolio",
     label: "Back to Portfolio",
-    path: "http://localhost:5173/",
+    path: portfolioUrl,
     icon: FiExternalLink,
     external: true,
   },
