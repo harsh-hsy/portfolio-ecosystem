@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
 import IconPicker from "../components/editor/IconPicker";
+import ImageUploader from "../components/editor/ImageUploader";
 import RepeaterField from "../components/editor/RepeaterField";
 import { isSupportedIcon } from "../data/iconCatalog";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
@@ -183,9 +184,9 @@ function About() {
     successMessage: "About content updated successfully.",
   });
 
-  const previewImage = useMemo(
-    () => resolvePreviewUrl(editor.form.aboutImage),
-    [editor.form.aboutImage],
+  const publishedPreviewImage = useMemo(
+    () => resolvePreviewUrl(editor.savedForm.aboutImage),
+    [editor.savedForm.aboutImage],
   );
 
   return (
@@ -262,22 +263,30 @@ function About() {
 
         <div className="content-editor__section">
           <h3>About Image</h3>
-          <div className="about-image-editor">
-            <div className="about-image-editor__preview">
-              <ImagePreview
-                source={previewImage}
-                alt={`${editor.form.title || "About"} preview`}
-              />
+          <div className="about-image-editor media-editor-layout">
+            <div className="media-current-card">
+              <div className="media-current-card__heading">
+                <span>Current image</span>
+                <small>Published preview</small>
+              </div>
+              <div className="about-image-editor__preview">
+                <ImagePreview
+                  source={publishedPreviewImage}
+                  alt={`${editor.savedForm.title || "About"} published preview`}
+                />
+              </div>
             </div>
 
             <div className="about-image-editor__control">
-              <FormField
-                label="About Image"
-                name="aboutImage"
+              <ImageUploader
                 value={editor.form.aboutImage}
-                onChange={editor.updateField}
+                onChange={(aboutImage) => editor.updateForm((current) => ({ ...current, aboutImage }))}
+                label="Edit about image"
+                section="about"
+                aspectRatio={4 / 5}
+                previewMaxWidth="100%"
                 error={editor.errors.aboutImage}
-                helpText="Use an existing public image URL or frontend asset path."
+                alt={`${editor.form.title || "About"} preview`}
                 required
               />
             </div>

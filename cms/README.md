@@ -57,6 +57,10 @@ The CMS does not keep content as the main source of truth. It sends changes to t
 - toast feedback
 - validation and safe defaults
 - loading and saving states
+- signed Cloudinary image uploads
+- interactive preview and crop controls
+- image replacement and removal
+- project screenshot ordering
 
 ## Local setup
 

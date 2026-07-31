@@ -140,8 +140,8 @@ p { margin: 0; line-height: 1.75; }
 
 .about-grid, .skills-layout, .contact-grid, .detail-hero { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 30px; align-items: center; }
 .about-photo, .skills-image, .contact-panel, .contact-form, .detail-preview, .detail-card, .mini-card, .service-card, .achievement-card, .stat-card, .timeline-item, .skill-group, .project-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass); backdrop-filter: blur(18px); box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08); }
-.about-photo, .skills-image { padding: 12px; }
-.about-photo img, .skills-image img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+.about-photo, .skills-image { width: 100%; align-self: start; padding: 12px; }
+.about-photo img, .skills-image img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center; border-radius: var(--radius); }
 .about-content p { font-size: 1.08rem; color: var(--muted); }
 .fact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
 .fact-grid article { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; background: var(--surface); }
@@ -153,7 +153,7 @@ p { margin: 0; line-height: 1.75; }
 .stat-card strong { display: block; color: var(--heading); font-family: "Space Grotesk"; font-size: 2.2rem; }
 .stat-card span { color: var(--muted); font-weight: 700; }
 
-.skills-layout { grid-template-columns: 0.72fr 1.28fr; align-items: start; }
+.skills-layout { align-items: start; }
 .skill-groups { display: grid; gap: 14px; }
 .skill-group { padding: 22px; }
 .skill-group h3 { margin-bottom: 16px; }
@@ -172,7 +172,7 @@ p { margin: 0; line-height: 1.75; }
 .projects-page { min-height: 80vh; padding-top: 132px; }
 .projects-empty { padding: 48px 0; color: var(--muted); text-align: center; }
 .project-card { overflow: hidden; transform-style: preserve-3d; }
-.project-image { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface); }
+.project-image { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--surface); }
 .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
 .project-card:hover .project-image img { transform: scale(1.06); }
 .project-image span { position: absolute; left: 12px; top: 12px; padding: 7px 10px; border-radius: var(--radius); color: #fff; background: rgba(15, 23, 42, 0.72); font-weight: 800; font-size: 0.78rem; }
@@ -197,7 +197,7 @@ p { margin: 0; line-height: 1.75; }
 .horizontal-cards, .service-grid, .achievement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .milestone-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .mini-card, .service-card, .achievement-card { padding: 20px; }
-.certificate-card-image { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
+.certificate-card-image { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); background: var(--surface); }
 .mini-card h3, .service-card h3 { margin: 8px 0; }
 .mini-card p, .achievement-card p { color: var(--muted); }
 .milestone-card small { display: block; color: var(--muted); font-weight: 800; }
@@ -254,12 +254,12 @@ p { margin: 0; line-height: 1.75; }
 .detail-hero h1 { font-size: clamp(2.6rem, 6vw, 5.3rem); line-height: 1; }
 .detail-hero p { margin: 18px 0; color: var(--muted); font-size: 1.08rem; }
 .detail-preview { padding: 12px; }
-.detail-preview img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); }
+.detail-preview img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); }
 .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
 .detail-card { padding: 22px; }
 .detail-card p { margin-top: 8px; color: var(--muted); }
 .screenshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 28px 0; }
-.screenshot-grid img { border: 1px solid var(--border); border-radius: var(--radius); aspect-ratio: 16 / 10; object-fit: cover; background: var(--surface); }
+.screenshot-grid img { border: 1px solid var(--border); border-radius: var(--radius); aspect-ratio: 16 / 9; object-fit: cover; background: var(--surface); }
 .tech-stack { padding: 22px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass); }
 .tech-stack h2, .related-section h2 { margin-bottom: 14px; }
 .related-section { margin-top: 40px; }

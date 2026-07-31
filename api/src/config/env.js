@@ -27,4 +27,8 @@ export const env = {
   adminName: cleanValue(process.env.ADMIN_NAME, 'Harsh Admin'),
   adminEmail: cleanValue(process.env.ADMIN_EMAIL, 'admin@example.com'),
   adminPassword: cleanValue(process.env.ADMIN_PASSWORD, 'change-me'),
+  cloudinaryCloudName: cleanValue(process.env.CLOUDINARY_CLOUD_NAME, ''),
+  cloudinaryApiKey: cleanValue(process.env.CLOUDINARY_API_KEY, ''),
+  cloudinaryApiSecret: cleanValue(process.env.CLOUDINARY_API_SECRET, ''),
+  cloudinaryFolder: cleanValue(process.env.CLOUDINARY_FOLDER, 'portfolio-ecosystem'),
 }

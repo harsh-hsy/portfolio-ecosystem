@@ -13,6 +13,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import ConfirmDialog from "../components/editor/ConfirmDialog";
 import FormField from "../components/editor/FormField";
+import ImageGalleryUploader from "../components/editor/ImageGalleryUploader";
+import ImageUploader from "../components/editor/ImageUploader";
 import RepeaterField from "../components/editor/RepeaterField";
 import { useToast } from "../hooks/useToast";
 import { useUnsavedChanges } from "../hooks/useUnsavedChanges";
@@ -203,9 +205,18 @@ function ProjectEditor() {
           <div className="project-editor-section__heading"><h2>Project media</h2><p>The first screenshot is used as the card thumbnail unless a thumbnail is specified.</p></div>
           <div className="project-media-preview">
             {image ? <img src={resolveImageUrl(image)} alt="Current project preview" /> : <span>No preview available</span>}
-            <FormField label="Thumbnail URL or Path" value={project.thumbnail || ""} onChange={(event) => updateField("thumbnail", event.target.value)} helpText="Optional. Leave empty to use the first screenshot." />
+            <ImageUploader
+              value={project.thumbnail || ""}
+              onChange={(thumbnail) => updateField("thumbnail", thumbnail)}
+              label="Project thumbnail"
+              helpText="Optional. Upload a 16:9 card thumbnail or leave empty to use the first screenshot."
+              section="projects"
+              aspectRatio={16 / 9}
+              previewMaxWidth="640px"
+              alt={`${project.shortTitle || project.title} thumbnail`}
+            />
           </div>
-          <RepeaterField className="project-editor-list-repeater" label="Project Screenshots" items={project.images} onChange={(items) => updateField("images", items)} createItem={() => ""} addLabel="Add Screenshot" emptyMessage="Add at least one screenshot before publishing." />
+          <ImageGalleryUploader items={project.images} onChange={(images) => updateField("images", images)} section="projects" />
         </div>
 
         <div className="project-editor-section">

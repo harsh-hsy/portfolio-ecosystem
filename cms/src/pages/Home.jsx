@@ -3,6 +3,7 @@
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
 import IconPicker from "../components/editor/IconPicker";
+import ImageUploader from "../components/editor/ImageUploader";
 import RepeaterField from "../components/editor/RepeaterField";
 import { isSupportedIcon } from "../data/iconCatalog";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
@@ -137,9 +138,10 @@ function Home() {
 
   const previewName = editor.form.name || "Portfolio owner";
   const previewRole = editor.form.rotatingRoles[0] || "Job title will appear here";
-  const previewImage = useMemo(
-    () => resolvePreviewUrl(editor.form.heroImage),
-    [editor.form.heroImage],
+  const publishedPreviewName = editor.savedForm.name || "Portfolio owner";
+  const publishedPreviewImage = useMemo(
+    () => resolvePreviewUrl(editor.savedForm.heroImage),
+    [editor.savedForm.heroImage],
   );
 
   return (
@@ -240,24 +242,42 @@ function Home() {
         <div className="content-editor__section">
           <h3>Hero Image and Badges</h3>
 
-          <div className="hero-image-editor">
-            <div className="hero-image-editor__preview">
-              {previewImage ? (
-                <img src={previewImage} alt={`${previewName} portrait`} />
-              ) : (
-                <span>Image preview</span>
-              )}
+          <div className="hero-image-editor media-editor-layout">
+            <div className="media-current-card">
+              <div className="media-current-card__heading">
+                <span>Current image</span>
+                <small>Published preview</small>
+              </div>
+              <div className="hero-image-editor__preview">
+                {publishedPreviewImage ? (
+                  <img src={publishedPreviewImage} alt={`${publishedPreviewName} portrait`} />
+                ) : (
+                  <span>Image preview</span>
+                )}
+              </div>
             </div>
 
-            <div className="form-grid">
-              <FormField
-                label="Hero Profile Image"
-                name="heroImage"
-                className="form-group--wide"
-                value={editor.form.heroImage}
-                onChange={editor.updateField}
-                error={editor.errors.heroImage}
-                helpText="Use an existing public image URL or frontend asset path."
+            <ImageUploader
+              value={editor.form.heroImage}
+              onChange={(heroImage) => editor.updateForm((current) => ({ ...current, heroImage }))}
+              label="Edit hero image"
+              section="home"
+              aspectRatio={1}
+              previewMaxWidth="100%"
+              error={editor.errors.heroImage}
+              alt={`${previewName} portrait`}
+              required
+            />
+          </div>
+
+          <div className="form-grid hero-badges-editor">
+              <IconPicker
+                label="Location Badge Icon"
+                value={editor.form.heroLocationIcon}
+                onChange={(heroLocationIcon) =>
+                  editor.updateForm((current) => ({ ...current, heroLocationIcon }))
+                }
+                error={editor.errors.heroLocationIcon}
                 required
               />
 
@@ -270,16 +290,6 @@ function Home() {
                 required
               />
 
-              <IconPicker
-                label="Location Badge Icon"
-                value={editor.form.heroLocationIcon}
-                onChange={(heroLocationIcon) =>
-                  editor.updateForm((current) => ({ ...current, heroLocationIcon }))
-                }
-                error={editor.errors.heroLocationIcon}
-                required
-              />
-
               <FormField
                 label="Image Role Badge"
                 name="heroOrbitRole"
@@ -289,7 +299,6 @@ function Home() {
                 error={editor.errors.heroOrbitRole}
                 required
               />
-            </div>
           </div>
         </div>
 

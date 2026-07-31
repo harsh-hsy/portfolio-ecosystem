@@ -25,6 +25,13 @@ import {
   listAdminProjects,
   updateAdminProject,
 } from '../services/projectService.js'
+import {
+  createUploadSignature,
+  deleteCloudinaryAsset,
+  getCloudinaryClientConfig,
+  pruneUnreferencedCloudinaryAssets,
+  registerCloudinaryAsset,
+} from '../services/mediaService.js'
 
 const router = Router()
 
@@ -42,6 +49,14 @@ function serializeUser(user) {
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   }
+}
+
+async function cleanupUnusedMedia(content) {
+  const [projects, certificates] = await Promise.all([
+    listAdminProjects(),
+    listAdminCertificates(),
+  ])
+  await pruneUnreferencedCloudinaryAssets({ content, projects, certificates })
 }
 
 router.get('/me', (req, res) => {
@@ -115,6 +130,24 @@ router.get('/portfolio', async (req, res) => {
   res.json({ content })
 })
 
+router.get('/media/config', (req, res) => {
+  res.json(getCloudinaryClientConfig())
+})
+
+router.post('/media/signature', (req, res) => {
+  res.json({ signature: createUploadSignature(req.body?.paramsToSign ?? {}) })
+})
+
+router.post('/media', async (req, res) => {
+  const asset = await registerCloudinaryAsset(req.body)
+  res.status(201).json({ asset })
+})
+
+router.delete('/media/:id', async (req, res) => {
+  const asset = await deleteCloudinaryAsset(req.params.id)
+  res.json({ asset })
+})
+
 router.get('/projects', async (req, res) => {
   res.json({ projects: await listAdminProjects() })
 })
@@ -130,11 +163,13 @@ router.get('/projects/:slug', async (req, res) => {
 
 router.put('/projects/:slug', async (req, res) => {
   const project = await updateAdminProject(req.params.slug, req.body)
+  await cleanupUnusedMedia(await getPublishedPortfolio())
   res.json({ project })
 })
 
 router.delete('/projects/:slug', async (req, res) => {
   const project = await deleteAdminProject(req.params.slug)
+  await cleanupUnusedMedia(await getPublishedPortfolio())
   res.json({ project })
 })
 
@@ -155,11 +190,13 @@ router.get('/certificates/:slug', async (req, res) => {
 
 router.put('/certificates/:slug', async (req, res) => {
   const certificate = await updateAdminCertificate(req.params.slug, req.body)
+  await cleanupUnusedMedia(await getPublishedPortfolio())
   res.json({ certificate })
 })
 
 router.delete('/certificates/:slug', async (req, res) => {
   const certificate = await deleteAdminCertificate(req.params.slug)
+  await cleanupUnusedMedia(await getPublishedPortfolio())
   res.json({ certificate })
 })
 
@@ -170,21 +207,25 @@ router.post('/portfolio/initialize', async (req, res) => {
 
 router.put('/portfolio', async (req, res) => {
   const content = await replacePublishedPortfolio(req.body)
+  await cleanupUnusedMedia(content)
   res.json({ content })
 })
 
 router.put('/portfolio/module/:module', async (req, res) => {
   const content = await updatePortfolioModule(req.params.module, req.body)
+  await cleanupUnusedMedia(content)
   res.json({ content })
 })
 
 router.put('/portfolio/:field', async (req, res) => {
   const content = await updatePortfolioField(req.params.field, req.body.value)
+  await cleanupUnusedMedia(content)
   res.json({ content })
 })
 
 router.post('/portfolio/reset', async (req, res) => {
   const content = await resetPublishedPortfolio()
+  await cleanupUnusedMedia(content)
   res.json({ content })
 })
 

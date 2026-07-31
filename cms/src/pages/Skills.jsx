@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
 import IconPicker from "../components/editor/IconPicker";
+import ImageUploader from "../components/editor/ImageUploader";
 import RepeaterField from "../components/editor/RepeaterField";
 import { isSupportedIcon } from "../data/iconCatalog";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
@@ -212,16 +213,25 @@ function Skills() {
 
         <div className="content-editor__section">
           <h3>Skills Image</h3>
-          <div className="hero-image-editor skills-image-editor">
-            <div className="hero-image-editor__preview">
-              <SkillsImagePreview source={editor.form.skillsImage} />
+          <div className="hero-image-editor skills-image-editor media-editor-layout">
+            <div className="media-current-card">
+              <div className="media-current-card__heading">
+                <span>Current image</span>
+                <small>Published preview</small>
+              </div>
+              <div className="hero-image-editor__preview">
+                <SkillsImagePreview source={editor.savedForm.skillsImage} />
+              </div>
             </div>
-            <FormField
-              label="Image URL or Path"
-              name="skillsImage"
+            <ImageUploader
               value={editor.form.skillsImage}
-              onChange={editor.updateField}
+              onChange={(skillsImage) => editor.updateForm((current) => ({ ...current, skillsImage }))}
+              label="Edit skills image"
+              section="skills"
+              aspectRatio={4 / 5}
+              previewMaxWidth="100%"
               error={editor.errors.skillsImage}
+              alt="Skills section preview"
               required
             />
           </div>

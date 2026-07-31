@@ -61,6 +61,10 @@ The API is the source of truth for CMS-managed content. The CMS writes to it, Mo
 - `GET /api/admin/certificates/:slug`
 - `PUT /api/admin/certificates/:slug`
 - `DELETE /api/admin/certificates/:slug`
+- `GET /api/admin/media/config`
+- `POST /api/admin/media/signature`
+- `POST /api/admin/media`
+- `DELETE /api/admin/media/:id`
 
 ## Data model overview
 
@@ -113,7 +117,13 @@ JWT_EXPIRES_IN=8h
 ADMIN_NAME=Harsh Kumar Singh
 ADMIN_EMAIL=you@example.com
 ADMIN_PASSWORD=your-password
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CLOUDINARY_FOLDER=portfolio-ecosystem
 ```
+
+Cloudinary credentials belong only in the API environment. Never expose the API secret through a CMS or frontend `VITE_*` variable. The authenticated CMS requests short-lived upload signatures from the API and uploads images directly to Cloudinary.
 
 ## Current status
 

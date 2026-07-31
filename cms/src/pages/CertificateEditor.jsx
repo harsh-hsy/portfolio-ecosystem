@@ -14,6 +14,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import ConfirmDialog from "../components/editor/ConfirmDialog";
 import FormField from "../components/editor/FormField";
+import ImageUploader from "../components/editor/ImageUploader";
 import { useToast } from "../hooks/useToast";
 import { useUnsavedChanges } from "../hooks/useUnsavedChanges";
 import {
@@ -199,11 +200,16 @@ function CertificateEditor() {
           <div className="project-editor-section__heading"><h2>Certificate media</h2><p>Add an optional image that appears on the certificate card.</p></div>
           <div className="project-media-preview certificate-media-preview">
             {image ? <img src={resolveImageUrl(image)} alt="Current certificate preview" /> : <span><FiAward aria-hidden="true" /> No certificate image added</span>}
-            <FormField
-              label="Certificate Image URL or Path"
+            <ImageUploader
               value={certificate.thumbnail}
-              onChange={(event) => updateField("thumbnail", event.target.value)}
-              helpText="Use a public image URL or a frontend asset path."
+              onChange={(thumbnail) => updateField("thumbnail", thumbnail)}
+              label="Certificate image"
+              helpText="The original certificate ratio is preserved so no content is cut off."
+              section="certificates"
+              aspectRatio={null}
+              previewMaxWidth="640px"
+              preserveOriginalRatio
+              alt={`${certificate.title} certificate`}
             />
           </div>
         </div>
