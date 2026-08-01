@@ -1,25 +1,45 @@
 import { useEffect, useState } from 'react'
 
 export function useScrollSpy(ids) {
-  const [activeId, setActiveId] = useState(ids[0])
+  const [activeId, setActiveId] = useState(() => {
+    const hashId = window.location.hash.slice(1)
+    return hashId || ids[0]
+  })
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible?.target?.id) setActiveId(visible.target.id)
-      },
-      { rootMargin: '-24% 0px -58% 0px', threshold: [0.15, 0.35, 0.55] },
-    )
+    if (!ids.length) return undefined
 
-    ids.forEach((id) => {
-      const node = document.getElementById(id)
-      if (node) observer.observe(node)
-    })
+    let frameId = 0
 
-    return () => observer.disconnect()
+    const updateActiveSection = () => {
+      frameId = 0
+      const marker = Math.min(window.innerHeight * 0.3, 220)
+      let nextId = ids[0]
+
+      ids.forEach((id) => {
+        const section = document.getElementById(id)
+        if (section && section.getBoundingClientRect().top <= marker) nextId = id
+      })
+
+      setActiveId((current) => (current === nextId ? current : nextId))
+    }
+
+    const scheduleUpdate = () => {
+      if (frameId) return
+      frameId = window.requestAnimationFrame(updateActiveSection)
+    }
+
+    scheduleUpdate()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+    window.addEventListener('hashchange', scheduleUpdate)
+
+    return () => {
+      if (frameId) window.cancelAnimationFrame(frameId)
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      window.removeEventListener('hashchange', scheduleUpdate)
+    }
   }, [ids])
 
   return activeId
