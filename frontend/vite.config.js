@@ -10,4 +10,9 @@ export default defineConfig({
       '/api': 'http://localhost:4174',
     },
   },
+  preview: {
+    proxy: {
+      '/api': 'http://localhost:4174',
+    },
+  },
 })

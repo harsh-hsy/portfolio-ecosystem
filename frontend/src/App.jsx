@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import Lenis from 'lenis'
 import { Route, Routes, useLocation } from 'react-router-dom'
@@ -14,17 +14,14 @@ import NotFound from './pages/NotFound.jsx'
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
 const ProjectsPage = lazy(() => import('./pages/Projects.jsx'))
 
-function App() {
+function App({ entranceReady }) {
   const location = useLocation()
-  const [loading, setLoading] = useState(true)
   const lenisRef = useRef(null)
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 900)
-    return () => window.clearTimeout(timer)
-  }, [])
+    const useNativeScroll = window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches
+    if (useNativeScroll) return undefined
 
-  useEffect(() => {
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true })
     lenisRef.current = lenis
     let rafId
@@ -45,7 +42,15 @@ function App() {
       if (location.hash) {
         const target = document.getElementById(decodeURIComponent(location.hash.slice(1)))
         if (target) {
-          lenisRef.current?.scrollTo(target, { offset: -96, immediate: true })
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(target, { offset: -96, immediate: true })
+          } else {
+            window.scrollTo({
+              top: target.getBoundingClientRect().top + window.scrollY - 96,
+              left: 0,
+              behavior: 'auto',
+            })
+          }
         }
         return
       }
@@ -59,16 +64,15 @@ function App() {
 
   return (
     <>
-      <LoadingScreen show={loading} />
       <ScrollProgress />
       <CustomCursor />
-      <Navbar />
+      <Navbar entranceReady={entranceReady} />
       <CommandPalette />
       <main id="main-content">
         <AnimatePresence mode="wait">
           <Suspense fallback={<LoadingScreen show />}>
             <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home entranceReady={entranceReady} />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:slug" element={<ProjectDetails />} />
               <Route path="*" element={<NotFound />} />

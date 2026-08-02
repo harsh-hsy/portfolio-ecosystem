@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { fadeUp } from '../../animations/variants.js'
 import { getProjectCardContent } from '../../lib/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
+import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
 
 export default function ProjectCard({ project }) {
   const contentState = usePortfolioContent()
@@ -16,8 +17,17 @@ export default function ProjectCard({ project }) {
       whileHover={{ y: -8, rotateX: 1.5, rotateY: -1.5 }}
       transition={{ type: 'spring', stiffness: 220, damping: 22 }}
     >
-      <Link to={`/projects/${project.slug}`} className="project-image" aria-label={`${ui.detailsAriaPrefix} ${project.shortTitle} ${ui.detailsAriaSuffix}`}>
-        <img src={project.images[0]} alt={`${project.shortTitle} ${ui.screenshotSuffix}`} loading="lazy" />
+      <Link to={`/projects/${project.slug}`} className="project-image" aria-label={`${ui.detailsAriaPrefix} ${project.shortTitle} ${ui.detailsAriaSuffix}, ${project.category}`}>
+        <img
+          src={getCloudinaryImageUrl(project.images[0], 800)}
+          srcSet={getCloudinarySrcSet(project.images[0], [400, 640, 800])}
+          sizes="(max-width: 760px) 92vw, 33vw"
+          alt={`${project.shortTitle} ${ui.screenshotSuffix}`}
+          width="800"
+          height="450"
+          loading="lazy"
+          decoding="async"
+        />
         <span>{project.category}</span>
       </Link>
       <div className="project-body">

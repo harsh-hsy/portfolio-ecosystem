@@ -25,7 +25,7 @@ export default function Projects() {
       <div className="container">
         <SectionHeader eyebrow="Projects" title={section.title} copy={section.copy} />
         <div className="project-toolbar">
-          <div className="filter-tabs" role="tablist" aria-label="Filter projects">
+          <div className="filter-tabs" role="group" aria-label="Filter projects">
             {categories.map((item) => <button type="button" className={category === item ? 'active' : ''} key={item} onClick={() => setCategory(item)}>{item}</button>)}
           </div>
           <label className="search-field" htmlFor="home-project-search">

@@ -15,7 +15,7 @@ import { pageTransition } from '../animations/variants.js'
 import { getHomeContent } from '../lib/contentSelectors.js'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 
-export default function Home() {
+export default function Home({ entranceReady }) {
   const contentState = usePortfolioContent()
   const { profile, seo, structuredData } = getHomeContent(contentState?.portfolio)
 
@@ -29,7 +29,7 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
-      <Hero />
+      <Hero entranceReady={entranceReady} />
       <About />
       <Skills />
       <Projects />

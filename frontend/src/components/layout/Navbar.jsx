@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { FiDownload, FiMenu, FiX } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ThemeToggle from './ThemeToggle.jsx'
+import { fadeDown } from '../../animations/variants.js'
 import { getNavigationContent, getProfileContent, getSiteSettings } from '../../lib/contentSelectors.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
-export default function Navbar() {
+export default function Navbar({ entranceReady }) {
   const [open, setOpen] = useState(false)
-  const [hidden, setHidden] = useState(false)
   const location = useLocation()
   const contentState = usePortfolioContent()
   const navigation = getNavigationContent(contentState?.portfolio)
@@ -18,23 +18,12 @@ export default function Navbar() {
   const ids = useMemo(() => navigation.map((link) => link.id), [navigation])
   const active = useScrollSpy(ids)
 
-  useEffect(() => {
-    let lastY = window.scrollY
-    const onScroll = () => {
-      const current = window.scrollY
-      setHidden(current > lastY && current > 180)
-      lastY = current
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   const hrefFor = (id) => (location.pathname === '/' ? `#${id}` : `/#${id}`)
 
   return (
-    <motion.header className={`navbar ${hidden ? 'is-hidden' : ''}`} initial={{ y: -80 }} animate={{ y: 0 }}>
+    <header className="navbar">
       <a className="skip-link" href="#main-content">{settings.nav.skipLabel}</a>
-      <nav className="nav-shell" aria-label={settings.nav.ariaLabel}>
+      <motion.nav className="nav-shell" aria-label={settings.nav.ariaLabel} variants={fadeDown} initial="hidden" animate={entranceReady ? 'visible' : 'hidden'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <span>{settings.brandInitials}</span>
           <strong>{profile.name}</strong>
@@ -55,7 +44,7 @@ export default function Navbar() {
             {open ? <FiX /> : <FiMenu />}
           </button>
         </div>
-      </nav>
-    </motion.header>
+      </motion.nav>
+    </header>
   )
 }

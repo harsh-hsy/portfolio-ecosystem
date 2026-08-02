@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { useMousePosition } from '../../hooks/useMousePosition.js'
+import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
-export default function CustomCursor() {
+function CursorVisual() {
   const { x, y } = useMousePosition()
   return (
     <div className="cursor-wrap" aria-hidden="true">
@@ -9,4 +10,9 @@ export default function CustomCursor() {
       <motion.span className="cursor-dot" animate={{ x: x - 4, y: y - 4 }} transition={{ type: 'spring', stiffness: 500, damping: 32 }} />
     </div>
   )
+}
+
+export default function CustomCursor() {
+  const disableCursor = useMediaQuery('(max-width: 640px), (pointer: coarse), (prefers-reduced-motion: reduce)')
+  return disableCursor ? null : <CursorVisual />
 }

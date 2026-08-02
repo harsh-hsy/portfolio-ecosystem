@@ -3,6 +3,7 @@ import Reveal from '../common/Reveal.jsx'
 import { getAboutContent } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
+import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
 
 export default function About() {
   const contentState = usePortfolioContent()
@@ -13,7 +14,18 @@ export default function About() {
       <div className="container">
         <SectionHeader eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
         <div className="about-grid">
-          <Reveal className="about-photo"><img src={profile.aboutImage} alt={profile.name} loading="lazy" /></Reveal>
+          <Reveal className="about-photo">
+            <img
+              src={getCloudinaryImageUrl(profile.aboutImage, 900)}
+              srcSet={getCloudinarySrcSet(profile.aboutImage, [360, 540, 720, 900])}
+              sizes="(max-width: 760px) 92vw, 42vw"
+              alt={profile.name}
+              width="800"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            />
+          </Reveal>
           <Reveal className="about-content">
             <p>{profile.about}</p>
             <div className="fact-grid">
