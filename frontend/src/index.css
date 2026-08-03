@@ -311,6 +311,9 @@ p { margin: 0; line-height: 1.75; }
   .skills-image, .skill-group, .project-card { box-shadow: none; }
   .project-card { transform-style: flat; }
   .project-image img { transition: none; }
+  .project-card:hover .project-image img { transform: none; }
+  .hero-socials a { transition: color 0.2s ease; }
+  .hero-socials a:hover { transform: none; }
 
   .command-trigger,
   .orbit-card,
