@@ -8,6 +8,7 @@ import ProjectCard from '../components/common/ProjectCard.jsx'
 import SectionHeader from '../components/common/SectionHeader.jsx'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 import { getProfileContent, getProjectsContent } from '../lib/contentSelectors.js'
+import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function ProjectsPage() {
   const contentState = usePortfolioContent()
@@ -16,6 +17,7 @@ export default function ProjectsPage() {
   const allLabel = 'All'
   const [category, setCategory] = useState(allLabel)
   const [query, setQuery] = useState('')
+  const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
   const categories = [allLabel, ...new Set(projects.map((project) => project.category))]
   const filtered = useMemo(
     () => projects.filter((project) => {
@@ -29,10 +31,10 @@ export default function ProjectsPage() {
   return (
     <motion.div
       className="section projects-page"
-      variants={pageTransition}
-      initial="initial"
-      animate="animate"
-      exit="exit"
+      variants={simplifyMotion ? undefined : pageTransition}
+      initial={simplifyMotion ? false : 'initial'}
+      animate={simplifyMotion ? undefined : 'animate'}
+      exit={simplifyMotion ? undefined : 'exit'}
     >
       <Helmet>
         <title>{`Projects | ${profile.fullName || profile.name}`}</title>
@@ -76,7 +78,12 @@ export default function ProjectsPage() {
 </label>
         </div>
 
-        <motion.div className="projects-grid" variants={stagger} initial="hidden" animate="visible">
+        <motion.div
+          className="projects-grid"
+          variants={simplifyMotion ? undefined : stagger}
+          initial={simplifyMotion ? false : 'hidden'}
+          animate={simplifyMotion ? undefined : 'visible'}
+        >
           {filtered.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </motion.div>
 

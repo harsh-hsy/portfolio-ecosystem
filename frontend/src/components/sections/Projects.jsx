@@ -7,6 +7,7 @@ import ProjectCard from '../common/ProjectCard.jsx'
 import { getProjectsContent } from '../../lib/contentSelectors.js'
 import { stagger } from '../../animations/variants.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
+import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
 export default function Projects() {
   const contentState = usePortfolioContent()
@@ -14,6 +15,7 @@ export default function Projects() {
   const allLabel = 'All'
   const [category, setCategory] = useState(allLabel)
   const [query, setQuery] = useState('')
+  const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
   const categories = [allLabel, ...new Set(projects.map((project) => project.category))]
   const filtered = useMemo(
     () => projects.filter((project) => (category === allLabel || project.category === category) && project.title.toLowerCase().includes(query.toLowerCase())),
@@ -46,9 +48,9 @@ export default function Projects() {
         </div>
         <motion.div
   className="projects-grid"
-  variants={stagger}
-  initial="hidden"
-  animate="visible"
+  variants={simplifyMotion ? undefined : stagger}
+  initial={simplifyMotion ? false : 'hidden'}
+  animate={simplifyMotion ? undefined : 'visible'}
 >
           {filtered.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </motion.div>

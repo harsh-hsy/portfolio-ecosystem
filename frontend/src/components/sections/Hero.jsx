@@ -24,6 +24,11 @@ export default function Hero({ entranceReady }) {
   const imageEntrance = hasLimitedMotion ? fadeUp : slideLeft
 
   useEffect(() => {
+    if (rotatingRoleCount <= 1) {
+      setIndex(0)
+      return undefined
+    }
+
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % rotatingRoleCount), 1800)
     return () => window.clearInterval(timer)
   }, [rotatingRoleCount])

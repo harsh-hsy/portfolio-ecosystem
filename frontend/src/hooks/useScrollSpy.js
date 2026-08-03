@@ -9,36 +9,30 @@ export function useScrollSpy(ids) {
   useEffect(() => {
     if (!ids.length) return undefined
 
-    let frameId = 0
-
-    const updateActiveSection = () => {
-      frameId = 0
-      const marker = Math.min(window.innerHeight * 0.3, 220)
-      let nextId = ids[0]
-
-      ids.forEach((id) => {
-        const section = document.getElementById(id)
-        if (section && section.getBoundingClientRect().top <= marker) nextId = id
-      })
-
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+    const observer = new IntersectionObserver((entries) => {
+      const currentSection = entries.find((entry) => entry.isIntersecting)
+      if (!currentSection) return
+      const nextId = currentSection.target.id
       setActiveId((current) => (current === nextId ? current : nextId))
+    }, {
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0,
+    })
+    const updateFromHash = () => {
+      const hashId = window.location.hash.slice(1)
+      if (ids.includes(hashId)) setActiveId(hashId)
     }
 
-    const scheduleUpdate = () => {
-      if (frameId) return
-      frameId = window.requestAnimationFrame(updateActiveSection)
-    }
-
-    scheduleUpdate()
-    window.addEventListener('scroll', scheduleUpdate, { passive: true })
-    window.addEventListener('resize', scheduleUpdate)
-    window.addEventListener('hashchange', scheduleUpdate)
+    sections.forEach((section) => observer.observe(section))
+    updateFromHash()
+    window.addEventListener('hashchange', updateFromHash)
 
     return () => {
-      if (frameId) window.cancelAnimationFrame(frameId)
-      window.removeEventListener('scroll', scheduleUpdate)
-      window.removeEventListener('resize', scheduleUpdate)
-      window.removeEventListener('hashchange', scheduleUpdate)
+      observer.disconnect()
+      window.removeEventListener('hashchange', updateFromHash)
     }
   }, [ids])
 

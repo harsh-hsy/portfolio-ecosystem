@@ -14,13 +14,20 @@ import Contact from '../components/sections/Contact.jsx'
 import { pageTransition } from '../animations/variants.js'
 import { getHomeContent } from '../lib/contentSelectors.js'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
+import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function Home({ entranceReady }) {
   const contentState = usePortfolioContent()
   const { profile, seo, structuredData } = getHomeContent(contentState?.portfolio)
+  const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
 
   return (
-    <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
+    <motion.div
+      variants={simplifyMotion ? undefined : pageTransition}
+      initial={simplifyMotion ? false : 'initial'}
+      animate={simplifyMotion ? undefined : 'animate'}
+      exit={simplifyMotion ? undefined : 'exit'}
+    >
       <Helmet>
         <title>{seo.title}</title>
         <meta name="description" content={profile.about} />

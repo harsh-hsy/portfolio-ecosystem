@@ -307,8 +307,32 @@ p { margin: 0; line-height: 1.75; }
 }
 
 @media (max-width: 640px), (pointer: coarse) {
-  .portrait-shell { box-shadow: none; }
-  .skills-image, .skill-group, .project-card { box-shadow: none; }
+  .nav-shell {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: none;
+  }
+
+  .portrait-shell,
+  .orbit-card,
+  .hero-strip,
+  .about-photo,
+  .skills-image,
+  .contact-panel,
+  .contact-form,
+  .detail-preview,
+  .detail-card,
+  .mini-card,
+  .service-card,
+  .achievement-card,
+  .stat-card,
+  .timeline-item,
+  .skill-group,
+  .project-card {
+    box-shadow: none;
+  }
+
+  .timeline-item::before { box-shadow: none; }
   .project-card { transform-style: flat; }
   .project-image img { transition: none; }
   .project-card:hover .project-image img { transform: none; }
