@@ -120,7 +120,6 @@ export const sectionContent = {
 
   notFound: {
     id: "not-found",
-    eyebrow: "404",
     title: "Page not found.",
     copy: "This route does not exist, but the portfolio is one click away.",
     action: "Back Home",

@@ -144,17 +144,13 @@ function Projects() {
   return (
     <section className="page projects-overview">
       <div className="page-header projects-overview__header">
-        <div>
+        <div className="projects-overview__heading">
           <p className="page-kicker">Content Module</p>
           <h1 className="page-title">Projects</h1>
           <p className="page-description">
             Create drafts, publish case studies, and choose the projects shown on your portfolio.
           </p>
         </div>
-        <button className="btn btn-primary" type="button" onClick={() => setIsCreateOpen(true)}>
-          <FiPlus aria-hidden="true" />
-          Add Project
-        </button>
       </div>
 
       <div className="projects-overview__toolbar" aria-label="Project library controls">
@@ -170,15 +166,21 @@ function Projects() {
             </button>
           ))}
         </div>
-        <label className="projects-overview__search">
-          <FiSearch aria-hidden="true" />
-          <span className="sr-only">Search projects</span>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search projects"
-          />
-        </label>
+        <div className="projects-overview__toolbar-actions">
+          <label className="projects-overview__search">
+            <FiSearch aria-hidden="true" />
+            <span className="sr-only">Search projects</span>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search projects"
+            />
+          </label>
+          <button className="btn btn-primary" type="button" onClick={() => setIsCreateOpen(true)}>
+            <FiPlus aria-hidden="true" />
+            Add Project
+          </button>
+        </div>
       </div>
 
       <div className="projects-overview__summary">

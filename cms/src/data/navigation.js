@@ -10,6 +10,7 @@ import {
   FiMail,
   FiLink,
   FiSettings,
+  FiGlobe,
   FiFlag,
   FiExternalLink,
   FiLogOut,
@@ -93,6 +94,12 @@ const navigation = [
     label: "Inbox",
     path: "/inbox",
     icon: FiMail,
+  },
+  {
+    id: "global-pages",
+    label: "Global Pages",
+    path: "/global-pages",
+    icon: FiGlobe,
   },
   {
     id: "settings",

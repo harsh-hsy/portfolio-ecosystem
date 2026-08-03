@@ -7,12 +7,14 @@ export default function Footer() {
   const contentState = usePortfolioContent()
   const { profile, socials } = getHomeContent(contentState?.portfolio)
   const settings = getSiteSettings(contentState?.portfolio)
+  const footerName = settings.footerName || profile.name
+  const footerDescription = settings.footerDescription || profile.tagline
 
   return (
     <footer className="footer">
       <div>
-        <a className="brand footer-brand" href="#home"><span>{settings.brandInitials}</span><strong>{profile.name}</strong></a>
-        <p>{profile.tagline}</p>
+        <a className="brand footer-brand" href="#home"><span>{settings.brandInitials}</span><strong>{footerName}</strong></a>
+        <p>{footerDescription}</p>
       </div>
       <div className="footer-links">
         {socials.map((social) => {
@@ -25,8 +27,8 @@ export default function Footer() {
         })}
       </div>
       <div className="footer-bottom">
-        <span>{settings.copyrightPrefix} {profile.copyrightYear} {settings.developedByLabel} {profile.name}.</span>
-        <a href="#home" className="back-top" aria-label={settings.footerBackToTopLabel}><FiArrowUp /></a>
+        <span>© {profile.copyrightYear} Developed by {footerName}.</span>
+        <a href="#home" className="back-top" aria-label="Back to top"><FiArrowUp /></a>
       </div>
     </footer>
   )

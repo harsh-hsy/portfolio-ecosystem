@@ -2,6 +2,8 @@ export const siteSettings = {
   brandInitials: 'HS',
   copyrightPrefix: '©',
   developedByLabel: 'Developed by',
+  footerName: '',
+  footerDescription: '',
   loadingMark: 'HS',
   footerBackToTopLabel: 'Back to top',
   nav: {

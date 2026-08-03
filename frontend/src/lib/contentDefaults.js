@@ -26,6 +26,8 @@ export const defaultSettings = {
   brandInitials: '',
   copyrightPrefix: '',
   developedByLabel: '',
+  footerName: '',
+  footerDescription: '',
   loadingMark: '',
   footerBackToTopLabel: '',
   nav: {

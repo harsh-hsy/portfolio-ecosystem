@@ -17,6 +17,7 @@ import {
 } from '../validation/contactContent.js'
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
+import { validateGlobalPagesContent } from '../validation/globalPagesContent.js'
 import {
   ensureCertificateResources,
   listPublishedCertificates,
@@ -53,6 +54,12 @@ const profileFields = {
 function pick(source, fields) {
   return Object.fromEntries(
     fields.filter((field) => source?.[field] !== undefined).map((field) => [field, source[field]]),
+  )
+}
+
+function withoutEyebrow(section = {}) {
+  return Object.fromEntries(
+    Object.entries(section).filter(([key]) => key !== 'eyebrow'),
   )
 }
 
@@ -137,7 +144,7 @@ const modules = {
     model: SettingsContent,
     extract: (content) => ({
       profile: pick(content.profile, profileFields.settings),
-      section: content.sections?.notFound ?? {},
+      section: withoutEyebrow(content.sections?.notFound),
       settings: content.settings ?? defaultPortfolio.settings,
       navigation: content.navigation ?? defaultPortfolio.navigation,
       commands: content.commands ?? defaultPortfolio.commands,
@@ -198,6 +205,7 @@ const editorModules = {
   contact: ['contact', 'links'],
   links: ['links', 'home', 'settings'],
   settings: ['settings'],
+  globalPages: ['settings'],
 }
 
 function sanitizeLegacyContent(content) {
@@ -245,6 +253,7 @@ async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
   if (names.includes('contact')) validateContactContent(normalizedContent)
   if (names.includes('links')) validateLinksContent(normalizedContent)
+  if (names.includes('settings')) validateGlobalPagesContent(normalizedContent)
 
   await Promise.all(
     names.map((name) => {

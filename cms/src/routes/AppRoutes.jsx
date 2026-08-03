@@ -21,6 +21,7 @@ import Contact from "../pages/Contact";
 import Inbox from "../pages/Inbox";
 import Links from "../pages/Links";
 import Settings from "../pages/Settings";
+import GlobalPages from "../pages/GlobalPages";
 import Account from "../pages/Account";
 
 function AppRoutes() {
@@ -61,6 +62,7 @@ function AppRoutes() {
         <Route path="contact" element={<Contact />} />
         <Route path="links" element={<Links />} />
         <Route path="inbox" element={<Inbox />} />
+        <Route path="global-pages" element={<GlobalPages />} />
         <Route path="settings" element={<Settings />} />
         <Route path="/account" element={<Account />} />
       </Route>

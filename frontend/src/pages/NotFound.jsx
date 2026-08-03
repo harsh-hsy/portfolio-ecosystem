@@ -13,10 +13,9 @@ export default function NotFound() {
     <motion.section className="not-found section" variants={pageTransition} initial="initial" animate="animate" exit="exit">
       <Helmet><title>{seoTitle}</title></Helmet>
       <div className="container">
-        <span className="eyebrow">{section.eyebrow}</span>
         <h1>{section.title}</h1>
         <p>{section.copy}</p>
-        <Link className="magnetic-button primary" to="/">{section.action}</Link>
+        <Link className="magnetic-button primary" to="/">Back Home</Link>
       </div>
     </motion.section>
   )
