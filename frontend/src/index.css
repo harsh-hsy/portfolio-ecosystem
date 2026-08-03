@@ -308,6 +308,9 @@ p { margin: 0; line-height: 1.75; }
 
 @media (max-width: 640px), (pointer: coarse) {
   .portrait-shell { box-shadow: none; }
+  .skills-image, .skill-group, .project-card { box-shadow: none; }
+  .project-card { transform-style: flat; }
+  .project-image img { transition: none; }
 
   .command-trigger,
   .orbit-card,

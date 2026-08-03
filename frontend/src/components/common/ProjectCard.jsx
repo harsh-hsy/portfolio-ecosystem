@@ -5,17 +5,19 @@ import { fadeUp } from '../../animations/variants.js'
 import { getProjectCardContent } from '../../lib/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
+import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
 export default function ProjectCard({ project }) {
   const contentState = usePortfolioContent()
   const ui = getProjectCardContent(contentState?.portfolio)
+  const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
 
   return (
     <motion.article
       className="project-card"
-      variants={fadeUp}
-      whileHover={{ y: -8, rotateX: 1.5, rotateY: -1.5 }}
-      transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+      variants={simplifyMotion ? undefined : fadeUp}
+      whileHover={simplifyMotion ? undefined : { y: -8, rotateX: 1.5, rotateY: -1.5 }}
+      transition={simplifyMotion ? undefined : { type: 'spring', stiffness: 220, damping: 22 }}
     >
       <Link to={`/projects/${project.slug}`} className="project-image" aria-label={`${ui.detailsAriaPrefix} ${project.shortTitle} ${ui.detailsAriaSuffix}, ${project.category}`}>
         <img
