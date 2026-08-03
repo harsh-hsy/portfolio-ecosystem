@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async";
 import {
   FiLock,
   FiLogIn,
+  FiEye,
+  FiEyeOff,
 } from "react-icons/fi";
 import {
   useLocation,
@@ -19,6 +21,7 @@ const initialForm = {
 function Login() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] =
     useState(false);
   const { login } = useAuth();
@@ -88,14 +91,29 @@ function Login() {
 
         <label className="login-field">
           <span>Password</span>
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={update}
-            autoComplete="current-password"
-            required
-          />
+          <div className="login-password-wrapper">
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={update}
+              autoComplete="current-password"
+              spellCheck={false}
+              autoCapitalize="none"
+              autoCorrect="off"
+              required
+            />
+            <button
+              type="button"
+              className="login-password-toggle"
+              onClick={() => setShowPassword((current) => !current)}
+              disabled={submitting}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
         </label>
 
         {error && (

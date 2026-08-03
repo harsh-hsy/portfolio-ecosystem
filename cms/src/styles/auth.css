@@ -82,6 +82,46 @@
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
 }
 
+.login-password-wrapper {
+  position: relative;
+}
+
+.login-password-wrapper input {
+  padding-right: 48px;
+}
+
+.login-card .login-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+  box-shadow: none;
+  font-weight: 400;
+  transform: translateY(-50%);
+}
+
+.login-card .login-password-toggle:hover:not(:disabled),
+.login-card .login-password-toggle:focus-visible {
+  color: var(--heading);
+  background: var(--sidebar-hover);
+}
+
+.login-card .login-password-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.login-card .login-password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
 .login-error {
   color: var(--danger) !important;
   font-weight: 800;

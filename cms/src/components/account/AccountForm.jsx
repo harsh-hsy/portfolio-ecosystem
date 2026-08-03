@@ -11,6 +11,10 @@ const emptyUser = {
   dateOfBirth: "",
   role: "admin",
   status: "active",
+  lastLoginAt: null,
+  passwordChangedAt: null,
+  createdAt: null,
+  updatedAt: null,
 };
 
 function AccountForm() {
@@ -71,7 +75,10 @@ function AccountForm() {
         onUserChange={setUser}
       />
 
-      <PasswordSection isLoading={isLoading} />
+      <PasswordSection
+        isLoading={isLoading}
+        passwordChangedAt={user.passwordChangedAt}
+      />
     </div>
   );
 }

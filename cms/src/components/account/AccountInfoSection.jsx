@@ -4,6 +4,7 @@ import {
   FiPhone,
   FiCalendar,
   FiShield,
+  FiClock,
   FiEdit3,
   FiLoader,
 } from "react-icons/fi";
@@ -19,6 +20,57 @@ function formatRole(role) {
 
 function formatStatus(status) {
   return status === "active" ? "Active" : "Disabled";
+}
+
+function formatAccountDate(value, fallback = "Not available") {
+  if (!value) return fallback;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return fallback;
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function maskDateOfBirth(value, appendSeparator = true) {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length < 2) return digits;
+
+  const day = digits.slice(0, 2);
+  if (digits.length === 2) return appendSeparator ? `${day}/` : day;
+
+  const month = digits.slice(2, 4);
+  if (digits.length < 4) return `${day}/${month}`;
+  if (digits.length === 4) return appendSeparator ? `${day}/${month}/` : `${day}/${month}`;
+
+  return `${day}/${month}/${digits.slice(4)}`;
+}
+
+function isValidDateOfBirth(value) {
+  if (!value) return true;
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+  if (!match) return false;
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const now = new Date();
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  return year >= 1900
+    && date.getUTCFullYear() === year
+    && date.getUTCMonth() === month - 1
+    && date.getUTCDate() === day
+    && date <= today;
+}
+
+function isValidPhone(value) {
+  if (!value.trim()) return true;
+  if (!/^[+\d\s().-]+$/.test(value)) return false;
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
 }
 
 function AccountInfoSection({
@@ -74,6 +126,24 @@ function AccountInfoSection({
       icon: FiShield,
       status: true,
     },
+    {
+      id: "createdAt",
+      label: "Member Since",
+      value: formatAccountDate(user.createdAt),
+      icon: FiClock,
+    },
+    {
+      id: "lastLoginAt",
+      label: "Last Login",
+      value: formatAccountDate(user.lastLoginAt, "Recorded after next login"),
+      icon: FiClock,
+    },
+    {
+      id: "updatedAt",
+      label: "Last Updated",
+      value: formatAccountDate(user.updatedAt),
+      icon: FiClock,
+    },
   ], [user]);
 
   function startEditing() {
@@ -94,6 +164,14 @@ function AccountInfoSection({
 
   function handleChange(event) {
     const { name, value } = event.target;
+    if (name === "dateOfBirth") {
+      const isDeleting = value.length < formData.dateOfBirth.length;
+      setFormData((current) => ({
+        ...current,
+        dateOfBirth: maskDateOfBirth(value, !isDeleting),
+      }));
+      return;
+    }
     setFormData((current) => ({ ...current, [name]: value }));
   }
 
@@ -102,6 +180,22 @@ function AccountInfoSection({
 
     if (!formData.name.trim() || !formData.email.trim()) {
       setStatus({ message: "Name and email are required.", type: "error" });
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      setStatus({
+        message: "Enter a valid contact number containing 7 to 15 digits.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!isValidDateOfBirth(formData.dateOfBirth)) {
+      setStatus({
+        message: "Enter a valid date of birth in DD/MM/YYYY format.",
+        type: "error",
+      });
       return;
     }
 
@@ -185,9 +279,13 @@ function AccountInfoSection({
               <input
                 className="form-input"
                 name="name"
+                type="text"
                 value={formData.name}
                 onChange={handleChange}
                 disabled={isSaving}
+                autoComplete="name"
+                maxLength={80}
+                required
               />
             </label>
 
@@ -200,6 +298,9 @@ function AccountInfoSection({
                 value={formData.email}
                 onChange={handleChange}
                 disabled={isSaving}
+                autoComplete="email"
+                maxLength={254}
+                required
               />
             </label>
 
@@ -208,9 +309,14 @@ function AccountInfoSection({
               <input
                 className="form-input"
                 name="phone"
+                type="tel"
                 value={formData.phone}
                 onChange={handleChange}
                 disabled={isSaving}
+                autoComplete="tel"
+                inputMode="tel"
+                maxLength={32}
+                placeholder="+91 98765 43210"
               />
             </label>
 
@@ -222,8 +328,15 @@ function AccountInfoSection({
                 value={formData.dateOfBirth}
                 onChange={handleChange}
                 disabled={isSaving}
-                placeholder="01 January 2004"
+                inputMode="numeric"
+                autoComplete="bday"
+                maxLength={10}
+                placeholder="DD/MM/YYYY"
+                aria-describedby="date-of-birth-hint"
               />
+              <small id="date-of-birth-hint" className="form-hint">
+                Day and month separators are added automatically.
+              </small>
             </label>
           </div>
         </form>

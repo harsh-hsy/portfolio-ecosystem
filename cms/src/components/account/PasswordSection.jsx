@@ -20,7 +20,7 @@ const INITIAL_FORM_DATA = {
 };
 
 
-function PasswordSection({ isLoading = false }) {
+function PasswordSection({ isLoading = false, passwordChangedAt = null }) {
   const [isEditing, setIsEditing] =
     useState(false);
 
@@ -39,6 +39,9 @@ function PasswordSection({ isLoading = false }) {
 
   const [formData, setFormData] =
     useState(INITIAL_FORM_DATA);
+
+  const [latestPasswordChange, setLatestPasswordChange] =
+    useState(null);
 
 
   const requirements = useMemo(() => {
@@ -174,10 +177,12 @@ function PasswordSection({ isLoading = false }) {
 
 
     try {
-      await updatePassword({
+      const response = await updatePassword({
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       });
+
+      setLatestPasswordChange(response.passwordChangedAt ?? new Date().toISOString());
 
 
       setStatus({
@@ -228,6 +233,7 @@ function PasswordSection({ isLoading = false }) {
           securityTips={SECURITY_TIPS}
           requirements={requirements}
           passwordsMatch={passwordsMatch}
+          passwordChangedAt={latestPasswordChange ?? passwordChangedAt}
         />
 
       </div>

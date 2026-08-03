@@ -10,7 +10,19 @@ function PasswordInfoPanel({
   securityTips,
   requirements,
   passwordsMatch,
+  passwordChangedAt,
 }) {
+  const passwordChangeDate = passwordChangedAt ? new Date(passwordChangedAt) : null;
+  const formattedPasswordChange = passwordChangeDate && !Number.isNaN(passwordChangeDate.getTime())
+    ? new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(passwordChangeDate)
+    : "Not changed yet";
+
   return (
     <aside className="password-sidebar">
       <div className="info-card">
@@ -23,22 +35,31 @@ function PasswordInfoPanel({
 
 
         {!isEditing && (
-          <ul className="info-card__list">
+          <>
+            <ul className="info-card__list">
 
-            {securityTips.map((tip) => (
-              <li
-                key={tip}
-                className="info-card__item"
-              >
-                <FiCheck className="requirement-icon requirement-icon--success" />
+              {securityTips.map((tip) => (
+                <li
+                  key={tip}
+                  className="info-card__item"
+                >
+                  <FiCheck className="requirement-icon requirement-icon--success" />
 
-                <span>
-                  {tip}
-                </span>
-              </li>
-            ))}
+                  <span>
+                    {tip}
+                  </span>
+                </li>
+              ))}
 
-          </ul>
+            </ul>
+
+            <div className="password-security-divider" aria-hidden="true" />
+
+            <p className="password-last-changed">
+              <span>Last password change</span>
+              <strong>{formattedPasswordChange}</strong>
+            </p>
+          </>
         )}
 
 

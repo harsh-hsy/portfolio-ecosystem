@@ -11,7 +11,7 @@ export async function requireAuth(req, res, next) {
 
     const payload = verifyAuthToken(token)
     const user = await User.findById(payload.sub).select('-passwordHash')
-    if (!user) {
+    if (!user || user.status === 'disabled') {
       res.status(401).json({ message: 'Unauthorized' })
       return
     }

@@ -26,10 +26,13 @@ router.post('/login', async (req, res) => {
   }
 
   const user = await User.findOne({ email: String(loginId).toLowerCase() })
-  if (!user || !(await user.verifyPassword(password))) {
+  if (!user || user.status === 'disabled' || !(await user.verifyPassword(password))) {
     res.status(401).json({ message: 'Invalid credentials' })
     return
   }
+
+  user.lastLoginAt = new Date()
+  await user.save({ timestamps: false })
 
   const token = signAuthToken(user)
   res.cookie('admin_token', token, cookieOptions())

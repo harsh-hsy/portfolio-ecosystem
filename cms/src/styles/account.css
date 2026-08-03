@@ -49,10 +49,7 @@
 .account-info-grid {
   display: grid;
 
-  grid-template-columns: repeat(
-    3,
-    minmax(0, 1fr)
-  );
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   gap: 20px;
 }
@@ -111,6 +108,8 @@
   flex-direction: column;
 
   gap: 5px;
+
+  min-width: 0;
 }
 
 
@@ -129,6 +128,16 @@
   font-weight: 700;
 
   color: var(--heading);
+
+  overflow-wrap: anywhere;
+}
+
+.account-edit-form .form-hint {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 

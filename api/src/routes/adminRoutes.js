@@ -3,6 +3,13 @@ import bcrypt from 'bcryptjs'
 import { requireAuth } from '../middleware/auth.js'
 import { User } from '../models/User.js'
 import {
+  formatDateOfBirth,
+  parseDateOfBirth,
+  validateAccountEmail,
+  validateAccountName,
+  validatePhone,
+} from '../validation/account.js'
+import {
   ensurePublishedPortfolio,
   getEditableFields,
   getPublishedPortfolio,
@@ -43,9 +50,11 @@ function serializeUser(user) {
     name: user.name,
     email: user.email,
     phone: user.phone || '',
-    dateOfBirth: user.dateOfBirth || '',
+    dateOfBirth: formatDateOfBirth(user.dateOfBirth),
     role: user.role,
-    status: user.status || 'active',
+    status: user.status,
+    lastLoginAt: user.lastLoginAt,
+    passwordChangedAt: user.passwordChangedAt,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   }
@@ -69,13 +78,10 @@ router.get('/account', (req, res) => {
 
 router.put('/account', async (req, res) => {
   const { name, email, phone, dateOfBirth } = req.body
-
-  if (!name?.trim() || !email?.trim()) {
-    res.status(400).json({ message: 'Name and email are required' })
-    return
-  }
-
-  const normalizedEmail = String(email).toLowerCase().trim()
+  const normalizedName = validateAccountName(name)
+  const normalizedEmail = validateAccountEmail(email)
+  const normalizedPhone = validatePhone(phone)
+  const normalizedDateOfBirth = parseDateOfBirth(dateOfBirth)
   const existingUser = await User.findOne({
     email: normalizedEmail,
     _id: { $ne: req.user._id },
@@ -89,10 +95,10 @@ router.put('/account', async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
-      name: String(name).trim(),
+      name: normalizedName,
       email: normalizedEmail,
-      phone: phone ? String(phone).trim() : '',
-      dateOfBirth: dateOfBirth ? String(dateOfBirth).trim() : '',
+      phone: normalizedPhone,
+      dateOfBirth: normalizedDateOfBirth,
     },
     { returnDocument: 'after', runValidators: true },
   ).select('-passwordHash')
@@ -120,9 +126,13 @@ router.put('/account/password', async (req, res) => {
   }
 
   user.passwordHash = await bcrypt.hash(newPassword, 12)
+  user.passwordChangedAt = new Date()
   await user.save()
 
-  res.json({ message: 'Password updated successfully' })
+  res.json({
+    message: 'Password updated successfully',
+    passwordChangedAt: user.passwordChangedAt,
+  })
 })
 
 router.get('/portfolio', async (req, res) => {
