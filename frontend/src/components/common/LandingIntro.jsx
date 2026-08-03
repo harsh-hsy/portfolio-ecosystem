@@ -9,7 +9,7 @@ export default function LandingIntro({ show }) {
           className="landing-intro"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.28, ease: 'easeOut' }}
+          transition={{ duration: 0.24, ease: 'easeOut' }}
           role="status"
           aria-label="Loading portfolio"
         >

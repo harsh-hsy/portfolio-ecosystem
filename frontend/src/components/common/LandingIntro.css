@@ -22,7 +22,7 @@
   font-size: 1.15rem;
   font-weight: 800;
   will-change: transform;
-  animation: landing-intro-spin 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation: landing-intro-spin 2.1s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
 .landing-intro-progress {
@@ -39,14 +39,14 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--primary), var(--accent));
-  transform: scaleX(0.06);
+  transform: scaleX(0.04);
   transform-origin: left;
   will-change: transform;
-  animation: landing-intro-progress 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: landing-intro-progress 2.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes landing-intro-spin {
-  to { transform: rotate(360deg); }
+  to { transform: rotate(720deg); }
 }
 
 @keyframes landing-intro-progress {
