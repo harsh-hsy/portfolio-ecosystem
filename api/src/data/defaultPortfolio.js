@@ -24,6 +24,8 @@ const profile = {
     "I am Harsh Kumar Singh, a dedicated Front-End Developer & Web Designer with a passion for creating modern, responsive, and highly functional web experiences. With expertise in HTML, CSS, JavaScript, React.js, and modern UI/UX principles, I specialize in building intuitive, user-friendly, and aesthetically refined digital solutions.",
 };
 
+const primaryPortfolioUrl = "https://harsh-hsy.onrender.com";
+
 const socials = [
   { label: "GitHub", href: profile.github, icon: "github" },
   { label: "LinkedIn", href: profile.linkedin, icon: "linkedin" },
@@ -463,10 +465,40 @@ export const defaultPortfolio = {
     brandInitials: "HS",
     copyrightPrefix: "©",
     developedByLabel: "Developed by",
-    footerName: "Harsh Singh",
+    footerName: profile.name,
     footerDescription: "Building polished, accessible, high-performance web experiences.",
     loadingMark: "HS",
     footerBackToTopLabel: "Back to top",
+    siteIdentity: {
+      siteName: `${profile.name} Portfolio`,
+      titleSuffix: profile.name,
+      favicon: "",
+      authorName: profile.name,
+      portfolioUrl: primaryPortfolioUrl,
+    },
+    socialSharing: {
+      openGraphTitle: `${profile.name} | ${profile.role}`,
+      openGraphDescription: "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
+      image: "",
+      twitterCard: "summary_large_image",
+    },
+    experience: {
+      loadingEnabled: true,
+      loadingDurationMs: 2400,
+      desktopAnimations: true,
+      mobileAnimations: false,
+      smoothScroll: true,
+      rotatingRole: true,
+      stickyHeader: true,
+      respectReducedMotion: true,
+    },
+    maintenance: {
+      enabled: false,
+      heading: "Portfolio under maintenance",
+      message: "I am making a few improvements. Please check back shortly.",
+      announcementEnabled: false,
+      announcementText: "",
+    },
     nav: {
       ariaLabel: "Primary navigation",
       skipLabel: "Skip to content",
@@ -545,10 +577,13 @@ export const defaultPortfolio = {
     },
   },
   seo: {
-    siteUrl: "https://harsh-hsy.netlify.app",
-    title: "Harsh Singh | Frontend Developer",
+    siteUrl: primaryPortfolioUrl,
+    title: `${profile.name} | ${profile.role}`,
     description:
       "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
-    projectTitleSuffix: " | Harsh Singh",
+    keywords: "Harsh Singh, frontend developer, React developer, UI engineer",
+    author: profile.name,
+    allowIndexing: true,
+    projectTitleSuffix: ` | ${profile.name}`,
   },
 };

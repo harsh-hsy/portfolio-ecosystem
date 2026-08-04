@@ -8,6 +8,7 @@ const allowedSections = new Set([
   'skills',
   'projects',
   'certificates',
+  'settings',
 ])
 
 function configurationError() {

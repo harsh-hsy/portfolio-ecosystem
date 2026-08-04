@@ -18,6 +18,7 @@ import {
 import { validateProjectsContent } from '../validation/projectContent.js'
 import { validateSkillsContent } from '../validation/skillsContent.js'
 import { validateGlobalPagesContent } from '../validation/globalPagesContent.js'
+import { validateSettingsContent } from '../validation/settingsContent.js'
 import {
   ensureCertificateResources,
   listPublishedCertificates,
@@ -55,6 +56,17 @@ function pick(source, fields) {
   return Object.fromEntries(
     fields.filter((field) => source?.[field] !== undefined).map((field) => [field, source[field]]),
   )
+}
+
+const legacyPortfolioUrls = new Set([
+  'https://harsh-hsy.netlify.app',
+  'https://harsh-hsy.netlify.app/',
+])
+
+function normalizePortfolioUrl(value) {
+  const url = String(value ?? '').trim()
+  if (!url || legacyPortfolioUrls.has(url)) return defaultPortfolio.settings.siteIdentity.portfolioUrl
+  return url.replace(/\/$/, '')
 }
 
 function withoutEyebrow(section = {}) {
@@ -233,9 +245,33 @@ async function readModuleDocuments() {
   return Object.fromEntries(entries)
 }
 
-async function writeModules(content, names = Object.keys(modules)) {
+async function writeModules(content, names = Object.keys(modules), editorName = '') {
   const normalizedContent = {
     ...content,
+    settings: {
+      ...defaultPortfolio.settings,
+      ...(content.settings ?? {}),
+      siteIdentity: {
+        ...defaultPortfolio.settings.siteIdentity,
+        ...(content.settings?.siteIdentity ?? {}),
+      },
+      socialSharing: {
+        ...defaultPortfolio.settings.socialSharing,
+        ...(content.settings?.socialSharing ?? {}),
+      },
+      experience: {
+        ...defaultPortfolio.settings.experience,
+        ...(content.settings?.experience ?? {}),
+      },
+      maintenance: {
+        ...defaultPortfolio.settings.maintenance,
+        ...(content.settings?.maintenance ?? {}),
+      },
+    },
+    seo: {
+      ...defaultPortfolio.seo,
+      ...(content.seo ?? {}),
+    },
     sections: {
       ...defaultPortfolio.sections,
       ...(content.sections ?? {}),
@@ -253,7 +289,14 @@ async function writeModules(content, names = Object.keys(modules)) {
   if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
   if (names.includes('contact')) validateContactContent(normalizedContent)
   if (names.includes('links')) validateLinksContent(normalizedContent)
-  if (names.includes('settings')) validateGlobalPagesContent(normalizedContent)
+  if (names.includes('settings')) {
+    if (editorName === 'globalPages') validateGlobalPagesContent(normalizedContent)
+    else if (editorName === 'settings') validateSettingsContent(normalizedContent)
+    else {
+      validateGlobalPagesContent(normalizedContent)
+      validateSettingsContent(normalizedContent)
+    }
+  }
 
   await Promise.all(
     names.map((name) => {
@@ -288,6 +331,35 @@ function composePortfolio(documents) {
   const contact = data('contact')
   const links = data('links')
   const settings = data('settings')
+  const rawSettings = settings.settings ?? {}
+  const rawIdentity = rawSettings.siteIdentity ?? {}
+  const rawSeo = settings.seo ?? {}
+  const portfolioSettings = {
+    ...defaultPortfolio.settings,
+    ...rawSettings,
+    siteIdentity: {
+      ...defaultPortfolio.settings.siteIdentity,
+      ...rawIdentity,
+      portfolioUrl: normalizePortfolioUrl(rawIdentity.portfolioUrl),
+    },
+    socialSharing: {
+      ...defaultPortfolio.settings.socialSharing,
+      ...(rawSettings.socialSharing ?? {}),
+    },
+    experience: {
+      ...defaultPortfolio.settings.experience,
+      ...(rawSettings.experience ?? {}),
+    },
+    maintenance: {
+      ...defaultPortfolio.settings.maintenance,
+      ...(rawSettings.maintenance ?? {}),
+    },
+  }
+  const portfolioSeo = {
+    ...defaultPortfolio.seo,
+    ...rawSeo,
+    siteUrl: normalizePortfolioUrl(rawSeo.siteUrl),
+  }
 
   return {
     profile: {
@@ -320,11 +392,11 @@ function composePortfolio(documents) {
       notFound: settings.section ?? {},
     },
     stats: about.stats ?? home.stats ?? [],
-    settings: settings.settings ?? {},
+    settings: portfolioSettings,
     navigation: settings.navigation ?? [],
     commands: settings.commands ?? [],
     ui: settings.ui ?? {},
-    seo: settings.seo ?? {},
+    seo: portfolioSeo,
   }
 }
 
@@ -377,7 +449,7 @@ export async function updatePortfolioModule(moduleName, content) {
   }
 
   await ensureModuleDocuments()
-  await writeModules(content, names)
+  await writeModules(content, names, moduleName)
   if (moduleName === 'projects') await replaceProjectResources(content.projects)
   return getPublishedPortfolio()
 }
