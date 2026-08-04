@@ -22,21 +22,7 @@ export const defaultSection = {
   copy: '',
 }
 
-export const defaultSettings = {
-  brandInitials: '',
-  copyrightPrefix: '',
-  developedByLabel: '',
-  footerName: '',
-  footerDescription: '',
-  loadingMark: '',
-  footerBackToTopLabel: '',
-  nav: {
-    ariaLabel: '',
-    skipLabel: '',
-    resumeLabel: '',
-    menuToggleLabel: '',
-  },
-}
+export const defaultSettings = siteSettings
 
 export const defaultProject = {
   title: '',
@@ -56,3 +42,4 @@ export const defaultProject = {
   visible: true,
   featured: false,
 }
+import { siteSettings } from '../content/settings.js'

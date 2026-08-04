@@ -7,13 +7,14 @@ import { pageTransition, stagger } from '../animations/variants.js'
 import ProjectCard from '../components/common/ProjectCard.jsx'
 import SectionHeader from '../components/common/SectionHeader.jsx'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
-import { getProfileContent, getProjectsContent } from '../lib/contentSelectors.js'
+import { getProjectsContent, getSiteSettings } from '../lib/contentSelectors.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function ProjectsPage() {
   const contentState = usePortfolioContent()
   const { section, projects } = getProjectsContent(contentState?.portfolio)
-  const profile = getProfileContent(contentState?.portfolio)
+  const settings = getSiteSettings(contentState?.portfolio)
+  const titleSuffix = settings.siteIdentity?.titleSuffix || settings.siteIdentity?.siteName || 'Portfolio'
   const allLabel = 'All'
   const [category, setCategory] = useState(allLabel)
   const [query, setQuery] = useState('')
@@ -37,7 +38,7 @@ export default function ProjectsPage() {
       exit={simplifyMotion ? undefined : 'exit'}
     >
       <Helmet>
-        <title>{`Projects | ${profile.fullName || profile.name}`}</title>
+        <title>{`Projects | ${titleSuffix}`}</title>
         <meta name="description" content={section.copy} />
       </Helmet>
 

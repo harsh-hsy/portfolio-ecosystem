@@ -30,7 +30,7 @@ export default function Home({ entranceReady }) {
     >
       <Helmet>
         <title>{seo.title}</title>
-        <meta name="description" content={profile.about} />
+        <meta name="description" content={seo.description || profile.about} />
         <meta property="og:title" content={seo.title} />
         <meta property="og:description" content={seo.description} />
         <meta property="og:type" content="website" />

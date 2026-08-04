@@ -32,6 +32,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+html.portfolio-native-scroll { scroll-behavior: auto; }
 body {
   margin: 0;
   min-width: 320px;
@@ -75,6 +76,7 @@ p { margin: 0; line-height: 1.75; }
 
 .scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; transform-origin: 0%; background: linear-gradient(90deg, var(--primary), var(--accent)); z-index: 1000; }
 .navbar { position: fixed; top: 16px; left: 0; right: 0; z-index: 900; transition: transform 0.3s ease; }
+.navbar.navbar--static { position: absolute; }
 .nav-shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 12px 0 16px; border: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(24px); box-shadow: var(--shadow); border-radius: var(--radius); }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; color: var(--heading); white-space: nowrap; }
 .brand span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: var(--radius); color: white; background: linear-gradient(135deg, var(--primary), var(--accent)); }
@@ -88,6 +90,20 @@ p { margin: 0; line-height: 1.75; }
 .icon-button { width: 42px; }
 .resume-link { padding: 0 14px; font-weight: 800; }
 .menu-button { display: none; }
+
+.announcement-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 920; min-height: 42px; display: grid; place-items: center; padding: 9px 20px; background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; text-align: center; font-size: 0.9rem; font-weight: 800; }
+.has-announcement .navbar { top: 56px; }
+.has-announcement .hero-section { padding-top: 176px; }
+.has-announcement .projects-page, .has-announcement .project-page { padding-top: 170px; }
+
+.maintenance-page { min-height: 100svh; display: grid; place-items: center; padding: 28px; background: var(--bg); }
+.maintenance-card { width: min(620px, 100%); display: grid; justify-items: center; gap: 14px; padding: clamp(30px, 7vw, 64px); border: 1px solid var(--border); border-radius: 24px; background: var(--glass); box-shadow: var(--shadow); text-align: center; }
+.maintenance-card__mark { width: 62px; height: 62px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(135deg, var(--primary), var(--accent)); font-weight: 900; }
+.maintenance-card > p { color: var(--primary); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+.maintenance-card h1 { font-size: clamp(2rem, 7vw, 4.2rem); line-height: 1; }
+.maintenance-card > div { max-width: 480px; color: var(--muted); line-height: 1.7; }
+
+.portfolio-motion-disabled *, .portfolio-motion-disabled *::before, .portfolio-motion-disabled *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 
 .command-trigger { position: fixed; right: 22px; bottom: 22px; z-index: 700; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); color: var(--heading); background: var(--glass); backdrop-filter: blur(18px); padding: 10px 12px; border-radius: var(--radius); box-shadow: var(--shadow); }
 .command-trigger span { font-size: 0.78rem; color: var(--muted); }

@@ -37,8 +37,6 @@ export function PortfolioContentProvider({ children }) {
     [portfolio, status],
   )
 
-  if (!portfolio) return null
-
   return (
     <PortfolioContentContext.Provider value={value}>
       {children}

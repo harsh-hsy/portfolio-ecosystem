@@ -8,7 +8,7 @@ import { getNavigationContent, getProfileContent, getSiteSettings } from '../../
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
-export default function Navbar({ entranceReady }) {
+export default function Navbar({ entranceReady, sticky = true }) {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const contentState = usePortfolioContent()
@@ -21,7 +21,7 @@ export default function Navbar({ entranceReady }) {
   const hrefFor = (id) => (location.pathname === '/' ? `#${id}` : `/#${id}`)
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${sticky ? '' : 'navbar--static'}`.trim()}>
       <a className="skip-link" href="#main-content">{settings.nav.skipLabel}</a>
       <motion.nav className="nav-shell" aria-label={settings.nav.ariaLabel} variants={fadeDown} initial="hidden" animate={entranceReady ? 'visible' : 'hidden'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>

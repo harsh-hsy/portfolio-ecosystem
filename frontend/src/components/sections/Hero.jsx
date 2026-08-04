@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import MagneticButton from '../common/MagneticButton.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { fadeUp, slideLeft, slideRight, stagger } from '../../animations/variants.js'
-import { getHomeContent } from '../../lib/contentSelectors.js'
+import { getHomeContent, getSiteSettings } from '../../lib/contentSelectors.js'
 import { getIcon } from '../../lib/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
@@ -14,24 +14,28 @@ export default function Hero({ entranceReady }) {
   const [index, setIndex] = useState(0)
   const contentState = usePortfolioContent()
   const { profile, socials, sections } = getHomeContent(contentState?.portfolio)
+  const settings = getSiteSettings(contentState?.portfolio)
+  const experience = settings.experience ?? {}
   const content = sections.hero
   const LocationIcon = getIcon(content.orbitLocationIcon || 'mapPin')
   const rotatingRoleCount = profile.rotatingRoles.length
-  const prefersReducedMotion = useReducedMotion()
-  const hasLimitedMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
+  const systemPrefersReducedMotion = useReducedMotion()
+  const isMobile = useMediaQuery('(max-width: 640px), (pointer: coarse)')
+  const prefersReducedMotion = experience.respectReducedMotion !== false && systemPrefersReducedMotion
+  const hasLimitedMotion = isMobile && experience.mobileAnimations !== true
   const reduceEffects = prefersReducedMotion || hasLimitedMotion
   const copyEntrance = hasLimitedMotion ? fadeUp : slideRight
   const imageEntrance = hasLimitedMotion ? fadeUp : slideLeft
 
   useEffect(() => {
-    if (rotatingRoleCount <= 1) {
+    if (experience.rotatingRole === false || rotatingRoleCount <= 1) {
       setIndex(0)
       return undefined
     }
 
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % rotatingRoleCount), 1800)
     return () => window.clearInterval(timer)
-  }, [rotatingRoleCount])
+  }, [experience.rotatingRole, rotatingRoleCount])
 
   return (
     <section id="home" className="hero-section section">
