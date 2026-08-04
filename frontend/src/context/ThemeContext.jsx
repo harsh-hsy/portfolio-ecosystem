@@ -4,21 +4,14 @@ import { ThemeContext } from './theme-context.js'
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    const initialTheme = document.documentElement.dataset.theme
-    return initialTheme === 'light' ? 'light' : 'dark'
+    const saved = localStorage.getItem('harsh-theme')
+    if (saved) return saved
+    return 'dark'
   })
 
   useEffect(() => {
-    const themeColor = theme === 'light' ? '#f8fafc' : '#030712'
     document.documentElement.dataset.theme = theme
-    document.documentElement.style.backgroundColor = themeColor
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor)
-
-    try {
-      localStorage.setItem('harsh-theme', theme)
-    } catch {
-      // The selected theme still applies when browser storage is unavailable.
-    }
+    localStorage.setItem('harsh-theme', theme)
   }, [theme])
 
   const value = useMemo(
