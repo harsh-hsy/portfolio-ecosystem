@@ -2150,16 +2150,19 @@ input[type="password"]::-webkit-textfield-decoration-container {
 
 .toast-viewport {
   position: fixed;
+  top: 88px;
   right: 20px;
-  bottom: 20px;
   z-index: 1200;
 
   width: min(380px, calc(100vw - 40px));
+  max-height: calc(100vh - 108px);
 
   display: flex;
   flex-direction: column;
 
   gap: 10px;
+
+  overflow-y: auto;
 
   pointer-events: none;
 }
@@ -2252,10 +2255,11 @@ input[type="password"]::-webkit-textfield-decoration-container {
   }
 
   .toast-viewport {
+    top: 84px;
     right: 12px;
-    bottom: 12px;
 
     width: calc(100vw - 24px);
+    max-height: calc(100vh - 96px);
   }
 }
 
