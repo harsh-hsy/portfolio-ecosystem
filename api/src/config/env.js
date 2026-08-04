@@ -31,4 +31,5 @@ export const env = {
   cloudinaryApiKey: cleanValue(process.env.CLOUDINARY_API_KEY, ''),
   cloudinaryApiSecret: cleanValue(process.env.CLOUDINARY_API_SECRET, ''),
   cloudinaryFolder: cleanValue(process.env.CLOUDINARY_FOLDER, 'portfolio-ecosystem'),
+  renderFrontendDeployHookUrl: cleanValue(process.env.RENDER_FRONTEND_DEPLOY_HOOK_URL, ''),
 }

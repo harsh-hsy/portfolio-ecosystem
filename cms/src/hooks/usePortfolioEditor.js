@@ -136,11 +136,23 @@ export function usePortfolioEditor({
         );
         const nextForm = getForm(response.content);
 
+        let nextSuccessMessage = successMessage;
+        let nextStatusType = "success";
+        if (response.deployment?.status === "accepted") {
+          nextSuccessMessage = `${successMessage} Frontend deployment started.`;
+        } else if (response.deployment?.status === "not_configured") {
+          nextSuccessMessage = `${successMessage} Frontend deploy hook is not configured.`;
+          nextStatusType = "warning";
+        } else if (response.deployment?.status === "failed") {
+          nextSuccessMessage = `${successMessage} Frontend deployment could not be started.`;
+          nextStatusType = "warning";
+        }
+
         setPortfolio(response.content);
         setForm(nextForm);
         setSavedForm(nextForm);
-        setStatus({ message: successMessage, type: "success" });
-        showToast(successMessage, { type: "success" });
+        setStatus({ message: nextSuccessMessage, type: nextStatusType });
+        showToast(nextSuccessMessage, { type: nextStatusType });
         return true;
       } catch (error) {
         const message = error.message || "Unable to save content.";
