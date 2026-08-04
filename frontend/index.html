@@ -2,9 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="theme-color" content="#030712" />
     <script>
-      document.documentElement.dataset.theme = localStorage.getItem('harsh-theme') || 'dark'
+      (() => {
+        let theme = 'dark'
+        try {
+          theme = localStorage.getItem('harsh-theme') === 'light' ? 'light' : 'dark'
+        } catch {
+          // Keep the dark default when browser storage is unavailable.
+        }
+
+        const color = theme === 'light' ? '#f8fafc' : '#030712'
+        document.documentElement.dataset.theme = theme
+        document.documentElement.style.backgroundColor = color
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color)
+      })()
     </script>
+    <style>
+      html,
+      body,
+      #root {
+        min-height: 100%;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: #030712;
+      }
+
+      html[data-theme='light'],
+      html[data-theme='light'] body {
+        background: #f8fafc;
+      }
+    </style>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +50,6 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" />
     </noscript>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#030712" />
   </head>
   <body>
     <div id="root"></div>

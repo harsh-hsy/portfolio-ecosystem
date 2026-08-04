@@ -1,8 +1,32 @@
 {
   "name": "Harsh Singh Portfolio",
-  "short_name": "Harsh Singh",
+  "short_name": "HS Portfolio",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#030712",
-  "theme_color": "#3B82F6"
+  "theme_color": "#030712",
+  "description": "Harsh Singh's frontend development portfolio.",
+  "categories": ["portfolio", "productivity"],
+  "icons": [
+    {
+      "src": "/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
