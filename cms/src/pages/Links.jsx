@@ -13,7 +13,6 @@ const emptyForm = {
   resume: "",
   location: "",
   mapUrl: "",
-  portfolioUrl: "",
 };
 
 function formFromPortfolio(portfolio) {
@@ -26,7 +25,6 @@ function formFromPortfolio(portfolio) {
     resume: profile.resume ?? "",
     location: profile.location ?? "",
     mapUrl: profile.mapUrl ?? "",
-    portfolioUrl: portfolio?.seo?.siteUrl ?? profile.portfolioUrl ?? "",
   };
 }
 
@@ -45,10 +43,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     profile: nextProfile,
     socials: createSocials(nextProfile),
-    seo: {
-      ...(portfolio.seo ?? {}),
-      siteUrl: form.portfolioUrl.trim(),
-    },
   };
 }
 
@@ -60,7 +54,6 @@ function validateLinksForm(form) {
     resume: [validators.required("Resume URL is required."), validators.url("Enter a valid resume URL.")],
     location: [validators.required("Location is required."), validators.maxLength(80)],
     mapUrl: [validators.required("Location map URL is required."), validators.url("Enter a valid map URL.")],
-    portfolioUrl: [validators.required("Portfolio URL is required."), validators.url("Enter a valid portfolio URL.")],
   });
 }
 
@@ -82,7 +75,7 @@ function Links() {
         <p className="page-kicker">Content Module</p>
         <h1 className="page-title">Links</h1>
         <p className="page-description">
-          Manage public social links, resume, portfolio URL, email, and location from one backend-connected module.
+          Manage public social links, resume, email, and location from one backend-connected module.
         </p>
       </div>
 
@@ -91,7 +84,7 @@ function Links() {
           <div>
             <span className="content-editor__eyebrow">Public links</span>
             <h2>Profile Links</h2>
-            <p>These values power navbar actions, footer links, contact links, SEO, and resume downloads.</p>
+            <p>These values power navbar actions, footer links, contact links, and resume downloads.</p>
           </div>
 
           <span className="content-editor__badge">
@@ -117,10 +110,9 @@ function Links() {
         </div>
 
         <div className="content-editor__section">
-          <h3>Portfolio & Resume</h3>
+          <h3>Resume</h3>
           <div className="form-grid">
-            <FormField label="Portfolio URL" name="portfolioUrl" value={editor.form.portfolioUrl} onChange={editor.updateField} error={editor.errors.portfolioUrl} required />
-            <FormField label="Resume URL" name="resume" value={editor.form.resume} onChange={editor.updateField} error={editor.errors.resume} required />
+            <FormField label="Resume URL" name="resume" className="form-group--wide" value={editor.form.resume} onChange={editor.updateField} error={editor.errors.resume} required />
           </div>
         </div>
 

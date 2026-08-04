@@ -1272,6 +1272,150 @@ input[type="password"]::-webkit-textfield-decoration-container {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.settings-editor {
+  gap: 28px;
+}
+
+.settings-card {
+  gap: 26px;
+
+  padding: 32px;
+}
+
+.settings-card .editor-section-heading {
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-card .editor-section-heading h2 {
+  margin: 0;
+}
+
+.settings-toggle-row {
+  margin-top: 0;
+}
+
+.settings-toggle {
+  height: 100%;
+  min-height: 88px;
+}
+
+.settings-toggle__recommended {
+  color: var(--success) !important;
+  font-weight: 700;
+}
+
+.settings-toggle__warning {
+  color: var(--warning) !important;
+  font-weight: 700;
+}
+
+.settings-toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.settings-toggle-grid > .form-group {
+  min-height: 88px;
+  justify-content: center;
+}
+
+.settings-social-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  align-items: start;
+
+  gap: 24px;
+}
+
+.settings-social-layout .image-uploader {
+  width: 100%;
+}
+
+.social-preview-card {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: var(--input-bg);
+}
+
+.social-preview-card__image {
+  aspect-ratio: 1200 / 630;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border-bottom: 1px solid var(--border);
+
+  color: var(--muted);
+  background: var(--card-bg);
+}
+
+.social-preview-card__image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.social-preview-card > div:last-child {
+  display: grid;
+
+  gap: 7px;
+
+  padding: 18px;
+}
+
+.social-preview-card small,
+.social-preview-card p {
+  color: var(--muted);
+}
+
+.social-preview-card strong {
+  color: var(--heading);
+  font-size: 16px;
+}
+
+.social-preview-card p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.settings-card--maintenance.is-enabled {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.settings-editor > .panel-footer {
+  margin: 0;
+  padding: 20px 28px;
+
+  border: 1px solid var(--border);
+  border-radius: 20px;
+
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 900px) {
+  .settings-toggle-grid,
+  .settings-social-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-card {
+    padding: 24px 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .settings-overview .settings-overview__grid {
     grid-template-columns: 1fr;

@@ -48,10 +48,12 @@ function loadImage(source) {
   })
 }
 
-async function createCroppedFile(source, cropPixels, originalFile) {
+async function createCroppedFile(source, cropPixels, originalFile, outputWidth, outputHeight) {
   const image = await loadImage(source)
-  const width = Math.max(1, Math.round(cropPixels.width))
-  const height = Math.max(1, Math.round(cropPixels.height))
+  const cropWidth = Math.max(1, Math.round(cropPixels.width))
+  const cropHeight = Math.max(1, Math.round(cropPixels.height))
+  const width = Math.max(1, Math.round(outputWidth || cropWidth))
+  const height = Math.max(1, Math.round(outputHeight || cropHeight))
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
@@ -63,8 +65,8 @@ async function createCroppedFile(source, cropPixels, originalFile) {
     image,
     Math.round(cropPixels.x),
     Math.round(cropPixels.y),
-    width,
-    height,
+    cropWidth,
+    cropHeight,
     0,
     0,
     width,
@@ -200,6 +202,8 @@ function ImageUploader({
   className = '',
   previewMaxWidth = '560px',
   preserveOriginalRatio = false,
+  outputWidth,
+  outputHeight,
 }) {
   const { showToast } = useToast()
   const inputRef = useRef(null)
@@ -248,7 +252,13 @@ function ImageUploader({
 
     try {
       setIsUploading(true)
-      const croppedFile = await createCroppedFile(selectedImage.url, cropPixels, selectedImage.file)
+      const croppedFile = await createCroppedFile(
+        selectedImage.url,
+        cropPixels,
+        selectedImage.file,
+        outputWidth,
+        outputHeight,
+      )
       const info = await uploadToCloudinary(croppedFile, section)
       const response = await registerMediaAsset({
         publicId: info.public_id,
