@@ -355,12 +355,7 @@ function Settings({ section }) {
 
   return (
     <section className="page settings-page">
-      <div className="page-header">
-        <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
-        <p className="page-kicker">{currentPage.kicker}</p>
-        <h1 className="page-title">{currentPage.title}</h1>
-        <p className="page-description">{currentPage.description}</p>
-      </div>
+      <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
 
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
         {section === "portfolio-identity" ? <section className="panel account-section settings-card">

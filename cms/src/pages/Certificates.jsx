@@ -185,16 +185,6 @@ function Certificates() {
 
   return (
     <section className="page projects-overview certificates-overview">
-      <div className="page-header projects-overview__header">
-        <div className="projects-overview__heading">
-          <p className="page-kicker">Content Module</p>
-          <h1 className="page-title">Certificates</h1>
-          <p className="page-description">
-            Create drafts, publish certificates, and choose the cards shown on your portfolio.
-          </p>
-        </div>
-      </div>
-
       <form className="panel content-editor certificates-section-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>

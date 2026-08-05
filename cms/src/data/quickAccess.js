@@ -22,7 +22,7 @@ const quickAccess = [
   {
     id: "settings",
     title: "Settings",
-    description: "Configure your CMS",
+    description: "Manage portfolio and CMS settings",
     icon: FiSettings,
     path: "/settings",
   },

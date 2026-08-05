@@ -75,14 +75,6 @@ function Journey() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Journey</h1>
-        <p className="page-description">
-          Manage the education, internship, learning, and future-goal timeline.
-        </p>
-      </div>
-
       <form
         className="panel content-editor structured-content-editor journey-editor"
         onSubmit={editor.saveForm}

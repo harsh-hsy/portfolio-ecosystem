@@ -96,14 +96,6 @@ function GlobalPages() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Global Content</p>
-        <h1 className="page-title">Global Pages</h1>
-        <p className="page-description">
-          Manage shared portfolio content and utility pages section by section.
-        </p>
-      </div>
-
       <form className="content-editor global-pages-editor" onSubmit={editor.saveForm}>
         <section className="panel account-section global-pages-card">
           <div className="editor-section-heading">

@@ -143,16 +143,6 @@ function Projects() {
 
   return (
     <section className="page projects-overview">
-      <div className="page-header projects-overview__header">
-        <div className="projects-overview__heading">
-          <p className="page-kicker">Content Module</p>
-          <h1 className="page-title">Projects</h1>
-          <p className="page-description">
-            Create drafts, publish case studies, and choose the projects shown on your portfolio.
-          </p>
-        </div>
-      </div>
-
       <div className="projects-overview__toolbar" aria-label="Project library controls">
         <div className="projects-overview__filters" role="group" aria-label="Filter projects">
           {filters.map((filter) => (

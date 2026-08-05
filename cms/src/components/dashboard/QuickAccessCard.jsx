@@ -12,20 +12,20 @@ function QuickAccessCard({
       to={path}
       className="quick-access-card"
     >
-      <div className="quick-access-card__icon">
-        <Icon size={22} />
-      </div>
-
-      <div className="quick-access-card__content">
+      <div className="quick-access-card__heading">
+        <div className="quick-access-card__icon">
+          <Icon size={22} />
+        </div>
         <h3>{title}</h3>
-
-        <p>{description}</p>
       </div>
 
-      <FiArrowRight
-        size={18}
-        className="quick-access-card__arrow"
-      />
+      <div className="quick-access-card__footer">
+        <p>{description}</p>
+        <FiArrowRight
+          size={18}
+          className="quick-access-card__arrow"
+        />
+      </div>
     </Link>
   );
 }

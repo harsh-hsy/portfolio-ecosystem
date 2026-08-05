@@ -1282,7 +1282,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
   align-items: center;
   gap: 8px;
   margin-bottom: 18px;
-  color: var(--accent);
+  color: var(--primary);
   font-size: 14px;
   font-weight: 700;
 }
@@ -1314,7 +1314,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
 }
 
 .settings-hub__group-heading p {
-  color: var(--accent);
+  color: var(--primary);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -1338,16 +1338,15 @@ input[type="password"]::-webkit-textfield-decoration-container {
 }
 
 .settings-hub__grid--single {
-  grid-template-columns: minmax(280px, 0.66fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .settings-hub-card {
   min-width: 0;
-  min-height: 190px;
+  min-height: 156px;
   display: grid;
-  grid-template-columns: 48px 1fr auto;
-  align-content: start;
-  gap: 18px;
+  grid-template-rows: auto 1fr;
+  gap: 22px;
   padding: 26px;
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -1357,8 +1356,25 @@ input[type="password"]::-webkit-textfield-decoration-container {
 }
 
 .settings-hub-card:hover {
-  border-color: var(--accent);
+  border-color: var(--primary);
   transform: translateY(-3px);
+}
+
+.settings-hub-card__heading,
+.settings-hub-card__footer {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.settings-hub-card__heading {
+  gap: 16px;
+}
+
+.settings-hub-card__footer {
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
 }
 
 .settings-hub-card__icon {
@@ -1367,35 +1383,36 @@ input[type="password"]::-webkit-textfield-decoration-container {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  flex: 0 0 auto;
+  color: var(--primary);
+  background: var(--sidebar-hover);
 }
 
 .settings-hub-card__icon svg {
   font-size: 21px;
 }
 
-.settings-hub-card__content {
-  display: grid;
-  align-content: start;
-  gap: 9px;
-}
-
-.settings-hub-card__content strong {
+.settings-hub-card__heading strong {
   color: var(--heading);
   font-size: 18px;
 }
 
-.settings-hub-card__content small {
+.settings-hub-card__footer small {
+  min-width: 0;
   color: var(--muted);
   font-size: 14px;
   line-height: 1.65;
 }
 
 .settings-hub-card__arrow {
-  align-self: end;
-  color: var(--accent);
+  flex: 0 0 auto;
+  color: var(--primary);
   font-size: 22px;
+  transition: transform 180ms ease;
+}
+
+.settings-hub-card:hover .settings-hub-card__arrow {
+  transform: translateX(5px);
 }
 
 .settings-toggle-grid--spaced {
@@ -1612,7 +1629,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
   }
 
   .settings-hub-card {
-    min-height: 150px;
+    min-height: 142px;
     padding: 22px;
   }
 }

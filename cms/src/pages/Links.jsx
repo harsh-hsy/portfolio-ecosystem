@@ -71,14 +71,6 @@ function Links() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Links</h1>
-        <p className="page-description">
-          Manage public social links, resume, email, and location from one backend-connected module.
-        </p>
-      </div>
-
       <form className="panel content-editor structured-content-editor links-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>

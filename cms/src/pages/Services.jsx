@@ -74,14 +74,6 @@ function Services() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Services</h1>
-        <p className="page-description">
-          Manage the service cards shown on the portfolio.
-        </p>
-      </div>
-
       <form className="panel content-editor list-content-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>

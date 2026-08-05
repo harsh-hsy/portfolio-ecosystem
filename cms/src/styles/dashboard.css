@@ -91,10 +91,11 @@
 ========================================== */
 
 .quick-access-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: start;
 
-  gap: 18px;
+  gap: 22px;
 
   padding: 24px;
 
@@ -112,7 +113,7 @@
 
   transition: var(--transition);
 
-  min-height: 190px;
+  min-height: 156px;
 }
 
 .quick-access-card:hover {
@@ -146,24 +147,42 @@
    Content
 ========================================== */
 
-.quick-access-card__content {
-  flex: 1;
+.quick-access-card__heading,
+.quick-access-card__footer {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
 }
 
-.quick-access-card__content h3 {
-  margin: 0 0 8px;
+.quick-access-card__heading {
+  gap: 16px;
+}
 
-  font-size: 20px;
+.quick-access-card__footer {
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 18px;
+}
+
+.quick-access-card__heading h3 {
+  margin: 0;
+
+  font-size: 18px;
   font-weight: 700;
 
   color: var(--heading);
 }
 
-.quick-access-card__content p {
+.quick-access-card__footer p {
+  min-width: 0;
+
   margin: 0;
 
   color: var(--muted);
 
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -172,7 +191,7 @@
 ========================================== */
 
 .quick-access-card__arrow {
-  align-self: flex-end;
+  flex: 0 0 auto;
 
   color: var(--primary);
 
@@ -432,7 +451,7 @@
 }
 
 :root[data-theme="dark"] .quick-access-card {
-  min-height: 174px;
+  min-height: 156px;
 }
 
 :root[data-theme="dark"] .quick-access-card:hover {

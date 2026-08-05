@@ -75,14 +75,6 @@ function Milestones() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Milestones</h1>
-        <p className="page-description">
-          Manage the key stages and shipped outcomes shown after the Journey section.
-        </p>
-      </div>
-
       <form
         className="panel content-editor structured-content-editor milestones-editor"
         onSubmit={editor.saveForm}

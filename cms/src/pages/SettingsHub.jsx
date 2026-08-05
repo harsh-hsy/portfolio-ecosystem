@@ -1,10 +1,7 @@
 import {
   FiActivity,
   FiGlobe,
-  FiImage,
-  FiMonitor,
   FiSearch,
-  FiSettings,
   FiShare2,
   FiShield,
 } from "react-icons/fi";
@@ -28,9 +25,9 @@ const groups = [
     title: "CMS Settings",
     description: "Configure how the CMS looks, behaves, installs, and appears when shared.",
     items: [
-      { title: "Identity", description: "Installed app name, icon, colors, display mode, and CMS URL.", icon: FiMonitor, path: "/settings/cms/identity" },
-      { title: "Experience", description: "Theme, mobile performance, sidebar, header, and accessibility.", icon: FiSettings, path: "/settings/cms/experience" },
-      { title: "Social Sharing", description: "Private CMS link title, description, and preview image.", icon: FiImage, path: "/settings/cms/social-sharing" },
+      { title: "Identity", description: "Installed app name, icon, colors, display mode, and CMS URL.", icon: FiGlobe, path: "/settings/cms/identity" },
+      { title: "Experience", description: "Theme, mobile performance, sidebar, header, and accessibility.", icon: FiActivity, path: "/settings/cms/experience" },
+      { title: "Social Sharing", description: "Private CMS link title, description, and preview image.", icon: FiShare2, path: "/settings/cms/social-sharing" },
     ],
   },
   {
@@ -56,12 +53,6 @@ const groups = [
 function SettingsHub() {
   return (
     <section className="page settings-hub">
-      <div className="page-header">
-        <p className="page-kicker">Configuration</p>
-        <h1 className="page-title">Settings</h1>
-        <p className="page-description">Choose a focused settings area to keep configuration simple and organized.</p>
-      </div>
-
       <div className="settings-hub__groups">
         {groups.map((group) => (
           <section className="settings-hub__group" key={group.id}>
@@ -73,12 +64,14 @@ function SettingsHub() {
             <div className={`settings-hub__grid${group.items.length === 1 ? " settings-hub__grid--single" : ""}`}>
               {group.items.map(({ title, description, icon: Icon, path }) => (
                 <Link className="settings-hub-card" to={path} key={path}>
-                  <span className="settings-hub-card__icon"><Icon aria-hidden="true" /></span>
-                  <span className="settings-hub-card__content">
+                  <span className="settings-hub-card__heading">
+                    <span className="settings-hub-card__icon"><Icon aria-hidden="true" /></span>
                     <strong>{title}</strong>
-                    <small>{description}</small>
                   </span>
-                  <span className="settings-hub-card__arrow" aria-hidden="true">→</span>
+                  <span className="settings-hub-card__footer">
+                    <small>{description}</small>
+                    <span className="settings-hub-card__arrow" aria-hidden="true">→</span>
+                  </span>
                 </Link>
               ))}
             </div>

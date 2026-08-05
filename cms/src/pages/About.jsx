@@ -191,14 +191,6 @@ function About() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">About</h1>
-        <p className="page-description">
-          Manage the visible About copy, profile image, fact cards, and statistics.
-        </p>
-      </div>
-
       <form className="panel content-editor about-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div>

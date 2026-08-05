@@ -124,11 +124,6 @@ function Contact() {
 
   return (
     <section className="page">
-      <div className="page-header">
-        <p className="page-kicker">Content Module</p>
-        <h1 className="page-title">Contact</h1>
-        <p className="page-description">Manage contact section copy, form labels, feedback messages, availability, and public email.</p>
-      </div>
       <form className="panel content-editor structured-content-editor contact-editor" onSubmit={editor.saveForm}>
         <div className="content-editor__header">
           <div><span className="content-editor__eyebrow">Contact section</span><h2>{editor.form.title || "Contact title"}</h2><p>{previewAvailability || "Availability"}</p></div>
