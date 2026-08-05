@@ -62,7 +62,7 @@ function metadataFrom(content, defaults) {
 }
 
 function meta(attrs) {
-  return { tag: 'meta', attrs: { ...attrs, 'data-rh': 'true' }, injectTo: 'head' }
+  return { tag: 'meta', attrs: { ...attrs, 'data-build-seo': 'true' }, injectTo: 'head' }
 }
 
 export function portfolioMetadataPlugin({ apiBaseUrl, defaults }) {
@@ -72,13 +72,13 @@ export function portfolioMetadataPlugin({ apiBaseUrl, defaults }) {
       const content = await fetchPortfolio(apiBaseUrl)
       const metadata = metadataFrom(content, defaults)
       const tags = [
-        { tag: 'title', attrs: { 'data-rh': 'true' }, children: metadata.title, injectTo: 'head' },
+        { tag: 'title', attrs: { 'data-build-seo': 'true' }, children: metadata.title, injectTo: 'head' },
         meta({ name: 'description', content: metadata.description }),
         meta({ name: 'keywords', content: metadata.keywords }),
         meta({ name: 'author', content: metadata.author }),
         meta({ name: 'robots', content: metadata.robots }),
-        { tag: 'link', attrs: { rel: 'canonical', href: metadata.siteUrl, 'data-rh': 'true' }, injectTo: 'head' },
-        { tag: 'link', attrs: { rel: 'icon', href: metadata.favicon, 'data-rh': 'true' }, injectTo: 'head' },
+        { tag: 'link', attrs: { rel: 'canonical', href: metadata.siteUrl, 'data-build-seo': 'true' }, injectTo: 'head' },
+        { tag: 'link', attrs: { rel: 'icon', href: metadata.favicon, 'data-build-seo': 'true' }, injectTo: 'head' },
         meta({ property: 'og:type', content: 'website' }),
         meta({ property: 'og:site_name', content: metadata.siteName }),
         meta({ property: 'og:title', content: metadata.title }),

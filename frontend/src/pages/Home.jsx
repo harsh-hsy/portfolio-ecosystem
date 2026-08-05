@@ -18,7 +18,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function Home({ entranceReady }) {
   const contentState = usePortfolioContent()
-  const { profile, seo, structuredData } = getHomeContent(contentState?.portfolio)
+  const { structuredData } = getHomeContent(contentState?.portfolio)
   const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
 
   return (
@@ -29,11 +29,6 @@ export default function Home({ entranceReady }) {
       exit={simplifyMotion ? undefined : 'exit'}
     >
       <Helmet>
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.description || profile.about} />
-        <meta property="og:title" content={seo.title} />
-        <meta property="og:description" content={seo.description} />
-        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
       <Hero entranceReady={entranceReady} />

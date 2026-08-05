@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { FiArrowLeft, FiExternalLink, FiGithub } from 'react-icons/fi'
 import { motion } from 'framer-motion'
@@ -14,15 +13,11 @@ export default function ProjectDetails() {
   const contentState = usePortfolioContent()
   const selectedProject = getProjectBySlug(slug, contentState?.portfolio?.projects)
   if (!selectedProject) return <Navigate to="/404" replace />
-  const { project, seo, ui } = getProjectDetailsContent(selectedProject, contentState?.portfolio)
+  const { project, ui } = getProjectDetailsContent(selectedProject, contentState?.portfolio)
   const related = getRelatedProjects(project.slug, 3, contentState?.portfolio?.projects)
 
   return (
     <motion.div className="project-page section" variants={pageTransition} initial="initial" animate="animate" exit="exit">
-      <Helmet>
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.description} />
-      </Helmet>
       <div className="container">
         <Link to="/#projects" className="back-link"><FiArrowLeft /> {ui.backLabel}</Link>
         <div className="detail-hero">

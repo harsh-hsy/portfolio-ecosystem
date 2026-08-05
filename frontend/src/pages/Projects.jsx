@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import { FiSearch } from 'react-icons/fi'
 
@@ -7,14 +6,12 @@ import { pageTransition, stagger } from '../animations/variants.js'
 import ProjectCard from '../components/common/ProjectCard.jsx'
 import SectionHeader from '../components/common/SectionHeader.jsx'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
-import { getProjectsContent, getSiteSettings } from '../lib/contentSelectors.js'
+import { getProjectsContent } from '../lib/contentSelectors.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function ProjectsPage() {
   const contentState = usePortfolioContent()
   const { section, projects } = getProjectsContent(contentState?.portfolio)
-  const settings = getSiteSettings(contentState?.portfolio)
-  const titleSuffix = settings.siteIdentity?.titleSuffix || settings.siteIdentity?.siteName || 'Portfolio'
   const allLabel = 'All'
   const [category, setCategory] = useState(allLabel)
   const [query, setQuery] = useState('')
@@ -37,11 +34,6 @@ export default function ProjectsPage() {
       animate={simplifyMotion ? undefined : 'animate'}
       exit={simplifyMotion ? undefined : 'exit'}
     >
-      <Helmet>
-        <title>{`Projects | ${titleSuffix}`}</title>
-        <meta name="description" content={section.copy} />
-      </Helmet>
-
       <div className="container">
         <SectionHeader
           eyebrow="Projects"

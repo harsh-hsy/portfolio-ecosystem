@@ -1,8 +1,16 @@
 import { Helmet } from 'react-helmet-async'
-import { getSiteSettings } from '../../lib/contentSelectors.js'
+import { useLocation } from 'react-router-dom'
+import {
+  getNotFoundContent,
+  getProjectDetailsContent,
+  getProjectsContent,
+  getSiteSettings,
+} from '../../lib/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
+import { getProjectBySlug } from '../../lib/projects.js'
 
 export default function SiteMetadata() {
+  const location = useLocation()
   const contentState = usePortfolioContent()
   const portfolio = contentState?.portfolio
   const settings = getSiteSettings(portfolio)
@@ -10,9 +18,33 @@ export default function SiteMetadata() {
   const sharing = settings.socialSharing ?? {}
   const seo = portfolio?.seo ?? {}
   const canonicalUrl = identity.portfolioUrl || seo.siteUrl || ''
-  const title = seo.title || identity.siteName || 'Portfolio'
-  const description = seo.description || sharing.openGraphDescription || ''
-  const robots = seo.allowIndexing === false ? 'noindex, nofollow' : 'index, follow'
+  const titleSuffix = identity.titleSuffix || identity.siteName || 'Portfolio'
+  let title = seo.title || identity.siteName || 'Portfolio'
+  let description = seo.description || sharing.openGraphDescription || ''
+
+  if (settings.maintenance?.enabled) {
+    title = `Maintenance | ${titleSuffix}`
+  } else if (location.pathname === '/projects') {
+    const { section } = getProjectsContent(portfolio)
+    title = `Projects | ${titleSuffix}`
+    description = section?.copy || description
+  } else if (location.pathname.startsWith('/projects/')) {
+    const slug = decodeURIComponent(location.pathname.slice('/projects/'.length))
+    const project = getProjectBySlug(slug, portfolio?.projects)
+    if (project) {
+      const projectMetadata = getProjectDetailsContent(project, portfolio).seo
+      title = projectMetadata.title
+      description = projectMetadata.description
+    } else {
+      title = getNotFoundContent(portfolio).seoTitle
+    }
+  } else if (location.pathname !== '/') {
+    title = getNotFoundContent(portfolio).seoTitle
+  }
+
+  const robots = settings.maintenance?.enabled || seo.allowIndexing === false
+    ? 'noindex, nofollow'
+    : 'index, follow'
 
   return (
     <Helmet>
@@ -24,14 +56,14 @@ export default function SiteMetadata() {
       {seo.bingVerification ? <meta name="msvalidate.01" content={seo.bingVerification} /> : null}
       {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
       {identity.favicon ? <link rel="icon" href={identity.favicon} /> : null}
-      <meta property="og:title" content={sharing.openGraphTitle || title} />
-      <meta property="og:description" content={sharing.openGraphDescription || description} />
+      <meta property="og:title" content={location.pathname === '/' ? sharing.openGraphTitle || title : title} />
+      <meta property="og:description" content={location.pathname === '/' ? sharing.openGraphDescription || description : description} />
       <meta property="og:type" content="website" />
       {canonicalUrl ? <meta property="og:url" content={canonicalUrl} /> : null}
       {sharing.image ? <meta property="og:image" content={sharing.image} /> : null}
       <meta name="twitter:card" content={sharing.twitterCard || 'summary_large_image'} />
-      <meta name="twitter:title" content={sharing.openGraphTitle || title} />
-      <meta name="twitter:description" content={sharing.openGraphDescription || description} />
+      <meta name="twitter:title" content={location.pathname === '/' ? sharing.openGraphTitle || title : title} />
+      <meta name="twitter:description" content={location.pathname === '/' ? sharing.openGraphDescription || description : description} />
       {sharing.image ? <meta name="twitter:image" content={sharing.image} /> : null}
     </Helmet>
   )
