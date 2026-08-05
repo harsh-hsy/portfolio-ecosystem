@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Portfolio CMS">
+  <rect width="512" height="512" rx="112" fill="#111827"/>
+  <rect x="56" y="56" width="400" height="400" rx="88" fill="#6366f1"/>
+  <path fill="#ffffff" d="M134 151h54v79h82v-79h54v210h-54v-82h-82v82h-54V151Zm218 0h54v210h-54V151Z"/>
+</svg>

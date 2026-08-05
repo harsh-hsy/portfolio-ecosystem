@@ -27,9 +27,19 @@ function requiredBoolean(value, label) {
   if (typeof value !== 'boolean') throw validationError(`${label} must be true or false`)
 }
 
+function requiredHexColor(value, label) {
+  const color = requiredText(value, label, 7)
+  if (!/^#[0-9a-f]{6}$/i.test(color)) {
+    throw validationError(`${label} must be a six-digit hex color`)
+  }
+}
+
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
   const identity = settings.siteIdentity ?? {}
+  const cmsManifest = settings.cmsManifest ?? {}
+  const cmsExperience = settings.cmsExperience ?? {}
+  const cmsSocialSharing = settings.cmsSocialSharing ?? {}
   const sharing = settings.socialSharing ?? {}
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
@@ -41,6 +51,38 @@ export function validateSettingsContent(content) {
   requiredText(identity.authorName, 'Default author name', 80)
   optionalUrl(identity.portfolioUrl, 'Primary portfolio URL')
   optionalUrl(identity.favicon, 'Favicon URL')
+
+  requiredText(cmsManifest.name, 'CMS app name', 80)
+  requiredText(cmsManifest.shortName, 'CMS short name', 24)
+  requiredText(cmsManifest.description, 'CMS app description', 180)
+  requiredText(cmsManifest.cmsUrl, 'Primary CMS URL', 240)
+  optionalUrl(cmsManifest.cmsUrl, 'Primary CMS URL')
+  optionalUrl(cmsManifest.icon, 'CMS app icon URL')
+  requiredHexColor(cmsManifest.themeColor, 'CMS theme color')
+  requiredHexColor(cmsManifest.backgroundColor, 'CMS background color')
+  if (!['standalone', 'minimal-ui', 'browser'].includes(cmsManifest.display)) {
+    throw validationError('Select a supported CMS display mode')
+  }
+
+  if (!['system', 'dark', 'light'].includes(cmsExperience.defaultTheme)) {
+    throw validationError('Select a supported CMS default theme')
+  }
+  ;[
+    ['desktopAnimations', 'CMS desktop animations'],
+    ['mobileAnimations', 'CMS mobile animations'],
+    ['stickyHeader', 'CMS sticky header'],
+    ['respectReducedMotion', 'CMS reduced-motion preference'],
+  ].forEach(([key, label]) => requiredBoolean(cmsExperience[key], label))
+  if (!['compact', 'expanded'].includes(cmsExperience.mobileSidebarMode)) {
+    throw validationError('Select a supported mobile sidebar mode')
+  }
+
+  requiredText(cmsSocialSharing.openGraphTitle, 'CMS Open Graph title', 70)
+  requiredText(cmsSocialSharing.openGraphDescription, 'CMS Open Graph description', 200)
+  optionalUrl(cmsSocialSharing.image, 'CMS social sharing image URL')
+  if (!['summary', 'summary_large_image'].includes(cmsSocialSharing.twitterCard)) {
+    throw validationError('Select a supported CMS Twitter card type')
+  }
 
   requiredText(seo.title, 'Default meta title', 70)
   requiredText(seo.description, 'Default meta description', 180)

@@ -255,6 +255,18 @@ async function writeModules(content, names = Object.keys(modules), editorName = 
         ...defaultPortfolio.settings.siteIdentity,
         ...(content.settings?.siteIdentity ?? {}),
       },
+      cmsManifest: {
+        ...defaultPortfolio.settings.cmsManifest,
+        ...(content.settings?.cmsManifest ?? {}),
+      },
+      cmsExperience: {
+        ...defaultPortfolio.settings.cmsExperience,
+        ...(content.settings?.cmsExperience ?? {}),
+      },
+      cmsSocialSharing: {
+        ...defaultPortfolio.settings.cmsSocialSharing,
+        ...(content.settings?.cmsSocialSharing ?? {}),
+      },
       socialSharing: {
         ...defaultPortfolio.settings.socialSharing,
         ...(content.settings?.socialSharing ?? {}),
@@ -341,6 +353,18 @@ function composePortfolio(documents) {
       ...defaultPortfolio.settings.siteIdentity,
       ...rawIdentity,
       portfolioUrl: normalizePortfolioUrl(rawIdentity.portfolioUrl),
+    },
+    cmsManifest: {
+      ...defaultPortfolio.settings.cmsManifest,
+      ...(rawSettings.cmsManifest ?? {}),
+    },
+    cmsExperience: {
+      ...defaultPortfolio.settings.cmsExperience,
+      ...(rawSettings.cmsExperience ?? {}),
+    },
+    cmsSocialSharing: {
+      ...defaultPortfolio.settings.cmsSocialSharing,
+      ...(rawSettings.cmsSocialSharing ?? {}),
     },
     socialSharing: {
       ...defaultPortfolio.settings.socialSharing,

@@ -39,7 +39,7 @@ import {
   pruneUnreferencedCloudinaryAssets,
   registerCloudinaryAsset,
 } from '../services/mediaService.js'
-import { triggerFrontendDeploy } from '../services/renderDeployService.js'
+import { triggerCmsDeploy, triggerFrontendDeploy } from '../services/renderDeployService.js'
 
 const router = Router()
 
@@ -227,12 +227,19 @@ router.put('/portfolio/module/:module', async (req, res) => {
   await cleanupUnusedMedia(content)
 
   let deployment
-  if (req.params.module === 'settings') {
+  const deployTarget = String(req.query.deploy ?? '').trim().toLowerCase()
+  const deploy = deployTarget === 'frontend'
+    ? triggerFrontendDeploy
+    : deployTarget === 'cms'
+      ? triggerCmsDeploy
+      : null
+
+  if (req.params.module === 'settings' && deploy) {
     try {
-      deployment = await triggerFrontendDeploy()
+      deployment = await deploy()
     } catch (error) {
-      console.error(`Unable to trigger the frontend deployment: ${error.message}`)
-      deployment = { status: 'failed', triggered: false }
+      console.error(`Unable to trigger the ${deployTarget} deployment: ${error.message}`)
+      deployment = { status: 'failed', triggered: false, target: deployTarget }
     }
   }
 

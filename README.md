@@ -118,10 +118,14 @@ CMS_ORIGIN=http://localhost:5174
 MONGODB_URI=mongodb://127.0.0.1:27017/portfolio_cms
 JWT_SECRET=your-secret
 JWT_EXPIRES_IN=8h
+RENDER_FRONTEND_DEPLOY_HOOK_URL=your-render-frontend-deploy-hook
+RENDER_CMS_DEPLOY_HOOK_URL=your-render-cms-deploy-hook
 ADMIN_NAME=Harsh Kumar Singh
 ADMIN_EMAIL=you@example.com
 ADMIN_PASSWORD=your-password
 ```
+
+Keep both Render deploy hooks only in the API environment. They are private server-side secrets and must never be added to a `VITE_` variable or committed to Git.
 
 ### CMS
 

@@ -39,3 +39,44 @@
 .dashboard-main--projects::-webkit-scrollbar {
   display: none;
 }
+
+.cms-header-static .header {
+  position: relative;
+}
+
+@media (min-width: 769px) {
+  .cms-no-desktop-motion *,
+  .cms-no-desktop-motion *::before,
+  .cms-no-desktop-motion *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: 20px 16px;
+  }
+
+  .cms-no-mobile-motion *,
+  .cms-no-mobile-motion *::before,
+  .cms-no-mobile-motion *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cms-respect-reduced-motion *,
+  .cms-respect-reduced-motion *::before,
+  .cms-respect-reduced-motion *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

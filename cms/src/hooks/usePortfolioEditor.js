@@ -18,6 +18,7 @@ export function usePortfolioEditor({
   getPortfolio,
   validate = () => ({}),
   successMessage = "Content updated successfully.",
+  deployTarget = "",
 }) {
   const { showToast } = useToast();
   const [portfolio, setPortfolio] = useState(null);
@@ -133,18 +134,20 @@ export function usePortfolioEditor({
         const response = await updateAdminPortfolioModule(
           moduleName,
           nextPortfolio,
+          { deployTarget },
         );
         const nextForm = getForm(response.content);
 
         let nextSuccessMessage = successMessage;
         let nextStatusType = "success";
+        const deploymentLabel = response.deployment?.target === "cms" ? "CMS" : "Frontend";
         if (response.deployment?.status === "accepted") {
-          nextSuccessMessage = `${successMessage} Frontend deployment started.`;
+          nextSuccessMessage = `${successMessage} ${deploymentLabel} deployment started.`;
         } else if (response.deployment?.status === "not_configured") {
-          nextSuccessMessage = `${successMessage} Frontend deploy hook is not configured.`;
+          nextSuccessMessage = `${successMessage} ${deploymentLabel} deploy hook is not configured.`;
           nextStatusType = "warning";
         } else if (response.deployment?.status === "failed") {
-          nextSuccessMessage = `${successMessage} Frontend deployment could not be started.`;
+          nextSuccessMessage = `${successMessage} ${deploymentLabel} deployment could not be started.`;
           nextStatusType = "warning";
         }
 
@@ -172,6 +175,7 @@ export function usePortfolioEditor({
       portfolio,
       showToast,
       successMessage,
+      deployTarget,
       validate,
     ],
   );

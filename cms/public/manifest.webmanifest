@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "Portfolio CMS",
+  "short_name": "CMS",
+  "description": "Private content management dashboard for the Harsh Singh portfolio.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -21,6 +21,7 @@ import Contact from "../pages/Contact";
 import Inbox from "../pages/Inbox";
 import Links from "../pages/Links";
 import Settings from "../pages/Settings";
+import SettingsHub from "../pages/SettingsHub";
 import GlobalPages from "../pages/GlobalPages";
 import Account from "../pages/Account";
 
@@ -63,7 +64,15 @@ function AppRoutes() {
         <Route path="links" element={<Links />} />
         <Route path="inbox" element={<Inbox />} />
         <Route path="global-pages" element={<GlobalPages />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="settings" element={<SettingsHub />} />
+        <Route path="settings/portfolio/identity" element={<Settings section="portfolio-identity" />} />
+        <Route path="settings/portfolio/experience" element={<Settings section="portfolio-experience" />} />
+        <Route path="settings/portfolio/social-sharing" element={<Settings section="portfolio-social-sharing" />} />
+        <Route path="settings/cms/identity" element={<Settings section="cms-identity" />} />
+        <Route path="settings/cms/experience" element={<Settings section="cms-experience" />} />
+        <Route path="settings/cms/social-sharing" element={<Settings section="cms-social-sharing" />} />
+        <Route path="settings/seo" element={<Settings section="seo" />} />
+        <Route path="settings/maintenance" element={<Settings section="maintenance" />} />
         <Route path="/account" element={<Account />} />
       </Route>
 

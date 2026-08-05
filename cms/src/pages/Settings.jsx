@@ -1,4 +1,6 @@
 import { useCallback } from "react";
+import { FiArrowLeft } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
@@ -14,6 +16,24 @@ const emptyForm = {
   favicon: "",
   authorName: "",
   portfolioUrl: "",
+  cmsAppName: "Portfolio CMS",
+  cmsShortName: "CMS",
+  cmsDescription: "",
+  cmsUrl: "",
+  cmsDisplay: "standalone",
+  cmsThemeColor: "#111827",
+  cmsBackgroundColor: "#080c14",
+  cmsIcon: "",
+  cmsDefaultTheme: "system",
+  cmsDesktopAnimations: true,
+  cmsMobileAnimations: false,
+  cmsStickyHeader: true,
+  cmsRespectReducedMotion: true,
+  cmsMobileSidebarMode: "compact",
+  cmsOpenGraphTitle: "",
+  cmsOpenGraphDescription: "",
+  cmsSocialImage: "",
+  cmsTwitterCard: "summary_large_image",
   metaTitle: "",
   metaDescription: "",
   seoKeywords: "",
@@ -40,6 +60,9 @@ const emptyForm = {
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
   const identity = settings.siteIdentity ?? {};
+  const cmsManifest = settings.cmsManifest ?? {};
+  const cmsExperience = settings.cmsExperience ?? {};
+  const cmsSocialSharing = settings.cmsSocialSharing ?? {};
   const sharing = settings.socialSharing ?? {};
   const experience = settings.experience ?? {};
   const maintenance = settings.maintenance ?? {};
@@ -52,6 +75,24 @@ function formFromPortfolio(portfolio) {
     favicon: identity.favicon ?? "",
     authorName: identity.authorName ?? portfolio?.profile?.name ?? "",
     portfolioUrl: identity.portfolioUrl ?? seo.siteUrl ?? "",
+    cmsAppName: cmsManifest.name ?? "Portfolio CMS",
+    cmsShortName: cmsManifest.shortName ?? "CMS",
+    cmsDescription: cmsManifest.description ?? "Private content management dashboard for the Harsh Singh portfolio.",
+    cmsUrl: cmsManifest.cmsUrl ?? "https://harsh-hsy-cms.onrender.com",
+    cmsDisplay: cmsManifest.display ?? "standalone",
+    cmsThemeColor: cmsManifest.themeColor ?? "#111827",
+    cmsBackgroundColor: cmsManifest.backgroundColor ?? "#080c14",
+    cmsIcon: cmsManifest.icon ?? "",
+    cmsDefaultTheme: cmsExperience.defaultTheme ?? "system",
+    cmsDesktopAnimations: cmsExperience.desktopAnimations ?? true,
+    cmsMobileAnimations: cmsExperience.mobileAnimations ?? false,
+    cmsStickyHeader: cmsExperience.stickyHeader ?? true,
+    cmsRespectReducedMotion: cmsExperience.respectReducedMotion ?? true,
+    cmsMobileSidebarMode: cmsExperience.mobileSidebarMode ?? "compact",
+    cmsOpenGraphTitle: cmsSocialSharing.openGraphTitle ?? "Portfolio CMS | Harsh Singh",
+    cmsOpenGraphDescription: cmsSocialSharing.openGraphDescription ?? "Private content management dashboard for the Harsh Singh portfolio.",
+    cmsSocialImage: cmsSocialSharing.image ?? "",
+    cmsTwitterCard: cmsSocialSharing.twitterCard ?? "summary_large_image",
     metaTitle: seo.title ?? "",
     metaDescription: seo.description ?? "",
     seoKeywords: seo.keywords ?? "",
@@ -93,6 +134,33 @@ function portfolioFromForm(portfolio, form) {
         favicon: form.favicon,
         authorName: form.authorName.trim(),
         portfolioUrl,
+      },
+      cmsManifest: {
+        ...(portfolio.settings?.cmsManifest ?? {}),
+        name: form.cmsAppName.trim(),
+        shortName: form.cmsShortName.trim(),
+        description: form.cmsDescription.trim(),
+        cmsUrl: form.cmsUrl.trim().replace(/\/$/, ""),
+        display: form.cmsDisplay,
+        themeColor: form.cmsThemeColor,
+        backgroundColor: form.cmsBackgroundColor,
+        icon: form.cmsIcon,
+      },
+      cmsExperience: {
+        ...(portfolio.settings?.cmsExperience ?? {}),
+        defaultTheme: form.cmsDefaultTheme,
+        desktopAnimations: form.cmsDesktopAnimations,
+        mobileAnimations: form.cmsMobileAnimations,
+        stickyHeader: form.cmsStickyHeader,
+        respectReducedMotion: form.cmsRespectReducedMotion,
+        mobileSidebarMode: form.cmsMobileSidebarMode,
+      },
+      cmsSocialSharing: {
+        ...(portfolio.settings?.cmsSocialSharing ?? {}),
+        openGraphTitle: form.cmsOpenGraphTitle.trim(),
+        openGraphDescription: form.cmsOpenGraphDescription.trim(),
+        image: form.cmsSocialImage,
+        twitterCard: form.cmsTwitterCard,
       },
       socialSharing: {
         ...(portfolio.settings?.socialSharing ?? {}),
@@ -145,6 +213,12 @@ function validHttpUrl(value) {
   }
 }
 
+function validHexColor(value) {
+  return /^#[0-9a-f]{6}$/i.test(String(value).trim())
+    ? ""
+    : "Use a six-digit hex color, for example #111827.";
+}
+
 function validateSettings(form) {
   return validateForm(form, {
     siteName: [validators.required(), validators.maxLength(80)],
@@ -152,6 +226,14 @@ function validateSettings(form) {
     titleSuffix: [validators.required(), validators.maxLength(60)],
     authorName: [validators.required(), validators.maxLength(80)],
     portfolioUrl: [validators.required(), validHttpUrl],
+    cmsAppName: [validators.required(), validators.maxLength(80)],
+    cmsShortName: [validators.required(), validators.maxLength(24)],
+    cmsDescription: [validators.required(), validators.maxLength(180)],
+    cmsUrl: [validators.required(), validHttpUrl],
+    cmsThemeColor: [validators.required(), validHexColor],
+    cmsBackgroundColor: [validators.required(), validHexColor],
+    cmsOpenGraphTitle: [validators.required(), validators.maxLength(70)],
+    cmsOpenGraphDescription: [validators.required(), validators.maxLength(200)],
     metaTitle: [validators.required(), validators.maxLength(70)],
     metaDescription: [validators.required(), validators.maxLength(180)],
     seoKeywords: [validators.required(), validators.maxLength(300)],
@@ -191,7 +273,60 @@ function ToggleField({ checked, label, description, recommended, warning, onChan
   );
 }
 
-function Settings() {
+function ConnectionBadge({ isLoading }) {
+  return <span className="content-editor__badge">{isLoading ? "Loading" : "Connected"}</span>;
+}
+
+const pageConfig = {
+  "portfolio-identity": {
+    kicker: "Portfolio",
+    title: "Portfolio Identity",
+    description: "Manage the public portfolio brand, browser identity, and primary URL.",
+    deployTarget: "frontend",
+  },
+  "portfolio-experience": {
+    kicker: "Portfolio",
+    title: "Portfolio Experience",
+    description: "Control public-site motion, loading, navigation, and accessibility preferences.",
+  },
+  "portfolio-social-sharing": {
+    kicker: "Portfolio",
+    title: "Portfolio Social Sharing",
+    description: "Manage link previews used by LinkedIn, WhatsApp, X, Telegram, and Facebook.",
+    deployTarget: "frontend",
+  },
+  "cms-identity": {
+    kicker: "CMS",
+    title: "CMS Identity",
+    description: "Manage the CMS installed-app identity, launch appearance, and icon.",
+    deployTarget: "cms",
+  },
+  "cms-experience": {
+    kicker: "CMS",
+    title: "CMS Experience",
+    description: "Keep the dashboard comfortable and lightweight across desktop and mobile devices.",
+  },
+  "cms-social-sharing": {
+    kicker: "CMS",
+    title: "CMS Social Sharing",
+    description: "Control the preview displayed when the private CMS link is shared.",
+    deployTarget: "cms",
+  },
+  seo: {
+    kicker: "Discoverability",
+    title: "SEO Defaults",
+    description: "Manage fallback metadata and public search-engine visibility.",
+    deployTarget: "frontend",
+  },
+  maintenance: {
+    kicker: "Availability",
+    title: "Maintenance & Announcement",
+    description: "Temporarily replace the public site or display a lightweight announcement.",
+  },
+};
+
+function Settings({ section }) {
+  const currentPage = pageConfig[section] ?? pageConfig["portfolio-identity"];
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
@@ -205,7 +340,8 @@ function Settings() {
     getForm,
     getPortfolio,
     validate: validateSettings,
-    successMessage: "Website settings updated successfully.",
+    successMessage: `${currentPage.title} updated successfully.`,
+    deployTarget: currentPage.deployTarget,
   });
 
   const updateToggle = (name, value) => {
@@ -220,21 +356,20 @@ function Settings() {
   return (
     <section className="page settings-page">
       <div className="page-header">
-        <p className="page-kicker">Configuration</p>
-        <h1 className="page-title">Settings</h1>
-        <p className="page-description">
-          Configure site identity, discoverability, sharing, experience, and public availability.
-        </p>
+        <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
+        <p className="page-kicker">{currentPage.kicker}</p>
+        <h1 className="page-title">{currentPage.title}</h1>
+        <p className="page-description">{currentPage.description}</p>
       </div>
 
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
-        <section className="panel account-section settings-card">
+        {section === "portfolio-identity" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">Site Identity</h2>
               <p>Control the public brand and browser identity used across the portfolio.</p>
             </div>
-            <span className="content-editor__badge">{editor.isLoading ? "Loading" : "Connected"}</span>
+            <ConnectionBadge isLoading={editor.isLoading} />
           </div>
           <div className="form-grid">
             <FormField label="Site Name" name="siteName" value={editor.form.siteName} onChange={editor.updateField} error={editor.errors.siteName} maxLength={80} required />
@@ -256,14 +391,70 @@ function Settings() {
               />
             </div>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="panel account-section settings-card">
+        {section === "cms-identity" ? <section className="panel account-section settings-card">
+          <div className="editor-section-heading">
+            <div>
+              <h2 className="account-section__title">CMS App Identity</h2>
+              <p>Control how the CMS appears when it is installed on a desktop or mobile device.</p>
+            </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
+          </div>
+          <div className="form-grid">
+            <FormField label="App Name" name="cmsAppName" value={editor.form.cmsAppName} onChange={editor.updateField} error={editor.errors.cmsAppName} maxLength={80} required />
+            <FormField label="Short Name" name="cmsShortName" value={editor.form.cmsShortName} onChange={editor.updateField} error={editor.errors.cmsShortName} helpText="Used below the installed app icon." maxLength={24} required />
+            <FormField label="App Description" name="cmsDescription" className="form-group--wide" value={editor.form.cmsDescription} onChange={editor.updateField} error={editor.errors.cmsDescription} maxLength={180} required />
+            <FormField label="Primary CMS URL" name="cmsUrl" type="url" value={editor.form.cmsUrl} onChange={editor.updateField} error={editor.errors.cmsUrl} helpText="The installed app opens at this address." required />
+            <FormField
+              label="Display Mode"
+              name="cmsDisplay"
+              as="select"
+              value={editor.form.cmsDisplay}
+              onChange={editor.updateField}
+              options={[
+                { value: "standalone", label: "Standalone app" },
+                { value: "minimal-ui", label: "Minimal browser controls" },
+                { value: "browser", label: "Browser tab" },
+              ]}
+              required
+            />
+            <FormField label="Theme Color" name="cmsThemeColor" type="color" className="settings-color-field" value={editor.form.cmsThemeColor} onChange={editor.updateField} error={editor.errors.cmsThemeColor} helpText={editor.form.cmsThemeColor} required />
+            <FormField label="Launch Background" name="cmsBackgroundColor" type="color" className="settings-color-field" value={editor.form.cmsBackgroundColor} onChange={editor.updateField} error={editor.errors.cmsBackgroundColor} helpText={editor.form.cmsBackgroundColor} required />
+            <div className="form-group form-group--wide settings-manifest-layout">
+              <ImageUploader
+                value={editor.form.cmsIcon}
+                onChange={(value) => editor.updateForm((current) => ({ ...current, cmsIcon: value }))}
+                label="CMS App Icon"
+                section="settings"
+                aspectRatio={1}
+                outputWidth={512}
+                outputHeight={512}
+                alt="CMS app icon"
+                previewMaxWidth="240px"
+              />
+              <article className="manifest-preview-card" style={{ backgroundColor: editor.form.cmsBackgroundColor }}>
+                <div className="manifest-preview-card__icon" style={{ backgroundColor: editor.form.cmsThemeColor }}>
+                  {editor.form.cmsIcon ? (
+                    <img src={resolveMediaUrl(editor.form.cmsIcon)} alt="" />
+                  ) : (
+                    <span>{editor.form.cmsShortName || "CMS"}</span>
+                  )}
+                </div>
+                <strong>{editor.form.cmsAppName || "Portfolio CMS"}</strong>
+                <small>Installed app preview</small>
+              </article>
+            </div>
+          </div>
+        </section> : null}
+
+        {section === "seo" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">SEO Defaults</h2>
               <p>Fallback metadata used when a project or certificate does not provide its own values.</p>
             </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
           </div>
           <div className="form-grid">
             <FormField label="Default Meta Title" name="metaTitle" value={editor.form.metaTitle} onChange={editor.updateField} error={editor.errors.metaTitle} maxLength={70} required />
@@ -279,14 +470,15 @@ function Settings() {
               />
             </div>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="panel account-section settings-card">
+        {section === "portfolio-social-sharing" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">Social Sharing</h2>
               <p>Default LinkedIn, WhatsApp, X, and Facebook preview metadata.</p>
             </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
           </div>
           <div className="form-grid">
             <FormField label="Open Graph Title" name="openGraphTitle" value={editor.form.openGraphTitle} onChange={editor.updateField} error={editor.errors.openGraphTitle} maxLength={70} required />
@@ -316,14 +508,15 @@ function Settings() {
               </article>
             </div>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="panel account-section settings-card">
+        {section === "portfolio-experience" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">Website Experience</h2>
               <p>Use recommended defaults to keep the portfolio smooth on mobile devices.</p>
             </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
           </div>
           <div className="settings-toggle-grid">
             <ToggleField checked={editor.form.loadingEnabled} label="Loading animation" description="Show the short HS intro while content loads." recommended="Enabled" onChange={(value) => updateToggle("loadingEnabled", value)} />
@@ -335,14 +528,97 @@ function Settings() {
             <ToggleField checked={editor.form.stickyHeader} label="Sticky header" description="Keep navigation visible while scrolling." recommended="Enabled" onChange={(value) => updateToggle("stickyHeader", value)} />
             <ToggleField checked={editor.form.respectReducedMotion} label="Respect reduced-motion preference" description="Reduce animation for visitors who request it in their device settings." recommended="Enabled" onChange={(value) => updateToggle("respectReducedMotion", value)} />
           </div>
-        </section>
+        </section> : null}
 
-        <section className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? "is-enabled" : ""}`}>
+        {section === "cms-experience" ? <section className="panel account-section settings-card">
+          <div className="editor-section-heading">
+            <div>
+              <h2 className="account-section__title">CMS Experience</h2>
+              <p>Choose lightweight dashboard defaults for desktop and mobile devices.</p>
+            </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
+          </div>
+          <div className="form-grid">
+            <FormField
+              label="Default Theme"
+              name="cmsDefaultTheme"
+              as="select"
+              value={editor.form.cmsDefaultTheme}
+              onChange={editor.updateField}
+              options={[
+                { value: "system", label: "Follow device" },
+                { value: "dark", label: "Dark" },
+                { value: "light", label: "Light" },
+              ]}
+              helpText="A manually selected theme still takes priority on that device."
+              required
+            />
+            <FormField
+              label="Mobile Sidebar"
+              name="cmsMobileSidebarMode"
+              as="select"
+              value={editor.form.cmsMobileSidebarMode}
+              onChange={editor.updateField}
+              options={[
+                { value: "compact", label: "Compact by default" },
+                { value: "expanded", label: "Expanded by default" },
+              ]}
+              required
+            />
+          </div>
+          <div className="settings-toggle-grid settings-toggle-grid--spaced">
+            <ToggleField checked={editor.form.cmsDesktopAnimations} label="Desktop transitions" description="Keep lightweight dashboard transitions on larger screens." recommended="Enabled" onChange={(value) => updateToggle("cmsDesktopAnimations", value)} />
+            <ToggleField checked={editor.form.cmsMobileAnimations} label="Mobile transitions" description="Enable decorative dashboard motion on phones." recommended="Disabled" warning="Disabling motion gives the smoothest mobile editing experience." onChange={(value) => updateToggle("cmsMobileAnimations", value)} />
+            <ToggleField checked={editor.form.cmsStickyHeader} label="Sticky CMS header" description="Keep the toolbar visible while editing long pages." recommended="Enabled" onChange={(value) => updateToggle("cmsStickyHeader", value)} />
+            <ToggleField checked={editor.form.cmsRespectReducedMotion} label="Respect reduced-motion preference" description="Follow the accessibility preference configured on the device." recommended="Enabled" onChange={(value) => updateToggle("cmsRespectReducedMotion", value)} />
+          </div>
+        </section> : null}
+
+        {section === "cms-social-sharing" ? <section className="panel account-section settings-card">
+          <div className="editor-section-heading">
+            <div>
+              <h2 className="account-section__title">CMS Social Sharing</h2>
+              <p>Set the preview shown when the CMS address is shared in a private conversation.</p>
+            </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
+          </div>
+          <div className="form-grid">
+            <FormField label="Open Graph Title" name="cmsOpenGraphTitle" value={editor.form.cmsOpenGraphTitle} onChange={editor.updateField} error={editor.errors.cmsOpenGraphTitle} maxLength={70} required />
+            <FormField label="Twitter Card Type" name="cmsTwitterCard" as="select" value={editor.form.cmsTwitterCard} onChange={editor.updateField} options={[{ value: "summary_large_image", label: "Large image" }, { value: "summary", label: "Compact summary" }]} required />
+            <FormField label="Open Graph Description" name="cmsOpenGraphDescription" className="form-group--wide" value={editor.form.cmsOpenGraphDescription} onChange={editor.updateField} error={editor.errors.cmsOpenGraphDescription} maxLength={200} required />
+            <div className="form-group form-group--wide settings-social-layout">
+              <ImageUploader
+                value={editor.form.cmsSocialImage}
+                onChange={(value) => editor.updateForm((current) => ({ ...current, cmsSocialImage: value }))}
+                label="CMS Social-sharing Image"
+                section="settings"
+                aspectRatio={1200 / 630}
+                outputWidth={1200}
+                outputHeight={630}
+                alt="CMS social sharing preview"
+                previewMaxWidth="560px"
+              />
+              <article className="social-preview-card">
+                <div className="social-preview-card__image">
+                  {editor.form.cmsSocialImage ? <img src={resolveMediaUrl(editor.form.cmsSocialImage)} alt="" /> : <span>1200 × 630 preview</span>}
+                </div>
+                <div>
+                  <small>{editor.form.cmsUrl || "cms.example"}</small>
+                  <strong>{editor.form.cmsOpenGraphTitle || "CMS preview title"}</strong>
+                  <p>{editor.form.cmsOpenGraphDescription || "CMS preview description"}</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section> : null}
+
+        {section === "maintenance" ? <section className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? "is-enabled" : ""}`}>
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">Maintenance and Announcement</h2>
               <p>Temporarily replace the public site or display a lightweight announcement.</p>
             </div>
+            <ConnectionBadge isLoading={editor.isLoading} />
           </div>
           <div className="form-grid">
             <ToggleField checked={editor.form.maintenanceEnabled} label="Maintenance mode" description="Visitors will see only the maintenance message." onChange={changeMaintenanceMode} />
@@ -351,7 +627,7 @@ function Settings() {
             <FormField label="Maintenance Message" name="maintenanceMessage" value={editor.form.maintenanceMessage} onChange={editor.updateField} error={editor.errors.maintenanceMessage} maxLength={240} required />
             <FormField label="Announcement Text" name="announcementText" className="form-group--wide" value={editor.form.announcementText} onChange={editor.updateField} error={editor.errors.announcementText} maxLength={180} disabled={!editor.form.announcementEnabled} required={editor.form.announcementEnabled} />
           </div>
-        </section>
+        </section> : null}
 
         <EditorActions status={editor.status} isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
       </form>
