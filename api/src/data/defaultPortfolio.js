@@ -607,6 +607,7 @@ export const defaultPortfolio = {
       "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
     keywords: "Harsh Singh, frontend developer, React developer, UI engineer",
     author: profile.name,
+    bingVerification: "7821903C0AC68D3A01EAD5788B45656C",
     allowIndexing: true,
     projectTitleSuffix: ` | ${profile.name}`,
   },

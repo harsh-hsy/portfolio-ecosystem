@@ -21,6 +21,7 @@ export default function SiteMetadata() {
       <meta name="keywords" content={seo.keywords || ''} />
       <meta name="author" content={seo.author || identity.authorName || ''} />
       <meta name="robots" content={robots} />
+      {seo.bingVerification ? <meta name="msvalidate.01" content={seo.bingVerification} /> : null}
       {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
       {identity.favicon ? <link rel="icon" href={identity.favicon} /> : null}
       <meta property="og:title" content={sharing.openGraphTitle || title} />

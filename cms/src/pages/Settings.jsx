@@ -37,6 +37,7 @@ const emptyForm = {
   metaTitle: "",
   metaDescription: "",
   seoKeywords: "",
+  bingVerification: "",
   allowIndexing: true,
   openGraphTitle: "",
   openGraphDescription: "",
@@ -96,6 +97,7 @@ function formFromPortfolio(portfolio) {
     metaTitle: seo.title ?? "",
     metaDescription: seo.description ?? "",
     seoKeywords: seo.keywords ?? "",
+    bingVerification: seo.bingVerification ?? "7821903C0AC68D3A01EAD5788B45656C",
     allowIndexing: seo.allowIndexing ?? true,
     openGraphTitle: sharing.openGraphTitle ?? seo.title ?? "",
     openGraphDescription: sharing.openGraphDescription ?? seo.description ?? "",
@@ -195,6 +197,7 @@ function portfolioFromForm(portfolio, form) {
       title: form.metaTitle.trim(),
       description: form.metaDescription.trim(),
       keywords: form.seoKeywords.trim(),
+      bingVerification: form.bingVerification.trim(),
       author: form.authorName.trim(),
       allowIndexing: form.allowIndexing,
       projectTitleSuffix: titleSuffix ? ` | ${titleSuffix}` : "",
@@ -237,6 +240,7 @@ function validateSettings(form) {
     metaTitle: [validators.required(), validators.maxLength(70)],
     metaDescription: [validators.required(), validators.maxLength(180)],
     seoKeywords: [validators.required(), validators.maxLength(1000)],
+    bingVerification: [validators.maxLength(128)],
     openGraphTitle: [validators.required(), validators.maxLength(70)],
     openGraphDescription: [validators.required(), validators.maxLength(200)],
     loadingDurationSeconds: [
@@ -454,6 +458,7 @@ function Settings({ section }) {
           <div className="form-grid">
             <FormField label="Default Meta Title" name="metaTitle" value={editor.form.metaTitle} onChange={editor.updateField} error={editor.errors.metaTitle} maxLength={70} required />
             <FormField label="SEO Keywords" name="seoKeywords" value={editor.form.seoKeywords} onChange={editor.updateField} error={editor.errors.seoKeywords} maxLength={1000} required />
+            <FormField label="Bing Webmaster Verification" name="bingVerification" value={editor.form.bingVerification} onChange={editor.updateField} error={editor.errors.bingVerification} helpText="The value used by the msvalidate.01 meta tag." maxLength={128} />
             <FormField label="Default Meta Description" name="metaDescription" className="form-group--wide" value={editor.form.metaDescription} onChange={editor.updateField} error={editor.errors.metaDescription} maxLength={180} required />
             <div className="form-group form-group--wide settings-toggle-row">
               <ToggleField

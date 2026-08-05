@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
       description: siteSettings.socialSharing.openGraphDescription,
       keywords: 'Harsh Singh, frontend developer, React developer, UI engineer',
       author: siteSettings.siteIdentity.authorName,
+      bingVerification: '7821903C0AC68D3A01EAD5788B45656C',
       allowIndexing: true,
     },
   }

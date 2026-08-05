@@ -87,6 +87,9 @@ export function validateSettingsContent(content) {
   requiredText(seo.title, 'Default meta title', 70)
   requiredText(seo.description, 'Default meta description', 180)
   requiredText(seo.keywords, 'SEO keywords', 1000)
+  if (String(seo.bingVerification ?? '').trim().length > 128) {
+    throw validationError('Bing verification code must use 128 characters or fewer')
+  }
   requiredBoolean(seo.allowIndexing, 'Search engine indexing')
 
   requiredText(sharing.openGraphTitle, 'Open Graph title', 70)

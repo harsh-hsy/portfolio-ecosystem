@@ -48,6 +48,7 @@ function metadataFrom(content, defaults) {
 
   return {
     author: seo.author || identity.authorName || profile.name,
+    bingVerification: seo.bingVerification || defaults.seo.bingVerification || '',
     description,
     favicon: absoluteUrl(identity.favicon || '/favicon.svg', siteUrl),
     image: absoluteUrl(sharing.image, siteUrl),
@@ -87,6 +88,10 @@ export function portfolioMetadataPlugin({ apiBaseUrl, defaults }) {
         meta({ name: 'twitter:title', content: metadata.title }),
         meta({ name: 'twitter:description', content: metadata.description }),
       ]
+
+      if (metadata.bingVerification) {
+        tags.push(meta({ name: 'msvalidate.01', content: metadata.bingVerification }))
+      }
 
       if (metadata.image) {
         tags.push(
