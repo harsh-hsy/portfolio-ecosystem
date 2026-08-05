@@ -236,7 +236,7 @@ function validateSettings(form) {
     cmsOpenGraphDescription: [validators.required(), validators.maxLength(200)],
     metaTitle: [validators.required(), validators.maxLength(70)],
     metaDescription: [validators.required(), validators.maxLength(180)],
-    seoKeywords: [validators.required(), validators.maxLength(300)],
+    seoKeywords: [validators.required(), validators.maxLength(1000)],
     openGraphTitle: [validators.required(), validators.maxLength(70)],
     openGraphDescription: [validators.required(), validators.maxLength(200)],
     loadingDurationSeconds: [
@@ -453,7 +453,7 @@ function Settings({ section }) {
           </div>
           <div className="form-grid">
             <FormField label="Default Meta Title" name="metaTitle" value={editor.form.metaTitle} onChange={editor.updateField} error={editor.errors.metaTitle} maxLength={70} required />
-            <FormField label="SEO Keywords" name="seoKeywords" value={editor.form.seoKeywords} onChange={editor.updateField} error={editor.errors.seoKeywords} maxLength={300} required />
+            <FormField label="SEO Keywords" name="seoKeywords" value={editor.form.seoKeywords} onChange={editor.updateField} error={editor.errors.seoKeywords} maxLength={1000} required />
             <FormField label="Default Meta Description" name="metaDescription" className="form-group--wide" value={editor.form.metaDescription} onChange={editor.updateField} error={editor.errors.metaDescription} maxLength={180} required />
             <div className="form-group form-group--wide settings-toggle-row">
               <ToggleField
