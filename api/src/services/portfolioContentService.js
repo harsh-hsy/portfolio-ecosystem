@@ -1,34 +1,34 @@
-import { defaultPortfolio } from '../data/defaultPortfolio.js'
-import { PortfolioContent } from '../models/PortfolioContent.js'
-import { validateAboutContent } from '../validation/aboutContent.js'
-import { validateCertificatesContent } from '../validation/certificateContent.js'
-import { validateHomeContent } from '../validation/homeContent.js'
+import { defaultPortfolio } from "../data/defaultPortfolio.js";
+import { PortfolioContent } from "../models/PortfolioContent.js";
+import { validateAboutContent } from "../validation/aboutContent.js";
+import { validateCertificatesContent } from "../validation/certificateContent.js";
+import { validateHomeContent } from "../validation/homeContent.js";
 import {
   validateJourneyContent,
   validateMilestonesContent,
-} from '../validation/journeyContent.js'
+} from "../validation/journeyContent.js";
 import {
   validateAchievementsContent,
   validateServicesContent,
-} from '../validation/listContent.js'
+} from "../validation/listContent.js";
 import {
   validateContactContent,
   validateLinksContent,
-} from '../validation/contactContent.js'
-import { validateProjectsContent } from '../validation/projectContent.js'
-import { validateSkillsContent } from '../validation/skillsContent.js'
-import { validateGlobalPagesContent } from '../validation/globalPagesContent.js'
-import { validateSettingsContent } from '../validation/settingsContent.js'
+} from "../validation/contactContent.js";
+import { validateProjectsContent } from "../validation/projectContent.js";
+import { validateSkillsContent } from "../validation/skillsContent.js";
+import { validateGlobalPagesContent } from "../validation/globalPagesContent.js";
+import { validateSettingsContent } from "../validation/settingsContent.js";
 import {
   ensureCertificateResources,
   listPublishedCertificates,
   replaceCertificateResources,
-} from './certificateService.js'
+} from "./certificateService.js";
 import {
   ensureProjectResources,
   listPublishedProjects,
   replaceProjectResources,
-} from './projectService.js'
+} from "./projectService.js";
 import {
   AboutContent,
   AchievementsContent,
@@ -42,37 +42,49 @@ import {
   ServicesContent,
   SettingsContent,
   SkillsContent,
-} from '../models/PortfolioModule.js'
+} from "../models/PortfolioModule.js";
 
 const profileFields = {
-  home: ['name', 'fullName', 'role', 'rotatingRoles', 'location', 'mapUrl', 'image', 'tagline'],
-  about: ['about', 'aboutImage'],
-  skills: ['skillsImage'],
-  links: ['github', 'linkedin', 'email', 'resume'],
-  settings: ['copyrightYear'],
-}
+  home: [
+    "name",
+    "fullName",
+    "role",
+    "rotatingRoles",
+    "location",
+    "mapUrl",
+    "image",
+    "tagline",
+  ],
+  about: ["about", "aboutImage"],
+  skills: ["skillsImage"],
+  links: ["github", "linkedin", "email", "resume"],
+  settings: ["copyrightYear"],
+};
 
 function pick(source, fields) {
   return Object.fromEntries(
-    fields.filter((field) => source?.[field] !== undefined).map((field) => [field, source[field]]),
-  )
+    fields
+      .filter((field) => source?.[field] !== undefined)
+      .map((field) => [field, source[field]]),
+  );
 }
 
 const legacyPortfolioUrls = new Set([
-  'https://harsh-hsy.netlify.app',
-  'https://harsh-hsy.netlify.app/',
-])
+  "https://harsh-hsy.onrender.com",
+  "https://harsh-hsy.onrender.com/",
+]);
 
 function normalizePortfolioUrl(value) {
-  const url = String(value ?? '').trim()
-  if (!url || legacyPortfolioUrls.has(url)) return defaultPortfolio.settings.siteIdentity.portfolioUrl
-  return url.replace(/\/$/, '')
+  const url = String(value ?? "").trim();
+  if (!url || legacyPortfolioUrls.has(url))
+    return defaultPortfolio.settings.siteIdentity.portfolioUrl;
+  return url.replace(/\/$/, "");
 }
 
 function withoutEyebrow(section = {}) {
   return Object.fromEntries(
-    Object.entries(section).filter(([key]) => key !== 'eyebrow'),
-  )
+    Object.entries(section).filter(([key]) => key !== "eyebrow"),
+  );
 }
 
 const modules = {
@@ -164,88 +176,107 @@ const modules = {
       seo: content.seo ?? defaultPortfolio.seo,
     }),
   },
-}
+};
 
 const editableFields = new Set([
-  'profile',
-  'socials',
-  'skills',
-  'projects',
-  'certificates',
-  'timeline',
-  'achievements',
-  'milestones',
-  'services',
-  'sections',
-  'stats',
-  'settings',
-  'navigation',
-  'commands',
-  'ui',
-  'seo',
-])
+  "profile",
+  "socials",
+  "skills",
+  "projects",
+  "certificates",
+  "timeline",
+  "achievements",
+  "milestones",
+  "services",
+  "sections",
+  "stats",
+  "settings",
+  "navigation",
+  "commands",
+  "ui",
+  "seo",
+]);
 
 const fieldModules = {
-  profile: ['home', 'about', 'skills', 'links', 'settings'],
-  socials: ['links'],
-  skills: ['skills'],
-  projects: ['projects'],
-  certificates: ['certificates'],
-  timeline: ['journey'],
-  achievements: ['achievements'],
-  milestones: ['milestones'],
-  services: ['services'],
-  sections: ['home', 'about', 'skills', 'projects', 'certificates', 'journey', 'milestones', 'services', 'achievements', 'contact', 'settings'],
-  stats: ['about'],
-  settings: ['settings'],
-  navigation: ['settings'],
-  commands: ['settings'],
-  ui: ['settings'],
-  seo: ['settings'],
-}
+  profile: ["home", "about", "skills", "links", "settings"],
+  socials: ["links"],
+  skills: ["skills"],
+  projects: ["projects"],
+  certificates: ["certificates"],
+  timeline: ["journey"],
+  achievements: ["achievements"],
+  milestones: ["milestones"],
+  services: ["services"],
+  sections: [
+    "home",
+    "about",
+    "skills",
+    "projects",
+    "certificates",
+    "journey",
+    "milestones",
+    "services",
+    "achievements",
+    "contact",
+    "settings",
+  ],
+  stats: ["about"],
+  settings: ["settings"],
+  navigation: ["settings"],
+  commands: ["settings"],
+  ui: ["settings"],
+  seo: ["settings"],
+};
 
 const editorModules = {
-  home: ['home'],
-  about: ['about'],
-  skills: ['skills'],
-  projects: ['projects'],
-  certificates: ['certificates'],
-  journey: ['journey'],
-  milestones: ['milestones'],
-  services: ['services'],
-  achievements: ['achievements'],
-  contact: ['contact', 'links'],
-  links: ['links', 'home', 'settings'],
-  settings: ['settings'],
-  globalPages: ['settings'],
-}
+  home: ["home"],
+  about: ["about"],
+  skills: ["skills"],
+  projects: ["projects"],
+  certificates: ["certificates"],
+  journey: ["journey"],
+  milestones: ["milestones"],
+  services: ["services"],
+  achievements: ["achievements"],
+  contact: ["contact", "links"],
+  links: ["links", "home", "settings"],
+  settings: ["settings"],
+  globalPages: ["settings"],
+};
 
 function sanitizeLegacyContent(content) {
-  const resume = content.profile?.resume
-  if (!resume) return content
+  const resume = content.profile?.resume;
+  if (!resume) return content;
 
   return {
     ...content,
     certificates: (content.certificates ?? []).map((certificate) => ({
       ...certificate,
-      file: certificate.file === resume ? '' : certificate.file,
-      credentialUrl: certificate.credentialUrl === resume ? '' : certificate.credentialUrl,
+      file: certificate.file === resume ? "" : certificate.file,
+      credentialUrl:
+        certificate.credentialUrl === resume ? "" : certificate.credentialUrl,
     })),
-  }
+  };
 }
 
 async function readModuleDocuments() {
   const entries = await Promise.all(
     Object.entries(modules).map(async ([name, definition]) => {
-      const document = await definition.model.findOne({ status: 'published' }).lean()
-      return [name, document]
+      const document = await definition.model
+        .findOne({ status: "published" })
+        .lean();
+      return [name, document];
     }),
-  )
+  );
 
-  return Object.fromEntries(entries)
+  return Object.fromEntries(entries);
 }
 
-async function writeModules(content, names = Object.keys(modules), editorName = '') {
+async function writeModules(
+  content,
+  names = Object.keys(modules),
+  editorName = "",
+) {
   const normalizedContent = {
     ...content,
     settings: {
@@ -288,64 +319,75 @@ async function writeModules(content, names = Object.keys(modules), editorName = 
       ...defaultPortfolio.sections,
       ...(content.sections ?? {}),
     },
-  }
+  };
 
-  if (names.includes('home')) validateHomeContent(normalizedContent)
-  if (names.includes('about')) validateAboutContent(normalizedContent)
-  if (names.includes('journey')) validateJourneyContent(normalizedContent)
-  if (names.includes('milestones')) validateMilestonesContent(normalizedContent)
-  if (names.includes('projects')) validateProjectsContent(normalizedContent)
-  if (names.includes('certificates')) validateCertificatesContent(normalizedContent)
-  if (names.includes('skills')) validateSkillsContent(normalizedContent)
-  if (names.includes('services')) validateServicesContent(normalizedContent)
-  if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
-  if (names.includes('contact')) validateContactContent(normalizedContent)
-  if (names.includes('links')) validateLinksContent(normalizedContent)
-  if (names.includes('settings')) {
-    if (editorName === 'globalPages') validateGlobalPagesContent(normalizedContent)
-    else if (editorName === 'settings') validateSettingsContent(normalizedContent)
+  if (names.includes("home")) validateHomeContent(normalizedContent);
+  if (names.includes("about")) validateAboutContent(normalizedContent);
+  if (names.includes("journey")) validateJourneyContent(normalizedContent);
+  if (names.includes("milestones"))
+    validateMilestonesContent(normalizedContent);
+  if (names.includes("projects")) validateProjectsContent(normalizedContent);
+  if (names.includes("certificates"))
+    validateCertificatesContent(normalizedContent);
+  if (names.includes("skills")) validateSkillsContent(normalizedContent);
+  if (names.includes("services")) validateServicesContent(normalizedContent);
+  if (names.includes("achievements"))
+    validateAchievementsContent(normalizedContent);
+  if (names.includes("contact")) validateContactContent(normalizedContent);
+  if (names.includes("links")) validateLinksContent(normalizedContent);
+  if (names.includes("settings")) {
+    if (editorName === "globalPages")
+      validateGlobalPagesContent(normalizedContent);
+    else if (editorName === "settings")
+      validateSettingsContent(normalizedContent);
     else {
-      validateGlobalPagesContent(normalizedContent)
-      validateSettingsContent(normalizedContent)
+      validateGlobalPagesContent(normalizedContent);
+      validateSettingsContent(normalizedContent);
     }
   }
 
   await Promise.all(
     names.map((name) => {
-      const definition = modules[name]
+      const definition = modules[name];
       if (!definition) {
-        const error = new Error(`Unsupported portfolio module: ${name}`)
-        error.statusCode = 400
-        throw error
+        const error = new Error(`Unsupported portfolio module: ${name}`);
+        error.statusCode = 400;
+        throw error;
       }
 
       return definition.model.findOneAndUpdate(
-        { status: 'published' },
-        { $set: { data: definition.extract(normalizedContent), status: 'published' } },
-        { upsert: true, returnDocument: 'after', runValidators: true },
-      )
+        { status: "published" },
+        {
+          $set: {
+            data: definition.extract(normalizedContent),
+            status: "published",
+          },
+        },
+        { upsert: true, returnDocument: "after", runValidators: true },
+      );
     }),
-  )
+  );
 }
 
 function composePortfolio(documents) {
-  const data = (name) => documents[name]?.data ?? modules[name].extract(defaultPortfolio)
+  const data = (name) =>
+    documents[name]?.data ?? modules[name].extract(defaultPortfolio);
 
-  const home = data('home')
-  const about = data('about')
-  const skills = data('skills')
-  const projects = data('projects')
-  const certificates = data('certificates')
-  const journey = data('journey')
-  const milestones = data('milestones')
-  const services = data('services')
-  const achievements = data('achievements')
-  const contact = data('contact')
-  const links = data('links')
-  const settings = data('settings')
-  const rawSettings = settings.settings ?? {}
-  const rawIdentity = rawSettings.siteIdentity ?? {}
-  const rawSeo = settings.seo ?? {}
+  const home = data("home");
+  const about = data("about");
+  const skills = data("skills");
+  const projects = data("projects");
+  const certificates = data("certificates");
+  const journey = data("journey");
+  const milestones = data("milestones");
+  const services = data("services");
+  const achievements = data("achievements");
+  const contact = data("contact");
+  const links = data("links");
+  const settings = data("settings");
+  const rawSettings = settings.settings ?? {};
+  const rawIdentity = rawSettings.siteIdentity ?? {};
+  const rawSeo = settings.seo ?? {};
   const portfolioSettings = {
     ...defaultPortfolio.settings,
     ...rawSettings,
@@ -378,12 +420,12 @@ function composePortfolio(documents) {
       ...defaultPortfolio.settings.maintenance,
       ...(rawSettings.maintenance ?? {}),
     },
-  }
+  };
   const portfolioSeo = {
     ...defaultPortfolio.seo,
     ...rawSeo,
     siteUrl: normalizePortfolioUrl(rawSeo.siteUrl),
-  }
+  };
 
   return {
     profile: {
@@ -421,88 +463,89 @@ function composePortfolio(documents) {
     commands: settings.commands ?? [],
     ui: settings.ui ?? {},
     seo: portfolioSeo,
-  }
+  };
 }
 
 async function ensureModuleDocuments() {
-  const documents = await readModuleDocuments()
-  const missingNames = Object.keys(modules).filter((name) => !documents[name])
-  if (missingNames.length === 0) return documents
+  const documents = await readModuleDocuments();
+  const missingNames = Object.keys(modules).filter((name) => !documents[name]);
+  if (missingNames.length === 0) return documents;
 
-  const legacy = await PortfolioContent.findOne({ status: 'published' }).lean()
-  const migrationSource = sanitizeLegacyContent(legacy ?? defaultPortfolio)
-  await writeModules(migrationSource, missingNames)
+  const legacy = await PortfolioContent.findOne({ status: "published" }).lean();
+  const migrationSource = sanitizeLegacyContent(legacy ?? defaultPortfolio);
+  await writeModules(migrationSource, missingNames);
 
-  return readModuleDocuments()
+  return readModuleDocuments();
 }
 
 export function getEditableFields() {
-  return [...editableFields]
+  return [...editableFields];
 }
 
 export function isEditableField(field) {
-  return editableFields.has(field)
+  return editableFields.has(field);
 }
 
 export function isEditorModule(moduleName) {
-  return Boolean(editorModules[moduleName])
+  return Boolean(editorModules[moduleName]);
 }
 
 export async function getPublishedPortfolio() {
-  const content = composePortfolio(await ensureModuleDocuments())
-  await ensureProjectResources(content.projects)
-  await ensureCertificateResources(content.certificates)
+  const content = composePortfolio(await ensureModuleDocuments());
+  await ensureProjectResources(content.projects);
+  await ensureCertificateResources(content.certificates);
 
   return {
     ...content,
     projects: await listPublishedProjects(),
     certificates: await listPublishedCertificates(),
-  }
+  };
 }
 
 export async function ensurePublishedPortfolio() {
-  return getPublishedPortfolio()
+  return getPublishedPortfolio();
 }
 
 export async function updatePortfolioModule(moduleName, content) {
-  const names = editorModules[moduleName]
+  const names = editorModules[moduleName];
   if (!names) {
-    const error = new Error('Unsupported portfolio module')
-    error.statusCode = 400
-    throw error
+    const error = new Error("Unsupported portfolio module");
+    error.statusCode = 400;
+    throw error;
   }
 
-  await ensureModuleDocuments()
-  await writeModules(content, names, moduleName)
-  if (moduleName === 'projects') await replaceProjectResources(content.projects)
-  return getPublishedPortfolio()
+  await ensureModuleDocuments();
+  await writeModules(content, names, moduleName);
+  if (moduleName === "projects")
+    await replaceProjectResources(content.projects);
+  return getPublishedPortfolio();
 }
 
 export async function updatePortfolioField(field, value) {
   if (!isEditableField(field)) {
-    const error = new Error('Unsupported portfolio field')
-    error.statusCode = 400
-    throw error
+    const error = new Error("Unsupported portfolio field");
+    error.statusCode = 400;
+    throw error;
   }
 
-  const content = await getPublishedPortfolio()
-  const nextContent = { ...content, [field]: value }
-  await writeModules(nextContent, fieldModules[field])
-  if (field === 'projects') await replaceProjectResources(value)
-  if (field === 'certificates') await replaceCertificateResources(value)
-  return getPublishedPortfolio()
+  const content = await getPublishedPortfolio();
+  const nextContent = { ...content, [field]: value };
+  await writeModules(nextContent, fieldModules[field]);
+  if (field === "projects") await replaceProjectResources(value);
+  if (field === "certificates") await replaceCertificateResources(value);
+  return getPublishedPortfolio();
 }
 
 export async function replacePublishedPortfolio(content) {
-  await writeModules(content)
-  await replaceProjectResources(content.projects)
-  await replaceCertificateResources(content.certificates)
-  return getPublishedPortfolio()
+  await writeModules(content);
+  await replaceProjectResources(content.projects);
+  await replaceCertificateResources(content.certificates);
+  return getPublishedPortfolio();
 }
 
 export async function resetPublishedPortfolio() {
-  await writeModules(defaultPortfolio)
-  await replaceProjectResources(defaultPortfolio.projects)
-  await replaceCertificateResources(defaultPortfolio.certificates)
-  return getPublishedPortfolio()
+  await writeModules(defaultPortfolio);
+  await replaceProjectResources(defaultPortfolio.projects);
+  await replaceCertificateResources(defaultPortfolio.certificates);
+  return getPublishedPortfolio();
 }
