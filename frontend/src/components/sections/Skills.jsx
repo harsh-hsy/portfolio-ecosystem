@@ -12,6 +12,7 @@ export default function Skills() {
   const contentState = usePortfolioContent()
   const { profile, section, skills } = getSkillsContent(contentState?.portfolio)
   const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
+  const contentIsLoading = contentState?.status === 'loading' || contentState?.status === 'idle'
 
   return (
     <section id="skills" className="section skills-section">
@@ -33,12 +34,17 @@ export default function Skills() {
           <motion.div
             className="skill-groups"
             variants={simplifyMotion ? undefined : stagger}
-            initial={simplifyMotion ? false : 'hidden'}
-            whileInView={simplifyMotion ? undefined : 'visible'}
+            initial={simplifyMotion || contentIsLoading ? false : 'hidden'}
+            whileInView={simplifyMotion || contentIsLoading ? undefined : 'visible'}
+            animate={contentIsLoading ? undefined : 'visible'}
             viewport={{ once: true, amount: 0.2 }}
           >
             {skills.map((group) => (
-              <motion.article className="skill-group" key={group.category} variants={simplifyMotion ? undefined : fadeUp}>
+              <motion.article
+                className="skill-group"
+                key={group.category}
+                variants={simplifyMotion || contentIsLoading ? undefined : fadeUp}
+              >
                 <h3>{group.category}</h3>
                 <div className="skill-list">
                   {group.items.map((skill) => {
