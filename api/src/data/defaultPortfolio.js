@@ -14,7 +14,7 @@ export const defaultPortfolio = {
     "email": "mr.harshsingh.contact@gmail.com",
     "github": "https://github.com/harsh-hsy",
     "linkedin": "https://www.linkedin.com/in/harsh-hsy/",
-    "resume": "https://drive.google.com/uc?export=download&id=1ybP16oy2vlj-K3a7CskXdZdX2riJ4vZ8",
+    "resume": "/assets/resume/Harsh_Kumar_Singh.pdf",
     "image": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/mrdrsoszikjnfpzmdlno?_a=BAMAPqWQ0",
     "aboutImage": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/tbgo5w47mq779zzezdkp?_a=BAMAPqWQ0",
     "skillsImage": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/lokh6odssm4wdecb6l1e?_a=BAMAPqWQ0",
