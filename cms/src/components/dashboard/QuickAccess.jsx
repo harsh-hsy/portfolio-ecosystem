@@ -1,5 +1,5 @@
-import quickAccess from "../../data/quickAccess";
-import QuickAccessCard from "./QuickAccessCard";
+import quickAccess from '../../data/quickAccess'
+import QuickAccessCard from './QuickAccessCard'
 
 function QuickAccess() {
   return (
@@ -10,14 +10,11 @@ function QuickAccess() {
 
       <div className="quick-access__grid">
         {quickAccess.map((item) => (
-          <QuickAccessCard
-            key={item.id}
-            {...item}
-          />
+          <QuickAccessCard key={item.id} {...item} />
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default QuickAccess;
+export default QuickAccess

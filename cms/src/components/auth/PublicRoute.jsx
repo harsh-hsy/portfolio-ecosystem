@@ -1,26 +1,19 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom'
 
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from '../../hooks/useAuth'
 
 function PublicRoute({ children }) {
-  const {
-    authenticated,
-    checkingSession,
-  } = useAuth();
+  const { authenticated, checkingSession } = useAuth()
 
   if (checkingSession) {
-    return (
-      <div className="auth-loading">
-        Checking secure session...
-      </div>
-    );
+    return <div className="auth-loading">Checking secure session...</div>
   }
 
   if (authenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/dashboard" replace />
   }
 
-  return children;
+  return children
 }
 
-export default PublicRoute;
+export default PublicRoute

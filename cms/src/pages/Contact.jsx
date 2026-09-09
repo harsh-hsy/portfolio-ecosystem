@@ -1,41 +1,41 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { createSocials, updateSection } from "../utils/contentFormUtils";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { createSocials, updateSection } from '../utils/contentFormUtils'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  eyebrow: "",
-  title: "",
-  copy: "",
+  eyebrow: '',
+  title: '',
+  copy: '',
   useHomeAvailability: false,
-  availability: "",
-  panelTitle: "",
-  publicEmail: "",
-};
+  availability: '',
+  panelTitle: '',
+  publicEmail: '',
+}
 
 function formFromPortfolio(portfolio) {
-  const profile = portfolio?.profile ?? {};
-  const section = portfolio?.sections?.contact ?? {};
+  const profile = portfolio?.profile ?? {}
+  const section = portfolio?.sections?.contact ?? {}
 
   return {
-    eyebrow: section.eyebrow ?? "",
-    title: section.title ?? "",
-    copy: section.copy ?? "",
+    eyebrow: section.eyebrow ?? '',
+    title: section.title ?? '',
+    copy: section.copy ?? '',
     useHomeAvailability: Boolean(section.useHomeAvailability),
-    availability: section.availability ?? "",
-    panelTitle: section.panelTitle ?? "",
-    publicEmail: profile.email ?? "",
-  };
+    availability: section.availability ?? '',
+    panelTitle: section.panelTitle ?? '',
+    publicEmail: profile.email ?? '',
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
   const nextProfile = {
     ...(portfolio.profile ?? {}),
     email: form.publicEmail.trim(),
-  };
+  }
 
   return updateSection(
     {
@@ -43,7 +43,7 @@ function portfolioFromForm(portfolio, form) {
       profile: nextProfile,
       socials: createSocials(nextProfile),
     },
-    "contact",
+    'contact',
     {
       eyebrow: form.eyebrow.trim(),
       title: form.title.trim(),
@@ -52,43 +52,43 @@ function portfolioFromForm(portfolio, form) {
       availability: form.availability.trim(),
       panelTitle: form.panelTitle.trim(),
     },
-  );
+  )
 }
 
 function validateContactForm(form) {
   return validateForm(form, {
     publicEmail: [
-      validators.required("Public email is required."),
-      validators.email("Enter a valid public email address."),
+      validators.required('Public email is required.'),
+      validators.email('Enter a valid public email address.'),
     ],
     availability: (value, currentForm) =>
       currentForm.useHomeAvailability
-        ? ""
-        : validators.required("Availability text is required.")(value) ||
+        ? ''
+        : validators.required('Availability text is required.')(value) ||
           validators.maxLength(80)(value),
-    title: [validators.required("Contact title is required."), validators.maxLength(110)],
-    copy: [validators.required("Contact copy is required."), validators.maxLength(280)],
-    panelTitle: [validators.required("Panel title is required."), validators.maxLength(120)],
-  });
+    title: [validators.required('Contact title is required.'), validators.maxLength(110)],
+    copy: [validators.required('Contact copy is required.'), validators.maxLength(280)],
+    panelTitle: [validators.required('Panel title is required.'), validators.maxLength(120)],
+  })
 }
 
 function Contact() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "contact",
+    moduleName: 'contact',
     getForm,
     getPortfolio,
     validate: validateContactForm,
-    successMessage: "Contact content updated successfully.",
-  });
-  const homeAvailability = editor.portfolio?.sections?.hero?.availability ?? "";
+    successMessage: 'Contact content updated successfully.',
+  })
+  const homeAvailability = editor.portfolio?.sections?.hero?.availability ?? ''
   const previewAvailability = editor.form.useHomeAvailability
     ? homeAvailability
-    : editor.form.availability;
+    : editor.form.availability
 
   return (
     <section className="page">
@@ -99,11 +99,11 @@ function Contact() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Contact section</span>
-            <h2>{editor.form.title || "Contact title"}</h2>
-            <p>{previewAvailability || "Availability"}</p>
+            <h2>{editor.form.title || 'Contact title'}</h2>
+            <p>{previewAvailability || 'Availability'}</p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
         <div className="content-editor__section">
@@ -195,7 +195,7 @@ function Contact() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Contact;
+export default Contact

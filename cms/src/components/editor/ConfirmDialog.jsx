@@ -1,34 +1,34 @@
-import { useEffect, useRef } from "react";
-import { FiAlertTriangle, FiX } from "react-icons/fi";
+import { useEffect, useRef } from 'react'
+import { FiAlertTriangle, FiX } from 'react-icons/fi'
 
 function ConfirmDialog({
   isOpen,
-  title = "Delete item?",
-  message = "This action cannot be undone.",
-  confirmLabel = "Delete",
-  cancelLabel = "Cancel",
+  title = 'Delete item?',
+  message = 'This action cannot be undone.',
+  confirmLabel = 'Delete',
+  cancelLabel = 'Cancel',
   isConfirming = false,
   onConfirm,
   onCancel,
 }) {
-  const cancelButtonRef = useRef(null);
+  const cancelButtonRef = useRef(null)
 
   useEffect(() => {
-    if (!isOpen) return undefined;
+    if (!isOpen) return undefined
 
-    cancelButtonRef.current?.focus();
+    cancelButtonRef.current?.focus()
 
     function handleKeyDown(event) {
-      if (event.key === "Escape" && !isConfirming) {
-        onCancel();
+      if (event.key === 'Escape' && !isConfirming) {
+        onCancel()
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isConfirming, isOpen, onCancel]);
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isConfirming, isOpen, onCancel])
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="dialog-backdrop" onMouseDown={onCancel}>
@@ -76,13 +76,13 @@ function ConfirmDialog({
               onClick={onConfirm}
               disabled={isConfirming}
             >
-              {isConfirming ? "Deleting" : confirmLabel}
+              {isConfirming ? 'Deleting' : confirmLabel}
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ConfirmDialog;
+export default ConfirmDialog

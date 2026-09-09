@@ -26,9 +26,16 @@ function ImageGalleryUploader({ items = [], onChange, section = 'projects', erro
       <div className="image-gallery-uploader__heading">
         <div>
           <h3>Project screenshots</h3>
-          <p>Upload, crop and arrange screenshots. The first image is used when no separate thumbnail is set.</p>
+          <p>
+            Upload, crop and arrange screenshots. The first image is used when no separate thumbnail
+            is set.
+          </p>
         </div>
-        <button className="btn btn-secondary" type="button" onClick={() => onChange([...items, ''])}>
+        <button
+          className="btn btn-secondary"
+          type="button"
+          onClick={() => onChange([...items, ''])}
+        >
           <FiPlus aria-hidden="true" /> Add screenshot
         </button>
       </div>
@@ -40,9 +47,32 @@ function ImageGalleryUploader({ items = [], onChange, section = 'projects', erro
               <div className="image-gallery-uploader__item-header">
                 <strong>Screenshot {index + 1}</strong>
                 <div>
-                  <button type="button" className="icon-button" onClick={() => onChange(move(items, index, index - 1))} disabled={index === 0} aria-label="Move screenshot up"><FiArrowUp /></button>
-                  <button type="button" className="icon-button" onClick={() => onChange(move(items, index, index + 1))} disabled={index === items.length - 1} aria-label="Move screenshot down"><FiArrowDown /></button>
-                  <button type="button" className="icon-button icon-button--danger" onClick={() => removeItem(index)} aria-label="Remove screenshot"><FiTrash2 /></button>
+                  <button
+                    type="button"
+                    className="icon-button"
+                    onClick={() => onChange(move(items, index, index - 1))}
+                    disabled={index === 0}
+                    aria-label="Move screenshot up"
+                  >
+                    <FiArrowUp />
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-button"
+                    onClick={() => onChange(move(items, index, index + 1))}
+                    disabled={index === items.length - 1}
+                    aria-label="Move screenshot down"
+                  >
+                    <FiArrowDown />
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-button icon-button--danger"
+                    onClick={() => removeItem(index)}
+                    aria-label="Remove screenshot"
+                  >
+                    <FiTrash2 />
+                  </button>
                 </div>
               </div>
               <ImageUploader
@@ -58,9 +88,15 @@ function ImageGalleryUploader({ items = [], onChange, section = 'projects', erro
             </div>
           ))}
         </div>
-      ) : <div className="image-gallery-uploader__empty">No screenshots added.</div>}
+      ) : (
+        <div className="image-gallery-uploader__empty">No screenshots added.</div>
+      )}
 
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      ) : null}
     </div>
   )
 }

@@ -5,8 +5,8 @@
 
 :root {
   /* ========= Typography ========= */
-  --font-primary: "Inter", system-ui, sans-serif;
-  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-primary: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
 
   /* ========= Brand Colors ========= */
   --primary: #2563eb;
@@ -66,7 +66,7 @@
    Dark Theme
 ========================================== */
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   /* ========= Brand ========= */
   --primary: #7c8cff;
   --primary-hover: #98a5ff;

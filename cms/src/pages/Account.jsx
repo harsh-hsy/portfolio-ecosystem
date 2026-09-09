@@ -1,7 +1,7 @@
-import AccountForm from "../components/account/AccountForm";
+import AccountForm from '../components/account/AccountForm'
 
 function Account() {
-  return <AccountForm />;
+  return <AccountForm />
 }
 
-export default Account;
+export default Account

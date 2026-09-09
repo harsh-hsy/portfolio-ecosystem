@@ -1,9 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-import {
-  FiEye,
-  FiEyeOff,
-} from "react-icons/fi";
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 
 function PasswordField({
   id,
@@ -14,53 +11,34 @@ function PasswordField({
   autoComplete,
   disabled = false,
   required = false,
-  error = "",
-  helperText = "",
+  error = '',
+  helperText = '',
   minLength,
   maxLength,
   onChange,
 }) {
-  const [showPassword, setShowPassword] =
-    useState(false);
-
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleToggleVisibility() {
     if (disabled) {
-      return;
+      return
     }
 
-    setShowPassword(
-      (previousValue) => !previousValue
-    );
+    setShowPassword((previousValue) => !previousValue)
   }
-
 
   return (
     <div className="form-group">
-
-      <label
-        htmlFor={id}
-        className="form-label"
-      >
+      <label htmlFor={id} className="form-label">
         {label}
       </label>
 
-
       <div className="password-input-wrapper">
-
         <input
           id={id}
           name={name}
-          className={`form-input ${
-            error
-              ? "form-input--error"
-              : ""
-          }`}
-          type={
-            showPassword
-              ? "text"
-              : "password"
-          }
+          className={`form-input ${error ? 'form-input--error' : ''}`}
+          type={showPassword ? 'text' : 'password'}
           placeholder={placeholder}
           autoComplete={autoComplete}
           value={value}
@@ -74,44 +52,23 @@ function PasswordField({
           autoCorrect="off"
         />
 
-
         <button
           type="button"
           className="password-input-toggle"
           onClick={handleToggleVisibility}
           disabled={disabled}
-          aria-label={
-            showPassword
-              ? "Hide password"
-              : "Show password"
-          }
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
           aria-pressed={showPassword}
         >
-          {showPassword ? (
-            <FiEyeOff />
-          ) : (
-            <FiEye />
-          )}
+          {showPassword ? <FiEyeOff /> : <FiEye />}
         </button>
-
       </div>
 
+      {helperText && !error && <p className="field-helper">{helperText}</p>}
 
-      {helperText && !error && (
-        <p className="field-helper">
-          {helperText}
-        </p>
-      )}
-
-
-      {error && (
-        <p className="field-error">
-          {error}
-        </p>
-      )}
-
+      {error && <p className="field-error">{error}</p>}
     </div>
-  );
+  )
 }
 
-export default PasswordField;
+export default PasswordField

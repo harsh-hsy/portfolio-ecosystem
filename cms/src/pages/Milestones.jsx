@@ -1,30 +1,27 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import StructuredEntriesEditor from "../components/editor/StructuredEntriesEditor";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import {
-  cleanStructuredEntries,
-  validateStructuredEntries,
-} from "../utils/structuredEntries";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import StructuredEntriesEditor from '../components/editor/StructuredEntriesEditor'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { cleanStructuredEntries, validateStructuredEntries } from '../utils/structuredEntries'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  title: "",
-  copy: "",
+  title: '',
+  copy: '',
   milestones: [],
-};
+}
 
 function formFromPortfolio(portfolio) {
-  const section = portfolio?.sections?.milestones ?? {};
+  const section = portfolio?.sections?.milestones ?? {}
 
   return {
-    title: section.title ?? "",
-    copy: section.copy ?? "",
+    title: section.title ?? '',
+    copy: section.copy ?? '',
     milestones: cleanStructuredEntries(portfolio?.milestones ?? []),
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -33,45 +30,39 @@ function portfolioFromForm(portfolio, form) {
       ...portfolio,
       milestones: cleanStructuredEntries(form.milestones),
     },
-    "milestones",
+    'milestones',
     {
       title: form.title.trim(),
       copy: form.copy.trim(),
     },
-  );
+  )
 }
 
 function validateMilestonesForm(form) {
   return validateForm(form, {
-    title: [validators.required("Milestones title is required."), validators.maxLength(140)],
-    copy: [
-      validators.required("Milestones description is required."),
-      validators.maxLength(280),
-    ],
+    title: [validators.required('Milestones title is required.'), validators.maxLength(140)],
+    copy: [validators.required('Milestones description is required.'), validators.maxLength(280)],
     milestones: (entries) =>
       validateStructuredEntries(entries, {
-        collectionLabel: "milestones",
-        itemLabel: "milestone",
+        collectionLabel: 'milestones',
+        itemLabel: 'milestone',
       }),
-  });
+  })
 }
 
 function Milestones() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "milestones",
+    moduleName: 'milestones',
     getForm,
     getPortfolio,
     validate: validateMilestonesForm,
-    successMessage: "Milestones updated successfully.",
-  });
+    successMessage: 'Milestones updated successfully.',
+  })
 
   return (
     <section className="page">
@@ -82,11 +73,11 @@ function Milestones() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Milestones preview</span>
-            <h2>{editor.form.title || "Milestones title"}</h2>
+            <h2>{editor.form.title || 'Milestones title'}</h2>
             <p>{editor.form.milestones?.length ?? 0} milestone cards</p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -129,14 +120,14 @@ function Milestones() {
             className="milestone-entries-editor"
             label="Portfolio Milestones"
             items={editor.form.milestones ?? []}
-            onChange={(milestones) =>
-              editor.updateForm((current) => ({ ...current, milestones }))
-            }
+            onChange={(milestones) => editor.updateForm((current) => ({ ...current, milestones }))}
             addLabel="Add Milestone"
             itemName="Milestone"
           />
           {editor.errors.milestones ? (
-            <p className="form-error" role="alert">{editor.errors.milestones}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.milestones}
+            </p>
           ) : null}
         </div>
 
@@ -149,7 +140,7 @@ function Milestones() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Milestones;
+export default Milestones

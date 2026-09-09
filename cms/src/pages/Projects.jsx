@@ -1,144 +1,133 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  FiEye,
-  FiEyeOff,
-  FiFolder,
-  FiPlus,
-  FiSearch,
-  FiStar,
-  FiX,
-} from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from 'react'
+import { FiEye, FiEyeOff, FiFolder, FiPlus, FiSearch, FiStar, FiX } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
 
-import { useToast } from "../hooks/useToast";
+import { useToast } from '../hooks/useToast'
 import {
   createAdminProject,
   getAdminProjects,
   updateAdminProject,
-} from "../services/portfolioService";
+} from '../services/portfolioService'
 
-const filters = ["All", "Published", "Draft", "Featured", "Hidden"];
-const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173";
+const filters = ['All', 'Published', 'Draft', 'Featured', 'Hidden']
+const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
 
 function slugify(value) {
-  return String(value || "")
+  return String(value || '')
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 function resolveImageUrl(path) {
-  if (!path) return "";
-  if (/^(https?:|data:|blob:)/i.test(path)) return path;
-  return `${portfolioUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+  if (!path) return ''
+  if (/^(https?:|data:|blob:)/i.test(path)) return path
+  return `${portfolioUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 
 function Projects() {
-  const navigate = useNavigate();
-  const { showToast } = useToast();
-  const [projects, setProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [projectName, setProjectName] = useState("");
-  const [isCreating, setIsCreating] = useState(false);
-  const [updatingSlug, setUpdatingSlug] = useState("");
+  const navigate = useNavigate()
+  const { showToast } = useToast()
+  const [projects, setProjects] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [query, setQuery] = useState('')
+  const [activeFilter, setActiveFilter] = useState('All')
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [projectName, setProjectName] = useState('')
+  const [isCreating, setIsCreating] = useState(false)
+  const [updatingSlug, setUpdatingSlug] = useState('')
 
   useEffect(() => {
-    document.querySelector(".dashboard-main")?.scrollTo({ top: 0, behavior: "auto" });
-  }, []);
+    document.querySelector('.dashboard-main')?.scrollTo({ top: 0, behavior: 'auto' })
+  }, [])
 
   useEffect(() => {
-    let ignore = false;
+    let ignore = false
 
     async function loadProjects() {
       try {
-        setIsLoading(true);
-        const response = await getAdminProjects();
-        if (!ignore) setProjects(response.projects || []);
+        setIsLoading(true)
+        const response = await getAdminProjects()
+        if (!ignore) setProjects(response.projects || [])
       } catch (requestError) {
-        if (!ignore) setError(requestError.message);
+        if (!ignore) setError(requestError.message)
       } finally {
-        if (!ignore) setIsLoading(false);
+        if (!ignore) setIsLoading(false)
       }
     }
 
-    loadProjects();
+    loadProjects()
     return () => {
-      ignore = true;
-    };
-  }, []);
+      ignore = true
+    }
+  }, [])
 
   const featuredCount = projects.filter(
-    (project) =>
-      project.publicationStatus === "published" &&
-      project.visible &&
-      project.featured,
-  ).length;
+    (project) => project.publicationStatus === 'published' && project.visible && project.featured,
+  ).length
 
   const filteredProjects = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase()
 
     return projects.filter((project) => {
       const matchesQuery =
         !normalizedQuery ||
         [project.title, project.shortTitle, project.category, project.slug]
-          .join(" ")
+          .join(' ')
           .toLowerCase()
-          .includes(normalizedQuery);
+          .includes(normalizedQuery)
 
       const matchesFilter =
-        activeFilter === "All" ||
-        (activeFilter === "Published" && project.publicationStatus === "published") ||
-        (activeFilter === "Draft" && project.publicationStatus === "draft") ||
-        (activeFilter === "Featured" && project.featured) ||
-        (activeFilter === "Hidden" && !project.visible);
+        activeFilter === 'All' ||
+        (activeFilter === 'Published' && project.publicationStatus === 'published') ||
+        (activeFilter === 'Draft' && project.publicationStatus === 'draft') ||
+        (activeFilter === 'Featured' && project.featured) ||
+        (activeFilter === 'Hidden' && !project.visible)
 
-      return matchesQuery && matchesFilter;
-    });
-  }, [activeFilter, projects, query]);
+      return matchesQuery && matchesFilter
+    })
+  }, [activeFilter, projects, query])
 
   async function updateProject(project, changes, successMessage) {
     try {
-      setUpdatingSlug(project.slug);
+      setUpdatingSlug(project.slug)
       const response = await updateAdminProject(project.slug, {
         ...project,
         ...changes,
-      });
+      })
       setProjects((current) =>
         current.map((item) => (item._id === project._id ? response.project : item)),
-      );
-      showToast(successMessage);
+      )
+      showToast(successMessage)
     } catch (requestError) {
-      showToast(requestError.message, { type: "error" });
+      showToast(requestError.message, { type: 'error' })
     } finally {
-      setUpdatingSlug("");
+      setUpdatingSlug('')
     }
   }
 
   async function handleCreate(event) {
-    event.preventDefault();
-    if (!projectName.trim()) return;
+    event.preventDefault()
+    if (!projectName.trim()) return
 
     try {
-      setIsCreating(true);
-      const response = await createAdminProject(projectName);
-      showToast("Project draft created in MongoDB.");
-      navigate(`/projects/${response.project.slug}`);
+      setIsCreating(true)
+      const response = await createAdminProject(projectName)
+      showToast('Project draft created in MongoDB.')
+      navigate(`/projects/${response.project.slug}`)
     } catch (requestError) {
-      showToast(requestError.message, { type: "error" });
+      showToast(requestError.message, { type: 'error' })
     } finally {
-      setIsCreating(false);
+      setIsCreating(false)
     }
   }
 
   function closeCreateDialog() {
-    if (isCreating) return;
-    setIsCreateOpen(false);
-    setProjectName("");
+    if (isCreating) return
+    setIsCreateOpen(false)
+    setProjectName('')
   }
 
   return (
@@ -147,7 +136,7 @@ function Projects() {
         <div className="projects-overview__filters" role="group" aria-label="Filter projects">
           {filters.map((filter) => (
             <button
-              className={activeFilter === filter ? "is-active" : ""}
+              className={activeFilter === filter ? 'is-active' : ''}
               key={filter}
               type="button"
               onClick={() => setActiveFilter(filter)}
@@ -179,17 +168,21 @@ function Projects() {
         <span>MongoDB connected</span>
       </div>
 
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       {isLoading ? (
         <div className="projects-overview__empty">Loading project library...</div>
       ) : filteredProjects.length ? (
         <div className="project-library-grid">
           {filteredProjects.map((project) => {
-            const image = project.thumbnail || project.images?.[0];
-            const isDraft = project.publicationStatus === "draft";
-            const isUpdating = updatingSlug === project.slug;
-            const canFeature = !isDraft && project.visible;
+            const image = project.thumbnail || project.images?.[0]
+            const isDraft = project.publicationStatus === 'draft'
+            const isUpdating = updatingSlug === project.slug
+            const canFeature = !isDraft && project.visible
 
             return (
               <article
@@ -199,9 +192,9 @@ function Projects() {
                 role="link"
                 onClick={() => navigate(`/projects/${project.slug}`)}
                 onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    navigate(`/projects/${project.slug}`);
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    navigate(`/projects/${project.slug}`)
                   }
                 }}
               >
@@ -211,48 +204,83 @@ function Projects() {
                   ) : (
                     <FiFolder aria-hidden="true" />
                   )}
-                  <span className={`project-library-card__status project-library-card__status--${isDraft ? "draft" : "published"}`}>
-                    {isDraft ? "Draft" : "Published"}
+                  <span
+                    className={`project-library-card__status project-library-card__status--${isDraft ? 'draft' : 'published'}`}
+                  >
+                    {isDraft ? 'Draft' : 'Published'}
                   </span>
                 </div>
 
                 <div className="project-library-card__body">
                   <div>
-                    <p>{project.category || "Uncategorized"}</p>
+                    <p>{project.category || 'Uncategorized'}</p>
                     <h2>{project.shortTitle || project.title}</h2>
                     <span>/projects/{project.slug}</span>
                   </div>
-                  <div className="project-library-card__actions" aria-label={`${project.shortTitle || project.title} actions`}>
+                  <div
+                    className="project-library-card__actions"
+                    aria-label={`${project.shortTitle || project.title} actions`}
+                  >
                     <button
-                      className={project.featured ? "is-active" : ""}
+                      className={project.featured ? 'is-active' : ''}
                       type="button"
-                      disabled={isUpdating || !canFeature || (!project.featured && featuredCount >= 6)}
-                      aria-label={project.featured ? "Remove from featured projects" : "Feature project"}
-                      title={!canFeature ? "Publish and show the project before featuring it" : "Feature project"}
+                      disabled={
+                        isUpdating || !canFeature || (!project.featured && featuredCount >= 6)
+                      }
+                      aria-label={
+                        project.featured ? 'Remove from featured projects' : 'Feature project'
+                      }
+                      title={
+                        !canFeature
+                          ? 'Publish and show the project before featuring it'
+                          : 'Feature project'
+                      }
                       onClick={(event) => {
-                        event.stopPropagation();
-                        updateProject(project, { featured: !project.featured }, project.featured ? "Removed from featured projects." : "Project featured on homepage.");
+                        event.stopPropagation()
+                        updateProject(
+                          project,
+                          { featured: !project.featured },
+                          project.featured
+                            ? 'Removed from featured projects.'
+                            : 'Project featured on homepage.',
+                        )
                       }}
                     >
                       <FiStar aria-hidden="true" />
                     </button>
                     <button
-                      className={project.visible ? "is-active" : ""}
+                      className={project.visible ? 'is-active' : ''}
                       type="button"
                       disabled={isUpdating || isDraft}
-                      aria-label={project.visible ? "Hide project" : "Show project"}
-                      title={isDraft ? "Publish the project before showing it" : project.visible ? "Hide project" : "Show project"}
+                      aria-label={project.visible ? 'Hide project' : 'Show project'}
+                      title={
+                        isDraft
+                          ? 'Publish the project before showing it'
+                          : project.visible
+                            ? 'Hide project'
+                            : 'Show project'
+                      }
                       onClick={(event) => {
-                        event.stopPropagation();
-                        updateProject(project, { visible: !project.visible }, project.visible ? "Project hidden from portfolio." : "Project visible on portfolio.");
+                        event.stopPropagation()
+                        updateProject(
+                          project,
+                          { visible: !project.visible },
+                          project.visible
+                            ? 'Project hidden from portfolio.'
+                            : 'Project visible on portfolio.',
+                        )
                       }}
                     >
-                      {project.visible ? <FiEye aria-hidden="true" /> : <FiEyeOff aria-hidden="true" />}
+                      {project.visible ? (
+                        <FiEye aria-hidden="true" />
+                      ) : (
+                        <FiEyeOff aria-hidden="true" />
+                      )}
                     </button>
                   </div>
                 </div>
               </article>
-            );
+            )
           })}
         </div>
       ) : (
@@ -283,7 +311,9 @@ function Projects() {
               </button>
             </div>
             <label className="form-group project-create-dialog__field">
-              <span className="form-label">Project Name <b aria-hidden="true">*</b></span>
+              <span className="form-label">
+                Project Name <b aria-hidden="true">*</b>
+              </span>
               <input
                 className="form-input"
                 autoFocus
@@ -296,19 +326,25 @@ function Projects() {
             </label>
             <div className="project-create-dialog__slug" id="project-slug-preview">
               <span>Generated project URL</span>
-              <code>/projects/{slugify(projectName) || "project-name"}</code>
+              <code>/projects/{slugify(projectName) || 'project-name'}</code>
             </div>
             <div className="project-create-dialog__actions">
-              <button className="btn btn-secondary" type="button" onClick={closeCreateDialog}>Cancel</button>
-              <button className="btn btn-primary" type="submit" disabled={isCreating || !projectName.trim()}>
-                {isCreating ? "Creating..." : "Create Draft"}
+              <button className="btn btn-secondary" type="button" onClick={closeCreateDialog}>
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={isCreating || !projectName.trim()}
+              >
+                {isCreating ? 'Creating...' : 'Create Draft'}
               </button>
             </div>
           </form>
         </div>
       ) : null}
     </section>
-  );
+  )
 }
 
-export default Projects;
+export default Projects

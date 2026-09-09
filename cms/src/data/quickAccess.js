@@ -1,31 +1,20 @@
-import {
-  FiUser,
-  FiMail,
-  FiSettings,
-} from "react-icons/fi";
+import { FiUser, FiSettings } from 'react-icons/fi'
 
 const quickAccess = [
   {
-  id: "account",
-  title: "Account",
-  description: "Manage your CMS account",
-  icon: FiUser,
-  path: "/account",
-},
-  {
-    id: "inbox",
-    title: "Inbox",
-    description: "View visitor messages",
-    icon: FiMail,
-    path: "/inbox",
+    id: 'account',
+    title: 'Account',
+    description: 'Manage your CMS account',
+    icon: FiUser,
+    path: '/account',
   },
   {
-    id: "settings",
-    title: "Settings",
-    description: "Manage portfolio and CMS settings",
+    id: 'settings',
+    title: 'Settings',
+    description: 'Manage portfolio and CMS settings',
     icon: FiSettings,
-    path: "/settings",
+    path: '/settings',
   },
-];
+]
 
-export default quickAccess;
+export default quickAccess

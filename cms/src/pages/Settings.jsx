@@ -1,29 +1,29 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
   maintenanceEnabled: false,
-  maintenanceHeading: "",
-  maintenanceMessage: "",
+  maintenanceHeading: '',
+  maintenanceMessage: '',
   announcementEnabled: false,
-  announcementText: "",
-};
+  announcementText: '',
+}
 
 function formFromPortfolio(portfolio) {
-  const maintenance = portfolio?.settings?.maintenance ?? {};
+  const maintenance = portfolio?.settings?.maintenance ?? {}
 
   return {
     maintenanceEnabled: maintenance.enabled ?? false,
-    maintenanceHeading: maintenance.heading ?? "Portfolio under maintenance",
+    maintenanceHeading: maintenance.heading ?? 'Portfolio under maintenance',
     maintenanceMessage:
-      maintenance.message ?? "I am making a few improvements. Please check back shortly.",
+      maintenance.message ?? 'I am making a few improvements. Please check back shortly.',
     announcementEnabled: maintenance.announcementEnabled ?? false,
-    announcementText: maintenance.announcementText ?? "",
-  };
+    announcementText: maintenance.announcementText ?? '',
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -40,7 +40,7 @@ function portfolioFromForm(portfolio, form) {
         announcementText: form.announcementText.trim(),
       },
     },
-  };
+  }
 }
 
 function validateSettings(form) {
@@ -50,11 +50,11 @@ function validateSettings(form) {
     announcementText: [
       (value, values) =>
         values.announcementEnabled && !String(value).trim()
-          ? "Announcement text is required while visible."
-          : "",
+          ? 'Announcement text is required while visible.'
+          : '',
       validators.maxLength(180),
     ],
-  });
+  })
 }
 
 function ToggleField({ checked, label, description, onChange }) {
@@ -70,45 +70,45 @@ function ToggleField({ checked, label, description, onChange }) {
         {description ? <small>{description}</small> : null}
       </span>
     </label>
-  );
+  )
 }
 
 export default function Settings() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "settings",
+    moduleName: 'settings',
     getForm,
     getPortfolio,
     validate: validateSettings,
-    successMessage: "Maintenance settings updated successfully.",
-  });
+    successMessage: 'Maintenance settings updated successfully.',
+  })
 
   const updateToggle = (name, value) => {
-    editor.updateForm((current) => ({ ...current, [name]: value }));
-  };
+    editor.updateForm((current) => ({ ...current, [name]: value }))
+  }
 
   const changeMaintenanceMode = (enabled) => {
     if (
       enabled &&
       !window.confirm(
-        "Enable maintenance mode? Public visitors will see only the maintenance page.",
+        'Enable maintenance mode? Public visitors will see only the maintenance page.',
       )
     ) {
-      return;
+      return
     }
 
-    updateToggle("maintenanceEnabled", enabled);
-  };
+    updateToggle('maintenanceEnabled', enabled)
+  }
 
   return (
     <section className="page settings-page">
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
         <section
-          className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? "is-enabled" : ""}`}
+          className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? 'is-enabled' : ''}`}
         >
           <div className="editor-section-heading">
             <div>
@@ -116,7 +116,7 @@ export default function Settings() {
               <p>Temporarily replace the public site or display a lightweight announcement.</p>
             </div>
             <span className="content-editor__badge">
-              {editor.isLoading ? "Loading" : "Connected"}
+              {editor.isLoading ? 'Loading' : 'Connected'}
             </span>
           </div>
 
@@ -131,7 +131,7 @@ export default function Settings() {
               checked={editor.form.announcementEnabled}
               label="Show announcement"
               description="Display a small banner above the portfolio navigation."
-              onChange={(value) => updateToggle("announcementEnabled", value)}
+              onChange={(value) => updateToggle('announcementEnabled', value)}
             />
             <FormField
               label="Maintenance Heading"
@@ -174,5 +174,5 @@ export default function Settings() {
         />
       </form>
     </section>
-  );
+  )
 }

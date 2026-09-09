@@ -1,29 +1,29 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import RepeaterField from "../components/editor/RepeaterField";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import RepeaterField from '../components/editor/RepeaterField'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  title: "",
+  title: '',
   achievements: [],
-};
+}
 
 function cleanList(items) {
   return (Array.isArray(items) ? items : [])
-    .map((item) => String(item ?? "").trim())
-    .filter(Boolean);
+    .map((item) => String(item ?? '').trim())
+    .filter(Boolean)
 }
 
 function formFromPortfolio(portfolio) {
-  const section = portfolio?.sections?.achievements ?? {};
+  const section = portfolio?.sections?.achievements ?? {}
   return {
-    title: section.title ?? "",
+    title: section.title ?? '',
     achievements: cleanList(portfolio?.achievements ?? []),
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -32,47 +32,44 @@ function portfolioFromForm(portfolio, form) {
       ...portfolio,
       achievements: cleanList(form.achievements),
     },
-    "achievements",
+    'achievements',
     {
       ...(portfolio.sections?.achievements ?? {}),
       title: form.title.trim(),
     },
-  );
+  )
 }
 
 function validateList(items) {
-  const cleaned = cleanList(items);
-  if (!cleaned.length) return "Add at least one achievement.";
-  if (cleaned.length > 12) return "Use 12 achievements or fewer.";
+  const cleaned = cleanList(items)
+  if (!cleaned.length) return 'Add at least one achievement.'
+  if (cleaned.length > 12) return 'Use 12 achievements or fewer.'
   if (cleaned.some((item) => item.length > 140)) {
-    return "Each achievement must use 140 characters or fewer.";
+    return 'Each achievement must use 140 characters or fewer.'
   }
-  return "";
+  return ''
 }
 
 function validateAchievementsForm(form) {
   return validateForm(form, {
-    title: [validators.required("Achievements title is required."), validators.maxLength(100)],
+    title: [validators.required('Achievements title is required.'), validators.maxLength(100)],
     achievements: validateList,
-  });
+  })
 }
 
 function Achievements() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "achievements",
+    moduleName: 'achievements',
     getForm,
     getPortfolio,
     validate: validateAchievementsForm,
-    successMessage: "Achievements updated successfully.",
-  });
+    successMessage: 'Achievements updated successfully.',
+  })
 
   return (
     <section className="page">
@@ -80,11 +77,11 @@ function Achievements() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Achievements preview</span>
-            <h2>{editor.form.title || "Achievements title"}</h2>
+            <h2>{editor.form.title || 'Achievements title'}</h2>
             <p>{editor.form.achievements?.length ?? 0} achievement cards</p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -119,7 +116,7 @@ function Achievements() {
             onChange={(achievements) =>
               editor.updateForm((current) => ({ ...current, achievements }))
             }
-            createItem={() => ""}
+            createItem={() => ''}
             addLabel="Add Achievement"
             itemLabel="Achievement"
             maxItems={12}
@@ -135,7 +132,9 @@ function Achievements() {
             )}
           />
           {editor.errors.achievements ? (
-            <p className="form-error" role="alert">{editor.errors.achievements}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.achievements}
+            </p>
           ) : null}
         </div>
 
@@ -148,7 +147,7 @@ function Achievements() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Achievements;
+export default Achievements

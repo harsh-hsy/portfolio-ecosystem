@@ -1,29 +1,29 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import RepeaterField from "../components/editor/RepeaterField";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import RepeaterField from '../components/editor/RepeaterField'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  title: "",
+  title: '',
   services: [],
-};
+}
 
 function cleanList(items) {
   return (Array.isArray(items) ? items : [])
-    .map((item) => String(item ?? "").trim())
-    .filter(Boolean);
+    .map((item) => String(item ?? '').trim())
+    .filter(Boolean)
 }
 
 function formFromPortfolio(portfolio) {
-  const section = portfolio?.sections?.services ?? {};
+  const section = portfolio?.sections?.services ?? {}
   return {
-    title: section.title ?? "",
+    title: section.title ?? '',
     services: cleanList(portfolio?.services ?? []),
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -32,45 +32,43 @@ function portfolioFromForm(portfolio, form) {
       ...portfolio,
       services: cleanList(form.services),
     },
-    "services",
+    'services',
     {
       ...(portfolio.sections?.services ?? {}),
       title: form.title.trim(),
     },
-  );
+  )
 }
 
 function validateList(items, label) {
-  const cleaned = cleanList(items);
-  if (!cleaned.length) return `Add at least one ${label}.`;
-  if (cleaned.length > 12) return `Use 12 ${label}s or fewer.`;
-  if (cleaned.some((item) => item.length > 70)) return `Each ${label} must use 70 characters or fewer.`;
-  return "";
+  const cleaned = cleanList(items)
+  if (!cleaned.length) return `Add at least one ${label}.`
+  if (cleaned.length > 12) return `Use 12 ${label}s or fewer.`
+  if (cleaned.some((item) => item.length > 70))
+    return `Each ${label} must use 70 characters or fewer.`
+  return ''
 }
 
 function validateServicesForm(form) {
   return validateForm(form, {
-    title: [validators.required("Services title is required."), validators.maxLength(90)],
-    services: (items) => validateList(items, "service"),
-  });
+    title: [validators.required('Services title is required.'), validators.maxLength(90)],
+    services: (items) => validateList(items, 'service'),
+  })
 }
 
 function Services() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "services",
+    moduleName: 'services',
     getForm,
     getPortfolio,
     validate: validateServicesForm,
-    successMessage: "Services updated successfully.",
-  });
+    successMessage: 'Services updated successfully.',
+  })
 
   return (
     <section className="page">
@@ -78,11 +76,11 @@ function Services() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Services preview</span>
-            <h2>{editor.form.title || "Services title"}</h2>
+            <h2>{editor.form.title || 'Services title'}</h2>
             <p>{editor.form.services?.length ?? 0} service cards</p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -114,10 +112,8 @@ function Services() {
             className="content-list-repeater"
             label="Services"
             items={editor.form.services ?? []}
-            onChange={(services) =>
-              editor.updateForm((current) => ({ ...current, services }))
-            }
-            createItem={() => ""}
+            onChange={(services) => editor.updateForm((current) => ({ ...current, services }))}
+            createItem={() => ''}
             addLabel="Add Service"
             itemLabel="Service"
             maxItems={12}
@@ -132,7 +128,9 @@ function Services() {
             )}
           />
           {editor.errors.services ? (
-            <p className="form-error" role="alert">{editor.errors.services}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.services}
+            </p>
           ) : null}
         </div>
 
@@ -145,7 +143,7 @@ function Services() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Services;
+export default Services

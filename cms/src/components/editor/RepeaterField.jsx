@@ -1,79 +1,62 @@
-import { useState } from "react";
-import {
-  FiArrowDown,
-  FiArrowUp,
-  FiCopy,
-  FiPlus,
-  FiTrash2,
-} from "react-icons/fi";
+import { useState } from 'react'
+import { FiArrowDown, FiArrowUp, FiCopy, FiPlus, FiTrash2 } from 'react-icons/fi'
 
-import ConfirmDialog from "./ConfirmDialog";
-import FormField from "./FormField";
+import ConfirmDialog from './ConfirmDialog'
+import FormField from './FormField'
 
 function RepeaterField({
   label,
   items = [],
   onChange,
-  createItem = () => "",
+  createItem = () => '',
   duplicateItem,
   getItemKey = (item, index) => item?.id || index,
   renderItem,
-  addLabel = "Add item",
-  itemLabel = "Item",
+  addLabel = 'Add item',
+  itemLabel = 'Item',
   compact = false,
-  className = "",
+  className = '',
   maxItems,
-  emptyMessage = "No items added yet.",
+  emptyMessage = 'No items added yet.',
 }) {
-  const [pendingDeleteIndex, setPendingDeleteIndex] = useState(null);
+  const [pendingDeleteIndex, setPendingDeleteIndex] = useState(null)
 
   function updateItem(index, nextItem) {
     onChange(
       items.map((item, itemIndex) =>
-        itemIndex === index
-          ? typeof nextItem === "function"
-            ? nextItem(item)
-            : nextItem
-          : item,
+        itemIndex === index ? (typeof nextItem === 'function' ? nextItem(item) : nextItem) : item,
       ),
-    );
+    )
   }
 
   function moveItem(index, direction) {
-    const nextIndex = index + direction;
+    const nextIndex = index + direction
 
-    if (nextIndex < 0 || nextIndex >= items.length) return;
+    if (nextIndex < 0 || nextIndex >= items.length) return
 
-    const nextItems = [...items];
-    [nextItems[index], nextItems[nextIndex]] = [
-      nextItems[nextIndex],
-      nextItems[index],
-    ];
-    onChange(nextItems);
+    const nextItems = [...items]
+    ;[nextItems[index], nextItems[nextIndex]] = [nextItems[nextIndex], nextItems[index]]
+    onChange(nextItems)
   }
 
   function copyItem(index) {
-    if (!duplicateItem || (Number.isFinite(maxItems) && items.length >= maxItems)) return;
+    if (!duplicateItem || (Number.isFinite(maxItems) && items.length >= maxItems)) return
 
-    const nextItems = [...items];
-    nextItems.splice(index + 1, 0, duplicateItem(items[index], index));
-    onChange(nextItems);
+    const nextItems = [...items]
+    nextItems.splice(index + 1, 0, duplicateItem(items[index], index))
+    onChange(nextItems)
   }
 
   function deleteItem() {
-    onChange(items.filter((_, index) => index !== pendingDeleteIndex));
-    setPendingDeleteIndex(null);
+    onChange(items.filter((_, index) => index !== pendingDeleteIndex))
+    setPendingDeleteIndex(null)
   }
 
   return (
     <fieldset
-      className={[
-        "repeater-field",
-        compact ? "repeater-field--compact" : "",
-        className,
-      ]
+      className={['repeater-field', compact ? 'repeater-field--compact' : '', className]
         .filter(Boolean)
-        .join(" ")}
+        .join(' ')}
     >
       <legend className="form-label">{label}</legend>
 
@@ -165,7 +148,7 @@ function RepeaterField({
         onCancel={() => setPendingDeleteIndex(null)}
       />
     </fieldset>
-  );
+  )
 }
 
-export default RepeaterField;
+export default RepeaterField

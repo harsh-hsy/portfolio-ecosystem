@@ -9,7 +9,6 @@
   gap: 32px;
 }
 
-
 /* ==========================================
    Account Section
 ========================================== */
@@ -21,7 +20,6 @@
   gap: 24px;
 }
 
-
 .account-section__title {
   margin: 0;
 
@@ -31,7 +29,6 @@
 
   color: var(--heading);
 }
-
 
 /* ==========================================
    Account Information Cards
@@ -45,7 +42,6 @@
   justify-content: space-between;
 }
 
-
 .account-info-grid {
   display: grid;
 
@@ -53,7 +49,6 @@
 
   gap: 20px;
 }
-
 
 .account-info-card {
   display: flex;
@@ -73,13 +68,11 @@
   transition: var(--transition);
 }
 
-
 .account-info-card:hover {
   border-color: var(--primary);
 
   transform: translateY(-3px);
 }
-
 
 .account-info-card__icon {
   width: 46px;
@@ -101,7 +94,6 @@
   flex-shrink: 0;
 }
 
-
 .account-info-card__content {
   display: flex;
 
@@ -112,7 +104,6 @@
   min-width: 0;
 }
 
-
 .account-info-card__label {
   font-size: 13px;
 
@@ -120,7 +111,6 @@
 
   color: var(--muted);
 }
-
 
 .account-info-card__value {
   font-size: 16px;
@@ -140,11 +130,9 @@
   line-height: 1.5;
 }
 
-
 .account-info-card__value--success {
   color: var(--success);
 }
-
 
 /* ==========================================
    Account Actions
@@ -164,7 +152,6 @@
   padding-top: 4px;
 }
 
-
 .account-info-actions .btn {
   display: inline-flex;
 
@@ -173,25 +160,16 @@
   gap: 8px;
 }
 
-
 @media (max-width: 992px) {
-
   .account-info-grid {
-    grid-template-columns: repeat(
-      2,
-      minmax(0, 1fr)
-    );
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
 }
 
-
 @media (max-width: 768px) {
-
   .account-info-grid {
     grid-template-columns: 1fr;
   }
-
 }
 
 /* ==========================================
@@ -210,7 +188,6 @@
   align-items: start;
 }
 
-
 /* ==========================================
    Password Form
 ========================================== */
@@ -222,7 +199,6 @@
 
   gap: 24px;
 }
-
 
 /* ==========================================
    Password Sidebar
@@ -237,7 +213,6 @@
 
   border-left: 1px solid var(--border);
 }
-
 
 /* ==========================================
    Password Actions
@@ -255,17 +230,14 @@
   margin-top: 20px;
 }
 
-
 /* ==========================================
    Responsive
 ========================================== */
 
 @media (max-width: 992px) {
-
   .password-layout {
     grid-template-columns: 1fr;
   }
-
 
   .password-sidebar {
     padding-left: 0;
@@ -276,16 +248,12 @@
 
     border-top: 1px solid var(--border);
   }
-
 }
 
-
 @media (max-width: 768px) {
-
   .account-info-grid {
     grid-template-columns: 1fr;
   }
-
 
   .password-actions {
     flex-direction: column-reverse;
@@ -293,9 +261,7 @@
     width: 100%;
   }
 
-
   .password-actions .btn {
     width: 100%;
   }
-
 }

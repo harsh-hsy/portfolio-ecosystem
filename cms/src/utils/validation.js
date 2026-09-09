@@ -1,70 +1,66 @@
 function isEmpty(value) {
-  return value == null || String(value).trim() === "";
+  return value == null || String(value).trim() === ''
 }
 
 export const validators = {
   required:
-    (message = "This field is required.") =>
+    (message = 'This field is required.') =>
     (value) =>
-      isEmpty(value) ? message : "",
+      isEmpty(value) ? message : '',
 
   email:
-    (message = "Enter a valid email address.") =>
+    (message = 'Enter a valid email address.') =>
     (value) =>
-      isEmpty(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-        ? ""
-        : message,
+      isEmpty(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : message,
 
   url:
-    (message = "Enter a valid URL.") =>
+    (message = 'Enter a valid URL.') =>
     (value) => {
-      if (isEmpty(value)) return "";
+      if (isEmpty(value)) return ''
 
       try {
-        const url = new URL(value);
-        return ["http:", "https:"].includes(url.protocol) ? "" : message;
+        const url = new URL(value)
+        return ['http:', 'https:'].includes(url.protocol) ? '' : message
       } catch {
-        return message;
+        return message
       }
     },
 
   json:
-    (message = "Enter valid JSON.") =>
+    (message = 'Enter valid JSON.') =>
     (value) => {
       try {
-        JSON.parse(value);
-        return "";
+        JSON.parse(value)
+        return ''
       } catch {
-        return message;
+        return message
       }
     },
 
   maxLength:
     (limit, message = `Use ${limit} characters or fewer.`) =>
     (value) =>
-      String(value ?? "").length > limit ? message : "",
+      String(value ?? '').length > limit ? message : '',
 
   minItems:
     (limit, message = `Add at least ${limit} item.`) =>
     (value) =>
-      Array.isArray(value) && value.length >= limit ? "" : message,
-};
+      Array.isArray(value) && value.length >= limit ? '' : message,
+}
 
 export function validateForm(form, rules = {}) {
   return Object.entries(rules).reduce((errors, [field, fieldRules]) => {
-    const validatorsForField = Array.isArray(fieldRules)
-      ? fieldRules
-      : [fieldRules];
+    const validatorsForField = Array.isArray(fieldRules) ? fieldRules : [fieldRules]
 
     for (const validate of validatorsForField) {
-      const message = validate?.(form[field], form);
+      const message = validate?.(form[field], form)
 
       if (message) {
-        errors[field] = message;
-        break;
+        errors[field] = message
+        break
       }
     }
 
-    return errors;
-  }, {});
+    return errors
+  }, {})
 }

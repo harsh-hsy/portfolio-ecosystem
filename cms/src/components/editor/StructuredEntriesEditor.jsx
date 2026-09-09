@@ -1,8 +1,8 @@
-import FormField from "./FormField";
-import RepeaterField from "./RepeaterField";
+import FormField from './FormField'
+import RepeaterField from './RepeaterField'
 
 function StructuredEntriesEditor({
-  className = "",
+  className = '',
   label,
   items,
   onChange,
@@ -16,7 +16,7 @@ function StructuredEntriesEditor({
       label={label}
       items={items}
       onChange={onChange}
-      createItem={() => ({ title: "", label: "", period: "", body: "" })}
+      createItem={() => ({ title: '', label: '', period: '', body: '' })}
       getItemKey={(_, index) => index}
       addLabel={items.length >= maxItems ? `Maximum ${maxItems} Entries` : addLabel}
       itemLabel={itemName}
@@ -27,27 +27,21 @@ function StructuredEntriesEditor({
             label="Title"
             className="structured-entry-title"
             value={item.title}
-            onChange={(event) =>
-              updateItem({ ...item, title: event.target.value })
-            }
+            onChange={(event) => updateItem({ ...item, title: event.target.value })}
             maxLength={120}
             required
           />
           <FormField
             label="Category / Label"
             value={item.label}
-            onChange={(event) =>
-              updateItem({ ...item, label: event.target.value })
-            }
+            onChange={(event) => updateItem({ ...item, label: event.target.value })}
             maxLength={40}
             required
           />
           <FormField
             label="Status / Period"
             value={item.period}
-            onChange={(event) =>
-              updateItem({ ...item, period: event.target.value })
-            }
+            onChange={(event) => updateItem({ ...item, period: event.target.value })}
             maxLength={60}
             required
           />
@@ -56,16 +50,14 @@ function StructuredEntriesEditor({
             as="textarea"
             className="structured-entry-description"
             value={item.body}
-            onChange={(event) =>
-              updateItem({ ...item, body: event.target.value })
-            }
+            onChange={(event) => updateItem({ ...item, body: event.target.value })}
             maxLength={500}
             required
           />
         </div>
       )}
     />
-  );
+  )
 }
 
-export default StructuredEntriesEditor;
+export default StructuredEntriesEditor

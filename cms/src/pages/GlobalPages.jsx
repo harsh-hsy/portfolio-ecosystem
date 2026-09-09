@@ -1,25 +1,25 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  footerName: "",
-  footerTagline: "",
-  copyrightYear: "",
-};
+  footerName: '',
+  footerTagline: '',
+  copyrightYear: '',
+}
 
 function formFromPortfolio(portfolio) {
-  const profile = portfolio?.profile ?? {};
-  const settings = portfolio?.settings ?? {};
+  const profile = portfolio?.profile ?? {}
+  const settings = portfolio?.settings ?? {}
 
   return {
-    footerName: settings.footerName ?? profile.name ?? "",
-    footerTagline: settings.footerDescription ?? profile.tagline ?? "",
-    copyrightYear: profile.copyrightYear ?? "",
-  };
+    footerName: settings.footerName ?? profile.name ?? '',
+    footerTagline: settings.footerDescription ?? profile.tagline ?? '',
+    copyrightYear: profile.copyrightYear ?? '',
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -31,13 +31,13 @@ function portfolioFromForm(portfolio, form) {
     },
     settings: {
       ...(portfolio.settings ?? {}),
-      copyrightPrefix: "\u00a9",
-      developedByLabel: "Developed by",
+      copyrightPrefix: '\u00a9',
+      developedByLabel: 'Developed by',
       footerName: form.footerName.trim(),
       footerDescription: form.footerTagline.trim(),
-      footerBackToTopLabel: "Back to top",
+      footerBackToTopLabel: 'Back to top',
     },
-  };
+  }
 }
 
 function validateGlobalPages(form) {
@@ -45,28 +45,28 @@ function validateGlobalPages(form) {
     footerName: [validators.required(), validators.maxLength(60)],
     footerTagline: [validators.required(), validators.maxLength(180)],
     copyrightYear: [
-      validators.required("Copyright year is required."),
-      (value) => (/^\d{4}$/.test(String(value).trim()) ? "" : "Use a four-digit year."),
+      validators.required('Copyright year is required.'),
+      (value) => (/^\d{4}$/.test(String(value).trim()) ? '' : 'Use a four-digit year.'),
     ],
-  });
+  })
 }
 
 function GlobalPages() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "globalPages",
+    moduleName: 'globalPages',
     getForm,
     getPortfolio,
     validate: validateGlobalPages,
-    successMessage: "Footer updated successfully.",
-  });
-  const savedHomeName = editor.portfolio?.profile?.name ?? "";
+    successMessage: 'Footer updated successfully.',
+  })
+  const savedHomeName = editor.portfolio?.profile?.name ?? ''
   const usesHomeName =
-    Boolean(savedHomeName) && editor.form.footerName.trim() === savedHomeName.trim();
+    Boolean(savedHomeName) && editor.form.footerName.trim() === savedHomeName.trim()
 
   return (
     <section className="page">
@@ -78,7 +78,7 @@ function GlobalPages() {
               <p>Manage the footer identity, description, and copyright year.</p>
             </div>
             <span className="content-editor__badge">
-              {editor.isLoading ? "Loading" : "Connected"}
+              {editor.isLoading ? 'Loading' : 'Connected'}
             </span>
           </div>
           <div className="form-grid">
@@ -109,11 +109,11 @@ function GlobalPages() {
                   checked={usesHomeName}
                   disabled={!savedHomeName}
                   onChange={(event) => {
-                    if (!event.target.checked || !savedHomeName) return;
+                    if (!event.target.checked || !savedHomeName) return
                     editor.updateForm((current) => ({
                       ...current,
                       footerName: savedHomeName,
-                    }));
+                    }))
                   }}
                 />
                 <span>
@@ -143,7 +143,7 @@ function GlobalPages() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default GlobalPages;
+export default GlobalPages

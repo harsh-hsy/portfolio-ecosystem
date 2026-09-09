@@ -1,9 +1,4 @@
-import {
-  FiCheck,
-  FiCircle,
-  FiX,
-} from "react-icons/fi";
-
+import { FiCheck, FiCircle, FiX } from 'react-icons/fi'
 
 function PasswordInfoPanel({
   isEditing,
@@ -12,45 +7,35 @@ function PasswordInfoPanel({
   passwordsMatch,
   passwordChangedAt,
 }) {
-  const passwordChangeDate = passwordChangedAt ? new Date(passwordChangedAt) : null;
-  const formattedPasswordChange = passwordChangeDate && !Number.isNaN(passwordChangeDate.getTime())
-    ? new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(passwordChangeDate)
-    : "Not changed yet";
+  const passwordChangeDate = passwordChangedAt ? new Date(passwordChangedAt) : null
+  const formattedPasswordChange =
+    passwordChangeDate && !Number.isNaN(passwordChangeDate.getTime())
+      ? new Intl.DateTimeFormat('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(passwordChangeDate)
+      : 'Not changed yet'
 
   return (
     <aside className="password-sidebar">
       <div className="info-card">
-
         <h3 className="info-card__title">
-          {isEditing
-            ? "Password Requirements"
-            : "Password Security Tips"}
+          {isEditing ? 'Password Requirements' : 'Password Security Tips'}
         </h3>
-
 
         {!isEditing && (
           <>
             <ul className="info-card__list">
-
               {securityTips.map((tip) => (
-                <li
-                  key={tip}
-                  className="info-card__item"
-                >
+                <li key={tip} className="info-card__item">
                   <FiCheck className="requirement-icon requirement-icon--success" />
 
-                  <span>
-                    {tip}
-                  </span>
+                  <span>{tip}</span>
                 </li>
               ))}
-
             </ul>
 
             <div className="password-security-divider" aria-hidden="true" />
@@ -62,64 +47,41 @@ function PasswordInfoPanel({
           </>
         )}
 
-
         {isEditing && (
           <>
-
-            <ul
-              className="info-card__list"
-              aria-live="polite"
-            >
-
+            <ul className="info-card__list" aria-live="polite">
               {requirements.map((rule) => (
-                <li
-                  key={rule.id}
-                  className="info-card__item"
-                >
-
+                <li key={rule.id} className="info-card__item">
                   {rule.valid ? (
                     <FiCheck className="requirement-icon requirement-icon--success" />
                   ) : (
                     <FiCircle className="requirement-icon requirement-icon--pending" />
                   )}
 
-                  <span>
-                    {rule.label}
-                  </span>
-
+                  <span>{rule.label}</span>
                 </li>
               ))}
-
             </ul>
 
-
-            {passwordsMatch !== null && (
-              passwordsMatch ? (
+            {passwordsMatch !== null &&
+              (passwordsMatch ? (
                 <p className="password-match password-match--success">
                   <FiCheck />
 
-                  <span>
-                    Passwords match
-                  </span>
+                  <span>Passwords match</span>
                 </p>
               ) : (
                 <p className="password-match password-match--error">
                   <FiX />
 
-                  <span>
-                    Passwords do not match
-                  </span>
+                  <span>Passwords do not match</span>
                 </p>
-              )
-            )}
-
+              ))}
           </>
         )}
-
       </div>
     </aside>
-  );
+  )
 }
 
-
-export default PasswordInfoPanel;
+export default PasswordInfoPanel

@@ -1,54 +1,54 @@
-﻿import { useCallback, useMemo } from "react";
+﻿import { useCallback, useMemo } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import IconPicker from "../components/editor/IconPicker";
-import ImageUploader from "../components/editor/ImageUploader";
-import RepeaterField from "../components/editor/RepeaterField";
-import { isSupportedIcon } from "../data/iconCatalog";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import IconPicker from '../components/editor/IconPicker'
+import ImageUploader from '../components/editor/ImageUploader'
+import RepeaterField from '../components/editor/RepeaterField'
+import { isSupportedIcon } from '../data/iconCatalog'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  name: "",
+  name: '',
   rotatingRoles: [],
-  heroDescription: "",
+  heroDescription: '',
   showAvailability: true,
-  heroAvailability: "",
-  heroImage: "",
-  location: "",
-  heroLocationIcon: "mapPin",
-  heroOrbitRole: "",
+  heroAvailability: '',
+  heroImage: '',
+  location: '',
+  heroLocationIcon: 'mapPin',
+  heroOrbitRole: '',
   heroStrip: [],
-};
+}
 
 function cleanList(items = []) {
-  return items.map((item) => String(item).trim()).filter(Boolean);
+  return items.map((item) => String(item).trim()).filter(Boolean)
 }
 
 function formFromPortfolio(portfolio) {
-  const profile = portfolio?.profile ?? {};
-  const hero = portfolio?.sections?.hero ?? {};
+  const profile = portfolio?.profile ?? {}
+  const hero = portfolio?.sections?.hero ?? {}
 
   return {
-    name: profile.name ?? "",
+    name: profile.name ?? '',
     rotatingRoles: [...(profile.rotatingRoles ?? [])],
-    heroDescription: hero.description ?? "",
+    heroDescription: hero.description ?? '',
     showAvailability: hero.showAvailability !== false,
-    heroAvailability: hero.availability ?? "",
-    heroImage: profile.image ?? "",
-    location: profile.location ?? "",
-    heroLocationIcon: isSupportedIcon(hero.orbitLocationIcon) ? hero.orbitLocationIcon : "mapPin",
-    heroOrbitRole: hero.orbitRole ?? "",
+    heroAvailability: hero.availability ?? '',
+    heroImage: profile.image ?? '',
+    location: profile.location ?? '',
+    heroLocationIcon: isSupportedIcon(hero.orbitLocationIcon) ? hero.orbitLocationIcon : 'mapPin',
+    heroOrbitRole: hero.orbitRole ?? '',
     heroStrip: [...(hero.strip ?? [])],
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
-  const rotatingRoles = cleanList(form.rotatingRoles);
-  const highlights = cleanList(form.heroStrip);
-  const location = form.location.trim();
+  const rotatingRoles = cleanList(form.rotatingRoles)
+  const highlights = cleanList(form.heroStrip)
+  const location = form.location.trim()
 
   return updateSection(
     {
@@ -61,7 +61,7 @@ function portfolioFromForm(portfolio, form) {
         location,
       },
     },
-    "hero",
+    'hero',
     {
       description: form.heroDescription.trim(),
       showAvailability: form.showAvailability,
@@ -71,50 +71,48 @@ function portfolioFromForm(portfolio, form) {
       orbitRole: form.heroOrbitRole.trim(),
       strip: highlights,
     },
-  );
+  )
 }
 
 function validateList(minimum, maximum, message) {
   return (value) => {
-    const count = cleanList(value).length;
-    return count >= minimum && count <= maximum ? "" : message;
-  };
+    const count = cleanList(value).length
+    return count >= minimum && count <= maximum ? '' : message
+  }
 }
 
 function validateHomeForm(form) {
   return validateForm(form, {
-    name: [validators.required("Display name is required."), validators.maxLength(60)],
-    rotatingRoles: validateList(1, 5, "Add between one and five job titles."),
+    name: [validators.required('Display name is required.'), validators.maxLength(60)],
+    rotatingRoles: validateList(1, 5, 'Add between one and five job titles.'),
     heroDescription: [
-      validators.required("Hero description is required."),
+      validators.required('Hero description is required.'),
       validators.maxLength(280),
     ],
     heroAvailability: (value, currentForm) =>
-      currentForm.showAvailability && !String(value ?? "").trim()
-        ? "Availability badge text is required while visible."
+      currentForm.showAvailability && !String(value ?? '').trim()
+        ? 'Availability badge text is required while visible.'
         : validators.maxLength(60)(value),
-    heroImage: validators.required("Hero profile image is required."),
-    location: validators.required("Location badge is required."),
-    heroLocationIcon: (value) => isSupportedIcon(value) ? "" : "Select a supported location badge icon.",
-    heroOrbitRole: [
-      validators.required("Image role badge is required."),
-      validators.maxLength(50),
-    ],
-    heroStrip: validateList(1, 6, "Add between one and six expertise highlights."),
-  });
+    heroImage: validators.required('Hero profile image is required.'),
+    location: validators.required('Location badge is required.'),
+    heroLocationIcon: (value) =>
+      isSupportedIcon(value) ? '' : 'Select a supported location badge icon.',
+    heroOrbitRole: [validators.required('Image role badge is required.'), validators.maxLength(50)],
+    heroStrip: validateList(1, 6, 'Add between one and six expertise highlights.'),
+  })
 }
 
 function resolvePreviewUrl(source) {
-  const value = String(source ?? "").trim();
-  if (!value) return "";
-  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+  const value = String(source ?? '').trim()
+  if (!value) return ''
+  if (/^(https?:|data:|blob:)/i.test(value)) return value
 
-  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173";
+  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
 
   try {
-    return new URL(value, `${portfolioUrl.replace(/\/$/, "")}/`).href;
+    return new URL(value, `${portfolioUrl.replace(/\/$/, '')}/`).href
   } catch {
-    return value;
+    return value
   }
 }
 
@@ -122,27 +120,24 @@ function Home() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
 
   const editor = usePortfolioEditor({
-    moduleName: "home",
+    moduleName: 'home',
     getForm,
     getPortfolio,
     validate: validateHomeForm,
-    successMessage: "Home content updated successfully.",
-  });
+    successMessage: 'Home content updated successfully.',
+  })
 
-  const previewName = editor.form.name || "Portfolio owner";
-  const previewRole = editor.form.rotatingRoles[0] || "Job title will appear here";
-  const publishedPreviewName = editor.savedForm.name || "Portfolio owner";
+  const previewName = editor.form.name || 'Portfolio owner'
+  const previewRole = editor.form.rotatingRoles[0] || 'Job title will appear here'
+  const publishedPreviewName = editor.savedForm.name || 'Portfolio owner'
   const publishedPreviewImage = useMemo(
     () => resolvePreviewUrl(editor.savedForm.heroImage),
     [editor.savedForm.heroImage],
-  );
+  )
 
   return (
     <section className="page">
@@ -155,7 +150,7 @@ function Home() {
           </div>
 
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -220,13 +215,15 @@ function Home() {
             onChange={(rotatingRoles) =>
               editor.updateForm((current) => ({ ...current, rotatingRoles }))
             }
-            createItem={() => ""}
+            createItem={() => ''}
             addLabel="Add Job Title"
             itemLabel="Job Title"
             compact
           />
           {editor.errors.rotatingRoles ? (
-            <p className="form-error" role="alert">{editor.errors.rotatingRoles}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.rotatingRoles}
+            </p>
           ) : null}
         </div>
 
@@ -262,34 +259,34 @@ function Home() {
           </div>
 
           <div className="form-grid hero-badges-editor">
-              <IconPicker
-                label="Location Badge Icon"
-                value={editor.form.heroLocationIcon}
-                onChange={(heroLocationIcon) =>
-                  editor.updateForm((current) => ({ ...current, heroLocationIcon }))
-                }
-                error={editor.errors.heroLocationIcon}
-                required
-              />
+            <IconPicker
+              label="Location Badge Icon"
+              value={editor.form.heroLocationIcon}
+              onChange={(heroLocationIcon) =>
+                editor.updateForm((current) => ({ ...current, heroLocationIcon }))
+              }
+              error={editor.errors.heroLocationIcon}
+              required
+            />
 
-              <FormField
-                label="Location Badge"
-                name="location"
-                value={editor.form.location}
-                onChange={editor.updateField}
-                error={editor.errors.location}
-                required
-              />
+            <FormField
+              label="Location Badge"
+              name="location"
+              value={editor.form.location}
+              onChange={editor.updateField}
+              error={editor.errors.location}
+              required
+            />
 
-              <FormField
-                label="Image Role Badge"
-                name="heroOrbitRole"
-                className="form-group--wide"
-                value={editor.form.heroOrbitRole}
-                onChange={editor.updateField}
-                error={editor.errors.heroOrbitRole}
-                required
-              />
+            <FormField
+              label="Image Role Badge"
+              name="heroOrbitRole"
+              className="form-group--wide"
+              value={editor.form.heroOrbitRole}
+              onChange={editor.updateField}
+              error={editor.errors.heroOrbitRole}
+              required
+            />
           </div>
         </div>
 
@@ -298,16 +295,16 @@ function Home() {
           <RepeaterField
             label="Highlights"
             items={editor.form.heroStrip}
-            onChange={(heroStrip) =>
-              editor.updateForm((current) => ({ ...current, heroStrip }))
-            }
-            createItem={() => ""}
+            onChange={(heroStrip) => editor.updateForm((current) => ({ ...current, heroStrip }))}
+            createItem={() => ''}
             addLabel="Add Highlight"
             itemLabel="Highlight"
             compact
           />
           {editor.errors.heroStrip ? (
-            <p className="form-error" role="alert">{editor.errors.heroStrip}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.heroStrip}
+            </p>
           ) : null}
         </div>
 
@@ -320,7 +317,7 @@ function Home() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Home;
+export default Home

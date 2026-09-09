@@ -76,7 +76,7 @@ async function createCroppedFile(source, cropPixels, originalFile, outputWidth, 
   const mimeType = getOutputType(originalFile)
   const blob = await new Promise((resolve, reject) => {
     canvas.toBlob(
-      (result) => result ? resolve(result) : reject(new Error('Unable to create cropped image')),
+      (result) => (result ? resolve(result) : reject(new Error('Unable to create cropped image'))),
       mimeType,
       mimeType === 'image/png' ? undefined : 0.9,
     )
@@ -132,12 +132,21 @@ function CropDialog({ image, aspectRatio, label, onCancel, onConfirm, isUploadin
             <span>Image editor</span>
             <h2 id={titleId}>Crop {label}</h2>
           </div>
-          <button type="button" className="icon-button" onClick={onCancel} disabled={isUploading} aria-label="Close crop editor">
+          <button
+            type="button"
+            className="icon-button"
+            onClick={onCancel}
+            disabled={isUploading}
+            aria-label="Close crop editor"
+          >
             <FiX aria-hidden="true" />
           </button>
         </div>
 
-        <div className="media-crop-dialog__stage" style={{ '--crop-aspect-ratio': effectiveAspectRatio }}>
+        <div
+          className="media-crop-dialog__stage"
+          style={{ '--crop-aspect-ratio': effectiveAspectRatio }}
+        >
           <Cropper
             image={image.url}
             crop={cropPosition}
@@ -168,18 +177,59 @@ function CropDialog({ image, aspectRatio, label, onCancel, onConfirm, isUploadin
               <output>{Math.round(zoom * 100)}%</output>
             </div>
             <div className="media-zoom-control__row">
-              <button type="button" className="icon-button" onClick={() => changeZoom(zoom - 0.1)} disabled={zoom <= 1 || isUploading} aria-label="Zoom out"><FiMinus /></button>
-              <input type="range" min="1" max="3" step="0.01" value={zoom} onChange={(event) => changeZoom(event.target.value)} aria-label="Image zoom" />
-              <button type="button" className="icon-button" onClick={() => changeZoom(zoom + 0.1)} disabled={zoom >= 3 || isUploading} aria-label="Zoom in"><FiPlus /></button>
+              <button
+                type="button"
+                className="icon-button"
+                onClick={() => changeZoom(zoom - 0.1)}
+                disabled={zoom <= 1 || isUploading}
+                aria-label="Zoom out"
+              >
+                <FiMinus />
+              </button>
+              <input
+                type="range"
+                min="1"
+                max="3"
+                step="0.01"
+                value={zoom}
+                onChange={(event) => changeZoom(event.target.value)}
+                aria-label="Image zoom"
+              />
+              <button
+                type="button"
+                className="icon-button"
+                onClick={() => changeZoom(zoom + 0.1)}
+                disabled={zoom >= 3 || isUploading}
+                aria-label="Zoom in"
+              >
+                <FiPlus />
+              </button>
             </div>
           </div>
 
           <div className="media-crop-dialog__actions">
-            <button type="button" className="btn btn-secondary" onClick={() => { setCropPosition({ x: 0, y: 0 }); setZoom(1) }} disabled={isUploading}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setCropPosition({ x: 0, y: 0 })
+                setZoom(1)
+              }}
+              disabled={isUploading}
+            >
               Reset
             </button>
-            <button type="button" className="btn btn-primary" onClick={() => onConfirm(cropPixels)} disabled={!cropPixels || isUploading}>
-              {isUploading ? <FiRefreshCw className="image-uploader__spinner" aria-hidden="true" /> : <FiCrop aria-hidden="true" />}
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => onConfirm(cropPixels)}
+              disabled={!cropPixels || isUploading}
+            >
+              {isUploading ? (
+                <FiRefreshCw className="image-uploader__spinner" aria-hidden="true" />
+              ) : (
+                <FiCrop aria-hidden="true" />
+              )}
               {isUploading ? 'Uploading...' : 'Crop and upload'}
             </button>
           </div>
@@ -214,9 +264,12 @@ function ImageUploader({
   const previewUrl = resolveMediaUrl(value)
   const previewError = Boolean(previewUrl && failedPreviewUrl === previewUrl)
 
-  useEffect(() => () => {
-    if (selectedImageRef.current?.url) URL.revokeObjectURL(selectedImageRef.current.url)
-  }, [])
+  useEffect(
+    () => () => {
+      if (selectedImageRef.current?.url) URL.revokeObjectURL(selectedImageRef.current.url)
+    },
+    [],
+  )
 
   function clearSelectedImage() {
     if (selectedImageRef.current?.url) URL.revokeObjectURL(selectedImageRef.current.url)
@@ -285,7 +338,9 @@ function ImageUploader({
 
   function removeImage() {
     onChange('', null)
-    showToast('Image removed from this field. Save the page to publish the change.', { type: 'warning' })
+    showToast('Image removed from this field. Save the page to publish the change.', {
+      type: 'warning',
+    })
   }
 
   return (
@@ -293,19 +348,34 @@ function ImageUploader({
       className={`image-uploader ${preserveOriginalRatio ? 'image-uploader--natural' : ''} ${error ? 'image-uploader--error' : ''} ${className}`.trim()}
       style={{ '--image-aspect-ratio': aspectRatio, '--image-preview-max-width': previewMaxWidth }}
     >
-      <input ref={inputRef} className="image-uploader__input" type="file" accept="image/jpeg,image/png,image/webp" onChange={selectFile} />
+      <input
+        ref={inputRef}
+        className="image-uploader__input"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        onChange={selectFile}
+      />
 
       <div className="image-uploader__heading">
         <div>
-          <label>{label}{required ? <span aria-hidden="true"> *</span> : null}</label>
+          <label>
+            {label}
+            {required ? <span aria-hidden="true"> *</span> : null}
+          </label>
           {helpText ? <p>{helpText}</p> : null}
         </div>
-        <span className="image-uploader__crop-badge"><FiCrop aria-hidden="true" /> Crop + zoom</span>
+        <span className="image-uploader__crop-badge">
+          <FiCrop aria-hidden="true" /> Crop + zoom
+        </span>
       </div>
 
       <div className="image-uploader__preview">
         {previewUrl && !previewError ? (
-          <img src={previewUrl} alt={alt || `${label} preview`} onError={() => setFailedPreviewUrl(previewUrl)} />
+          <img
+            src={previewUrl}
+            alt={alt || `${label} preview`}
+            onError={() => setFailedPreviewUrl(previewUrl)}
+          />
         ) : (
           <div className="image-uploader__empty">
             <FiImage aria-hidden="true" />
@@ -325,7 +395,11 @@ function ImageUploader({
         ) : null}
       </div>
 
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       {selectedImage ? (
         <CropDialog

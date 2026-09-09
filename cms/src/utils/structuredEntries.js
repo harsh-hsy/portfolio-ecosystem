@@ -1,21 +1,18 @@
 export function cleanStructuredEntries(entries = []) {
   return entries.map((entry) => ({
-    title: String(entry?.title ?? "").trim(),
-    label: String(entry?.label ?? "").trim(),
-    period: String(entry?.period ?? "").trim(),
-    body: String(entry?.body ?? "").trim(),
-  }));
+    title: String(entry?.title ?? '').trim(),
+    label: String(entry?.label ?? '').trim(),
+    period: String(entry?.period ?? '').trim(),
+    body: String(entry?.body ?? '').trim(),
+  }))
 }
 
 export function validateStructuredEntries(
   entries,
-  {
-    collectionLabel = "entries",
-    itemLabel = "entry",
-  } = {},
+  { collectionLabel = 'entries', itemLabel = 'entry' } = {},
 ) {
   if (!Array.isArray(entries) || entries.length < 1 || entries.length > 12) {
-    return `Add between one and twelve ${collectionLabel}.`;
+    return `Add between one and twelve ${collectionLabel}.`
   }
 
   return entries.every(
@@ -29,6 +26,6 @@ export function validateStructuredEntries(
       entry.body.trim() &&
       entry.body.length <= 500,
   )
-    ? ""
-    : `Complete the title, category, status, and description for every ${itemLabel}.`;
+    ? ''
+    : `Complete the title, category, status, and description for every ${itemLabel}.`
 }

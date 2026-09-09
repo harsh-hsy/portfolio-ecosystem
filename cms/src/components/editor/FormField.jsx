@@ -1,42 +1,35 @@
-import { useId } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { useId } from 'react'
+import { FiChevronDown } from 'react-icons/fi'
 
 function FormField({
   label,
   name,
-  error = "",
-  helpText = "",
-  as = "input",
+  error = '',
+  helpText = '',
+  as = 'input',
   options = [],
-  className = "",
+  className = '',
   required = false,
   children,
   ...controlProps
 }) {
-  const generatedId = useId();
-  const id = controlProps.id || `${name || "field"}-${generatedId}`;
-  const describedBy = [
-    helpText ? `${id}-help` : "",
-    error ? `${id}-error` : "",
-  ]
+  const generatedId = useId()
+  const id = controlProps.id || `${name || 'field'}-${generatedId}`
+  const describedBy = [helpText ? `${id}-help` : '', error ? `${id}-error` : '']
     .filter(Boolean)
-    .join(" ");
-  const fieldClassName = [
-    "form-group",
-    className,
-    error ? "form-group--error" : "",
-  ]
+    .join(' ')
+  const fieldClassName = ['form-group', className, error ? 'form-group--error' : '']
     .filter(Boolean)
-    .join(" ");
+    .join(' ')
   const sharedProps = {
     ...controlProps,
     id,
     name,
     required,
-    "aria-invalid": Boolean(error),
-    "aria-describedby": describedBy || undefined,
-    className: `form-input ${as === "textarea" ? "form-textarea" : ""}`.trim(),
-  };
+    'aria-invalid': Boolean(error),
+    'aria-describedby': describedBy || undefined,
+    className: `form-input ${as === 'textarea' ? 'form-textarea' : ''}`.trim(),
+  }
 
   return (
     <label className={fieldClassName} htmlFor={id}>
@@ -45,9 +38,9 @@ function FormField({
         {required ? <span className="form-label__required"> *</span> : null}
       </span>
 
-      {as === "textarea" ? (
+      {as === 'textarea' ? (
         <textarea {...sharedProps} />
-      ) : as === "select" ? (
+      ) : as === 'select' ? (
         <span className="form-select-control">
           <select {...sharedProps}>
             {options.map((option) => (
@@ -74,7 +67,7 @@ function FormField({
         </span>
       ) : null}
     </label>
-  );
+  )
 }
 
-export default FormField;
+export default FormField

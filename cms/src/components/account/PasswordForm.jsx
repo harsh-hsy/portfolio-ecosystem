@@ -1,20 +1,8 @@
-import PasswordField from "../common/PasswordField";
+import PasswordField from '../common/PasswordField'
 
-function PasswordForm({
-  formData,
-  isEditing,
-  onChange,
-  onSubmit,
-  errors = {},
-  children,
-}) {
+function PasswordForm({ formData, isEditing, onChange, onSubmit, errors = {}, children }) {
   return (
-    <form
-  id="password-security-form"
-  className="password-form"
-  onSubmit={onSubmit}
-  noValidate
->
+    <form id="password-security-form" className="password-form" onSubmit={onSubmit} noValidate>
       <PasswordField
         id="current-password"
         name="currentPassword"
@@ -57,7 +45,7 @@ function PasswordForm({
 
       {children}
     </form>
-  );
+  )
 }
 
-export default PasswordForm;
+export default PasswordForm

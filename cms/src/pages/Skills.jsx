@@ -1,42 +1,42 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import IconPicker from "../components/editor/IconPicker";
-import ImageUploader from "../components/editor/ImageUploader";
-import RepeaterField from "../components/editor/RepeaterField";
-import { isSupportedIcon } from "../data/iconCatalog";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import IconPicker from '../components/editor/IconPicker'
+import ImageUploader from '../components/editor/ImageUploader'
+import RepeaterField from '../components/editor/RepeaterField'
+import { isSupportedIcon } from '../data/iconCatalog'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  title: "",
-  copy: "",
-  skillsImage: "",
+  title: '',
+  copy: '',
+  skillsImage: '',
   skills: [],
-};
+}
 
 function normalizeSkills(skills = []) {
   return skills.map((group) => ({
-    category: group?.category ?? "",
+    category: group?.category ?? '',
     items: (group?.items ?? []).map((skill) => ({
-      name: skill?.name ?? "",
-      icon: isSupportedIcon(skill?.icon) ? skill.icon : "code",
+      name: skill?.name ?? '',
+      icon: isSupportedIcon(skill?.icon) ? skill.icon : 'code',
     })),
-  }));
+  }))
 }
 
 function formFromPortfolio(portfolio) {
-  const profile = portfolio?.profile ?? {};
-  const section = portfolio?.sections?.skills ?? {};
+  const profile = portfolio?.profile ?? {}
+  const section = portfolio?.sections?.skills ?? {}
 
   return {
-    title: section.title ?? "",
-    copy: section.copy ?? "",
-    skillsImage: profile.skillsImage ?? "",
+    title: section.title ?? '',
+    copy: section.copy ?? '',
+    skillsImage: profile.skillsImage ?? '',
     skills: normalizeSkills(portfolio?.skills),
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -46,7 +46,7 @@ function portfolioFromForm(portfolio, form) {
       name: skill.name.trim(),
       icon: skill.icon,
     })),
-  }));
+  }))
 
   return updateSection(
     {
@@ -57,80 +57,80 @@ function portfolioFromForm(portfolio, form) {
       },
       skills,
     },
-    "skills",
+    'skills',
     {
       title: form.title.trim(),
       copy: form.copy.trim(),
     },
-  );
+  )
 }
 
 function hasDuplicates(values) {
-  const normalized = values.map((value) => value.trim().toLowerCase());
-  return new Set(normalized).size !== normalized.length;
+  const normalized = values.map((value) => value.trim().toLowerCase())
+  return new Set(normalized).size !== normalized.length
 }
 
 function validateSkillsForm(form) {
   return validateForm(form, {
-    title: [validators.required("Skills title is required."), validators.maxLength(140)],
-    copy: [
-      validators.required("Skills description is required."),
-      validators.maxLength(280),
-    ],
-    skillsImage: validators.required("Skills image is required."),
+    title: [validators.required('Skills title is required.'), validators.maxLength(140)],
+    copy: [validators.required('Skills description is required.'), validators.maxLength(280)],
+    skillsImage: validators.required('Skills image is required.'),
     skills: (groups) => {
       if (!Array.isArray(groups) || groups.length < 1 || groups.length > 6) {
-        return "Add between one and six skill categories.";
+        return 'Add between one and six skill categories.'
       }
 
       if (hasDuplicates(groups.map((group) => group.category))) {
-        return "Category names must be unique.";
+        return 'Category names must be unique.'
       }
 
       for (const group of groups) {
         if (!group.category.trim() || group.category.trim().length > 50) {
-          return "Every category needs a name using 50 characters or fewer.";
+          return 'Every category needs a name using 50 characters or fewer.'
         }
 
         if (!Array.isArray(group.items) || group.items.length < 1 || group.items.length > 16) {
-          return "Each category must contain between one and sixteen skills.";
+          return 'Each category must contain between one and sixteen skills.'
         }
 
         if (hasDuplicates(group.items.map((skill) => skill.name))) {
-          return `Skill names in ${group.category.trim()} must be unique.`;
+          return `Skill names in ${group.category.trim()} must be unique.`
         }
 
-        if (group.items.some((skill) =>
-          !skill.name.trim() || skill.name.trim().length > 40 || !isSupportedIcon(skill.icon)
-        )) {
-          return "Every skill needs a name using 40 characters or fewer and a supported icon.";
+        if (
+          group.items.some(
+            (skill) =>
+              !skill.name.trim() || skill.name.trim().length > 40 || !isSupportedIcon(skill.icon),
+          )
+        ) {
+          return 'Every skill needs a name using 40 characters or fewer and a supported icon.'
         }
       }
 
-      return "";
+      return ''
     },
-  });
+  })
 }
 
 function resolvePreviewUrl(source) {
-  const value = String(source ?? "").trim();
-  if (!value) return "";
-  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+  const value = String(source ?? '').trim()
+  if (!value) return ''
+  if (/^(https?:|data:|blob:)/i.test(value)) return value
 
-  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173";
+  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
 
   try {
-    return new URL(value, `${portfolioUrl.replace(/\/$/, "")}/`).href;
+    return new URL(value, `${portfolioUrl.replace(/\/$/, '')}/`).href
   } catch {
-    return value;
+    return value
   }
 }
 
 function SkillsImagePreview({ source }) {
-  const [hasError, setHasError] = useState(false);
-  const previewUrl = resolvePreviewUrl(source);
+  const [hasError, setHasError] = useState(false)
+  const previewUrl = resolvePreviewUrl(source)
 
-  if (!previewUrl || hasError) return <span>Image preview</span>;
+  if (!previewUrl || hasError) return <span>Image preview</span>
 
   return (
     <img
@@ -139,30 +139,27 @@ function SkillsImagePreview({ source }) {
       onLoad={() => setHasError(false)}
       onError={() => setHasError(true)}
     />
-  );
+  )
 }
 
 function Skills() {
   const getForm = useCallback(
-    (portfolio) => portfolio ? formFromPortfolio(portfolio) : emptyForm,
+    (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
 
   const editor = usePortfolioEditor({
-    moduleName: "skills",
+    moduleName: 'skills',
     getForm,
     getPortfolio,
     validate: validateSkillsForm,
-    successMessage: "Skills content updated successfully.",
-  });
+    successMessage: 'Skills content updated successfully.',
+  })
   const skillCount = useMemo(
     () => editor.form.skills.reduce((total, group) => total + group.items.length, 0),
     [editor.form.skills],
-  );
+  )
 
   return (
     <section className="page">
@@ -170,11 +167,13 @@ function Skills() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Skills Preview</span>
-            <h2>{editor.form.title || "Skills title"}</h2>
-            <p>{editor.form.skills.length} categories &middot; {skillCount} skills</p>
+            <h2>{editor.form.title || 'Skills title'}</h2>
+            <p>
+              {editor.form.skills.length} categories &middot; {skillCount} skills
+            </p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -217,7 +216,9 @@ function Skills() {
             </div>
             <ImageUploader
               value={editor.form.skillsImage}
-              onChange={(skillsImage) => editor.updateForm((current) => ({ ...current, skillsImage }))}
+              onChange={(skillsImage) =>
+                editor.updateForm((current) => ({ ...current, skillsImage }))
+              }
               label="Edit skills image"
               section="skills"
               aspectRatio={4 / 5}
@@ -241,19 +242,17 @@ function Skills() {
             className="skills-categories-editor"
             label="Categories"
             items={editor.form.skills}
-            onChange={(skills) =>
-              editor.updateForm((current) => ({ ...current, skills }))
-            }
+            onChange={(skills) => editor.updateForm((current) => ({ ...current, skills }))}
             createItem={() => ({
-              category: "New Category",
-              items: [{ name: "New Skill", icon: "code" }],
+              category: 'New Category',
+              items: [{ name: 'New Skill', icon: 'code' }],
             })}
             duplicateItem={(group) => ({
               category: `${group.category} Copy`,
               items: group.items.map((skill) => ({ ...skill })),
             })}
             getItemKey={(_, index) => index}
-            addLabel={editor.form.skills.length >= 6 ? "Maximum 6 Categories" : "Add Category"}
+            addLabel={editor.form.skills.length >= 6 ? 'Maximum 6 Categories' : 'Add Category'}
             itemLabel="Category"
             maxItems={6}
             renderItem={({ item: group, updateItem: updateGroup }) => (
@@ -261,9 +260,7 @@ function Skills() {
                 <FormField
                   label="Category Name"
                   value={group.category}
-                  onChange={(event) =>
-                    updateGroup({ ...group, category: event.target.value })
-                  }
+                  onChange={(event) => updateGroup({ ...group, category: event.target.value })}
                   required
                 />
 
@@ -272,9 +269,9 @@ function Skills() {
                   label="Skills"
                   items={group.items}
                   onChange={(items) => updateGroup({ ...group, items })}
-                  createItem={() => ({ name: "New Skill", icon: "code" })}
+                  createItem={() => ({ name: 'New Skill', icon: 'code' })}
                   getItemKey={(_, index) => index}
-                  addLabel={group.items.length >= 16 ? "Maximum 16 Skills" : "Add Skill"}
+                  addLabel={group.items.length >= 16 ? 'Maximum 16 Skills' : 'Add Skill'}
                   itemLabel="Skill"
                   maxItems={16}
                   renderItem={({ item: skill, updateItem: updateSkill }) => (
@@ -282,9 +279,7 @@ function Skills() {
                       <FormField
                         label="Skill Name"
                         value={skill.name}
-                        onChange={(event) =>
-                          updateSkill({ ...skill, name: event.target.value })
-                        }
+                        onChange={(event) => updateSkill({ ...skill, name: event.target.value })}
                         required
                       />
                       <IconPicker
@@ -301,7 +296,9 @@ function Skills() {
             )}
           />
           {editor.errors.skills ? (
-            <p className="form-error" role="alert">{editor.errors.skills}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.skills}
+            </p>
           ) : null}
         </div>
 
@@ -314,7 +311,7 @@ function Skills() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Skills;
+export default Skills

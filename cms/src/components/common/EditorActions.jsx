@@ -1,25 +1,14 @@
-import { FiRefreshCw, FiSave } from "react-icons/fi";
+import { FiRefreshCw, FiSave } from 'react-icons/fi'
 
-import PanelStatus from "./PanelStatus";
+import PanelStatus from './PanelStatus'
 
-function EditorActions({
-  status,
-  isDirty,
-  isLoading,
-  isSaving,
-  onReset,
-}) {
+function EditorActions({ status, isDirty, isLoading, isSaving, onReset }) {
   const displayStatus =
-    isDirty && !status.message
-      ? { message: "You have unsaved changes.", type: "warning" }
-      : status;
+    isDirty && !status.message ? { message: 'You have unsaved changes.', type: 'warning' } : status
 
   return (
     <footer className="panel-footer">
-      <PanelStatus
-        message={displayStatus.message}
-        type={displayStatus.type}
-      />
+      <PanelStatus message={displayStatus.message} type={displayStatus.type} />
 
       <div className="panel-actions">
         <button
@@ -38,11 +27,11 @@ function EditorActions({
           disabled={isLoading || isSaving || !isDirty}
         >
           <FiSave aria-hidden="true" />
-          {isSaving ? "Saving" : "Save Changes"}
+          {isSaving ? 'Saving' : 'Save Changes'}
         </button>
       </div>
     </footer>
-  );
+  )
 }
 
-export default EditorActions;
+export default EditorActions

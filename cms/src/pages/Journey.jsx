@@ -1,30 +1,27 @@
-import { useCallback } from "react";
+import { useCallback } from 'react'
 
-import EditorActions from "../components/common/EditorActions";
-import FormField from "../components/editor/FormField";
-import StructuredEntriesEditor from "../components/editor/StructuredEntriesEditor";
-import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
-import { updateSection } from "../utils/contentFormUtils";
-import {
-  cleanStructuredEntries,
-  validateStructuredEntries,
-} from "../utils/structuredEntries";
-import { validateForm, validators } from "../utils/validation";
+import EditorActions from '../components/common/EditorActions'
+import FormField from '../components/editor/FormField'
+import StructuredEntriesEditor from '../components/editor/StructuredEntriesEditor'
+import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
+import { updateSection } from '../utils/contentFormUtils'
+import { cleanStructuredEntries, validateStructuredEntries } from '../utils/structuredEntries'
+import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
-  title: "",
-  copy: "",
+  title: '',
+  copy: '',
   timeline: [],
-};
+}
 
 function formFromPortfolio(portfolio) {
-  const section = portfolio?.sections?.experience ?? {};
+  const section = portfolio?.sections?.experience ?? {}
 
   return {
-    title: section.title ?? "",
-    copy: section.copy ?? "",
+    title: section.title ?? '',
+    copy: section.copy ?? '',
     timeline: cleanStructuredEntries(portfolio?.timeline ?? []),
-  };
+  }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -33,45 +30,39 @@ function portfolioFromForm(portfolio, form) {
       ...portfolio,
       timeline: cleanStructuredEntries(form.timeline),
     },
-    "experience",
+    'experience',
     {
       title: form.title.trim(),
       copy: form.copy.trim(),
     },
-  );
+  )
 }
 
 function validateJourneyForm(form) {
   return validateForm(form, {
-    title: [validators.required("Journey title is required."), validators.maxLength(140)],
-    copy: [
-      validators.required("Journey description is required."),
-      validators.maxLength(280),
-    ],
+    title: [validators.required('Journey title is required.'), validators.maxLength(140)],
+    copy: [validators.required('Journey description is required.'), validators.maxLength(280)],
     timeline: (entries) =>
       validateStructuredEntries(entries, {
-        collectionLabel: "timeline entries",
-        itemLabel: "timeline entry",
+        collectionLabel: 'timeline entries',
+        itemLabel: 'timeline entry',
       }),
-  });
+  })
 }
 
 function Journey() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
-  );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  )
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: "journey",
+    moduleName: 'journey',
     getForm,
     getPortfolio,
     validate: validateJourneyForm,
-    successMessage: "Journey content updated successfully.",
-  });
+    successMessage: 'Journey content updated successfully.',
+  })
 
   return (
     <section className="page">
@@ -82,11 +73,11 @@ function Journey() {
         <div className="content-editor__header">
           <div>
             <span className="content-editor__eyebrow">Journey preview</span>
-            <h2>{editor.form.title || "Journey title"}</h2>
+            <h2>{editor.form.title || 'Journey title'}</h2>
             <p>{editor.form.timeline?.length ?? 0} timeline entries</p>
           </div>
           <span className="content-editor__badge">
-            {editor.isLoading ? "Loading" : "Connected"}
+            {editor.isLoading ? 'Loading' : 'Connected'}
           </span>
         </div>
 
@@ -129,14 +120,14 @@ function Journey() {
             className="journey-entries-editor"
             label="Journey Timeline"
             items={editor.form.timeline ?? []}
-            onChange={(timeline) =>
-              editor.updateForm((current) => ({ ...current, timeline }))
-            }
+            onChange={(timeline) => editor.updateForm((current) => ({ ...current, timeline }))}
             addLabel="Add Timeline Entry"
             itemName="Timeline Entry"
           />
           {editor.errors.timeline ? (
-            <p className="form-error" role="alert">{editor.errors.timeline}</p>
+            <p className="form-error" role="alert">
+              {editor.errors.timeline}
+            </p>
           ) : null}
         </div>
 
@@ -149,7 +140,7 @@ function Journey() {
         />
       </form>
     </section>
-  );
+  )
 }
 
-export default Journey;
+export default Journey

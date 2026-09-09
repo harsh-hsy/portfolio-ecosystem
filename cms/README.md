@@ -32,8 +32,6 @@ The CMS currently covers:
 - Links
 - Settings
 - Account
-- Resume
-- Inbox
 
 ## How it fits in the ecosystem
 
@@ -95,7 +93,3 @@ VITE_API_BASE_URL=http://localhost:4174
 ## Current status
 
 Most of the CMS foundation is already built. The focus now is on polishing the editor experience, keeping the layout consistent, and finishing the remaining module work.
-
-## Future goal
-
-Build the inbox page so contact messages can be reviewed and managed from the dashboard.

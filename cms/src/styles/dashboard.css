@@ -60,21 +60,6 @@
 }
 
 /* ==========================================
-   Dashboard Widgets
-========================================== */
-
-.dashboard-widgets {
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 24px;
-
-  margin-top: 32px;
-}
-
-
-/* ==========================================
    Grid
 ========================================== */
 
@@ -202,7 +187,6 @@
   transform: translateX(6px);
 }
 
-
 /* ==========================================
    Section Heading
 ========================================== */
@@ -224,211 +208,12 @@
   color: var(--heading);
 }
 
-.section-heading--between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.section-link {
-  display: inline-flex;
-  align-items: center;
-
-  gap: 6px;
-
-  color: var(--primary);
-
-  font-size: 14px;
-  font-weight: 600;
-
-  text-decoration: none;
-
-  transition: var(--transition);
-}
-
-.section-link:hover {
-  gap: 10px;
-}
-
-/* ==========================================
-   Recent Messages
-========================================== */
-
-.dashboard-widget {
-  padding: 28px;
-
-  background: var(--card-bg);
-
-  border: 1px solid var(--border);
-
-  border-radius: 20px;
-
-  box-shadow: var(--shadow);
-}
-
-.message-list {
-  display: flex;
-  flex-direction: column;
-}
-
-/* ==========================================
-   Recent Messages
-========================================== */
-
-.dashboard-widget {
-  margin-top: 32px;
-
-  padding: 28px;
-
-  background: var(--card-bg);
-
-  border: 1px solid var(--border);
-
-  border-radius: 20px;
-
-  box-shadow: var(--shadow);
-}
-
-.message-list {
-  display: flex;
-  flex-direction: column;
-
-  gap: 16px;
-}
-
-/* ==========================================
-   Message Card
-========================================== */
-
-.message-card {
-  padding: 18px 20px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 14px;
-
-  transition: var(--transition);
-
-  background: var(--card-bg);
-}
-
-.message-card:hover {
-  border-color: var(--primary);
-
-  transform: translateY(-2px);
-
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
-}
-
-.message-card__header {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  gap: 8px;
-
-  margin-bottom: 10px;
-}
-
-.message-card__name {
-  font-weight: 600;
-
-  color: var(--heading);
-}
-
-.message-card__email,
-.message-card__date {
-  font-size: 14px;
-
-  color: var(--muted);
-}
-
-.message-card__divider {
-  color: var(--border);
-}
-
-.message-card__subject {
-  margin: 0;
-
-  color: var(--heading);
-
-  font-size: 15px;
-
-  line-height: 1.5;
-}
-
-/* ==========================================
-   Recent Activity
-========================================== */
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-
-  gap: 16px;
-}
-
-.activity-card {
-  padding: 18px 20px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 14px;
-
-  background: var(--card-bg);
-
-  transition: var(--transition);
-}
-
-.activity-card:hover {
-  border-color: var(--primary);
-
-  transform: translateY(-2px);
-
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
-}
-
-.activity-card__header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  margin-bottom: 10px;
-}
-
-.activity-card__title {
-  font-weight: 600;
-
-  color: var(--heading);
-}
-
-.activity-card__date {
-  color: var(--muted);
-
-  font-size: 14px;
-}
-
-.activity-card__divider {
-  color: var(--border);
-}
-
-.activity-card__description {
-  margin: 0;
-
-  color: var(--heading);
-
-  font-size: 15px;
-
-  line-height: 1.5;
-}
-
 /* ==========================================
    Responsive
 ========================================== */
 
 @media (max-width: 992px) {
-  .quick-access__grid,
-  .dashboard-widgets {
+  .quick-access__grid {
     grid-template-columns: 1fr;
   }
 }
@@ -437,24 +222,23 @@
    Dark Theme Refinements
 ========================================== */
 
-:root[data-theme="dark"] .greeting-card,
-:root[data-theme="dark"] .quick-access-card,
-:root[data-theme="dark"] .dashboard-widget {
+:root[data-theme='dark'] .greeting-card,
+:root[data-theme='dark'] .quick-access-card {
   border-color: rgba(203, 213, 225, 0.11);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.025) inset,
     0 14px 32px rgba(0, 0, 0, 0.16);
 }
 
-:root[data-theme="dark"] .greeting-card {
+:root[data-theme='dark'] .greeting-card {
   border-left: 3px solid var(--primary);
 }
 
-:root[data-theme="dark"] .quick-access-card {
+:root[data-theme='dark'] .quick-access-card {
   min-height: 156px;
 }
 
-:root[data-theme="dark"] .quick-access-card:hover {
+:root[data-theme='dark'] .quick-access-card:hover {
   background: #1b1f28;
   border-color: rgba(124, 140, 255, 0.48);
   box-shadow:
@@ -462,17 +246,6 @@
     0 18px 38px rgba(0, 0, 0, 0.24);
 }
 
-:root[data-theme="dark"] .quick-access-card__icon {
+:root[data-theme='dark'] .quick-access-card__icon {
   background: rgba(124, 140, 255, 0.12);
-}
-
-:root[data-theme="dark"] .message-card,
-:root[data-theme="dark"] .activity-card {
-  background: #13161c;
-}
-
-:root[data-theme="dark"] .message-card:hover,
-:root[data-theme="dark"] .activity-card:hover {
-  background: #191d25;
-  border-color: rgba(124, 140, 255, 0.42);
 }
