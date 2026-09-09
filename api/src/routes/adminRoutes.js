@@ -39,7 +39,7 @@ import {
   pruneUnreferencedCloudinaryAssets,
   registerCloudinaryAsset,
 } from '../services/mediaService.js'
-import { triggerCmsDeploy, triggerFrontendDeploy } from '../services/renderDeployService.js'
+import { triggerFrontendDeploy } from '../services/renderDeployService.js'
 
 const router = Router()
 
@@ -228,11 +228,7 @@ router.put('/portfolio/module/:module', async (req, res) => {
 
   let deployment
   const deployTarget = String(req.query.deploy ?? '').trim().toLowerCase()
-  const deploy = deployTarget === 'frontend'
-    ? triggerFrontendDeploy
-    : deployTarget === 'cms'
-      ? triggerCmsDeploy
-      : null
+  const deploy = deployTarget === 'frontend' ? triggerFrontendDeploy : null
 
   if (req.params.module === 'settings' && deploy) {
     try {

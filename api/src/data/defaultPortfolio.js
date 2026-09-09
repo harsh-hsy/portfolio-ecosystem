@@ -654,12 +654,6 @@ export const defaultPortfolio = {
       "authorName": portfolioIdentity.authorName,
       "portfolioUrl": portfolioIdentity.portfolioUrl
     },
-    "cmsSocialSharing": {
-      "openGraphTitle": "Portfolio CMS | Harsh Singh",
-      "openGraphDescription": "Private content management dashboard for the Harsh Singh portfolio.",
-      "image": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/fublkil7nw8me9wjue45?_a=BAMAPqWQ0",
-      "twitterCard": "summary_large_image"
-    },
     "socialSharing": {
       "openGraphTitle": "Harsh Singh | Frontend Developer",
       "openGraphDescription": "React developer and UI engineer building accessible, responsive, high-performance web experiences.",

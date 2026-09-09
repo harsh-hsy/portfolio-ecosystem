@@ -8,17 +8,12 @@ import ImageUploader from "../components/editor/ImageUploader";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { validateForm, validators } from "../utils/validation";
 import { resolveMediaUrl } from "../utils/media";
-import { cmsIdentity } from "../../config/cmsIdentity.js";
 
 const portfolioUrl = (
   import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
 ).replace(/\/$/, "");
 
 const emptyForm = {
-  cmsOpenGraphTitle: "",
-  cmsOpenGraphDescription: "",
-  cmsSocialImage: "",
-  cmsTwitterCard: "summary_large_image",
   metaTitle: "",
   metaDescription: "",
   seoKeywords: "",
@@ -45,17 +40,12 @@ const emptyForm = {
 
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
-  const cmsSocialSharing = settings.cmsSocialSharing ?? {};
   const sharing = settings.socialSharing ?? {};
   const experience = settings.experience ?? {};
   const maintenance = settings.maintenance ?? {};
   const seo = portfolio?.seo ?? {};
 
   return {
-    cmsOpenGraphTitle: cmsSocialSharing.openGraphTitle ?? "Portfolio CMS | Harsh Singh",
-    cmsOpenGraphDescription: cmsSocialSharing.openGraphDescription ?? "Private content management dashboard for the Harsh Singh portfolio.",
-    cmsSocialImage: cmsSocialSharing.image ?? "",
-    cmsTwitterCard: cmsSocialSharing.twitterCard ?? "summary_large_image",
     metaTitle: seo.title ?? "",
     metaDescription: seo.description ?? "",
     seoKeywords: seo.keywords ?? "",
@@ -86,13 +76,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      cmsSocialSharing: {
-        ...(portfolio.settings?.cmsSocialSharing ?? {}),
-        openGraphTitle: form.cmsOpenGraphTitle.trim(),
-        openGraphDescription: form.cmsOpenGraphDescription.trim(),
-        image: form.cmsSocialImage,
-        twitterCard: form.cmsTwitterCard,
-      },
       socialSharing: {
         ...(portfolio.settings?.socialSharing ?? {}),
         openGraphTitle: form.openGraphTitle.trim(),
@@ -133,8 +116,6 @@ function portfolioFromForm(portfolio, form) {
 
 function validateSettings(form) {
   return validateForm(form, {
-    cmsOpenGraphTitle: [validators.required(), validators.maxLength(70)],
-    cmsOpenGraphDescription: [validators.required(), validators.maxLength(200)],
     metaTitle: [validators.required(), validators.maxLength(70)],
     metaDescription: [validators.required(), validators.maxLength(180)],
     seoKeywords: [validators.required(), validators.maxLength(1000)],
@@ -190,12 +171,6 @@ const pageConfig = {
     title: "Portfolio Social Sharing",
     description: "Manage link previews used by LinkedIn, WhatsApp, X, Telegram, and Facebook.",
     deployTarget: "frontend",
-  },
-  "cms-social-sharing": {
-    kicker: "CMS",
-    title: "CMS Social Sharing",
-    description: "Control the preview displayed when the private CMS link is shared.",
-    deployTarget: "cms",
   },
   seo: {
     kicker: "Discoverability",
@@ -323,44 +298,6 @@ function Settings({ section }) {
             <ToggleField checked={editor.form.rotatingRole} label="Rotating job title" recommended="Enabled" onChange={(value) => updateToggle("rotatingRole", value)} />
             <ToggleField checked={editor.form.stickyHeader} label="Sticky header" description="Keep navigation visible while scrolling." recommended="Enabled" onChange={(value) => updateToggle("stickyHeader", value)} />
             <ToggleField checked={editor.form.respectReducedMotion} label="Respect reduced-motion preference" description="Reduce animation for visitors who request it in their device settings." recommended="Enabled" onChange={(value) => updateToggle("respectReducedMotion", value)} />
-          </div>
-        </section> : null}
-
-        {section === "cms-social-sharing" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">CMS Social Sharing</h2>
-              <p>Set the preview shown when the CMS address is shared in a private conversation.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField label="Open Graph Title" name="cmsOpenGraphTitle" value={editor.form.cmsOpenGraphTitle} onChange={editor.updateField} error={editor.errors.cmsOpenGraphTitle} maxLength={70} required />
-            <FormField label="Twitter Card Type" name="cmsTwitterCard" as="select" value={editor.form.cmsTwitterCard} onChange={editor.updateField} options={[{ value: "summary_large_image", label: "Large image" }, { value: "summary", label: "Compact summary" }]} required />
-            <FormField label="Open Graph Description" name="cmsOpenGraphDescription" className="form-group--wide" value={editor.form.cmsOpenGraphDescription} onChange={editor.updateField} error={editor.errors.cmsOpenGraphDescription} maxLength={200} required />
-            <div className="form-group form-group--wide settings-social-layout">
-              <ImageUploader
-                value={editor.form.cmsSocialImage}
-                onChange={(value) => editor.updateForm((current) => ({ ...current, cmsSocialImage: value }))}
-                label="CMS Social-sharing Image"
-                section="settings"
-                aspectRatio={1200 / 630}
-                outputWidth={1200}
-                outputHeight={630}
-                alt="CMS social sharing preview"
-                previewMaxWidth="560px"
-              />
-              <article className="social-preview-card">
-                <div className="social-preview-card__image">
-                  {editor.form.cmsSocialImage ? <img src={resolveMediaUrl(editor.form.cmsSocialImage)} alt="" /> : <span>1200 × 630 preview</span>}
-                </div>
-                <div>
-                  <small>{cmsIdentity.cmsUrl}</small>
-                  <strong>{editor.form.cmsOpenGraphTitle || "CMS preview title"}</strong>
-                  <p>{editor.form.cmsOpenGraphDescription || "CMS preview description"}</p>
-                </div>
-              </article>
-            </div>
           </div>
         </section> : null}
 

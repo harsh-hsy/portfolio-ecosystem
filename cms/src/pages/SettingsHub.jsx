@@ -18,15 +18,6 @@ const groups = [
     ],
   },
   {
-    id: "cms",
-    eyebrow: "Admin dashboard",
-    title: "CMS Settings",
-    description: "Configure how the CMS looks, behaves, installs, and appears when shared.",
-    items: [
-      { title: "Social Sharing", description: "Private CMS link title, description, and preview image.", icon: FiShare2, path: "/settings/cms/social-sharing" },
-    ],
-  },
-  {
     id: "seo",
     eyebrow: "Discoverability",
     title: "SEO Settings",

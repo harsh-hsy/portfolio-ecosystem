@@ -80,6 +80,7 @@ function withCodeOwnedIdentity(settings = {}) {
   const {
     cmsManifest: _cmsManifest,
     cmsExperience: _cmsExperience,
+    cmsSocialSharing: _cmsSocialSharing,
     ...settingsWithoutCmsConfiguration
   } = settings;
 
@@ -104,6 +105,7 @@ function withoutCodeOwnedIdentity(settings = {}) {
     siteIdentity: _siteIdentity,
     cmsManifest: _cmsManifest,
     cmsExperience: _cmsExperience,
+    cmsSocialSharing: _cmsSocialSharing,
     ...cmsManagedSettings
   } = settings;
 
@@ -329,10 +331,6 @@ async function writeModules(
     settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      cmsSocialSharing: {
-        ...defaultPortfolio.settings.cmsSocialSharing,
-        ...(content.settings?.cmsSocialSharing ?? {}),
-      },
       socialSharing: {
         ...defaultPortfolio.settings.socialSharing,
         ...(content.settings?.socialSharing ?? {}),
@@ -425,10 +423,6 @@ function composePortfolio(documents) {
   const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    cmsSocialSharing: {
-      ...defaultPortfolio.settings.cmsSocialSharing,
-      ...(rawSettings.cmsSocialSharing ?? {}),
-    },
     socialSharing: {
       ...defaultPortfolio.settings.socialSharing,
       ...(rawSettings.socialSharing ?? {}),

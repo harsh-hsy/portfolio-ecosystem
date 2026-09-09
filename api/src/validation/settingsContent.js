@@ -29,18 +29,10 @@ function requiredBoolean(value, label) {
 
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const cmsSocialSharing = settings.cmsSocialSharing ?? {}
   const sharing = settings.socialSharing ?? {}
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
   const seo = content.seo ?? {}
-
-  requiredText(cmsSocialSharing.openGraphTitle, 'CMS Open Graph title', 70)
-  requiredText(cmsSocialSharing.openGraphDescription, 'CMS Open Graph description', 200)
-  optionalUrl(cmsSocialSharing.image, 'CMS social sharing image URL')
-  if (!['summary', 'summary_large_image'].includes(cmsSocialSharing.twitterCard)) {
-    throw validationError('Select a supported CMS Twitter card type')
-  }
 
   requiredText(seo.title, 'Default meta title', 70)
   requiredText(seo.description, 'Default meta description', 180)

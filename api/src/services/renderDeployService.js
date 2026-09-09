@@ -30,7 +30,3 @@ async function triggerRenderDeploy(url, target) {
 export function triggerFrontendDeploy() {
   return triggerRenderDeploy(env.renderFrontendDeployHookUrl, 'frontend')
 }
-
-export function triggerCmsDeploy() {
-  return triggerRenderDeploy(env.renderCmsDeployHookUrl, 'cms')
-}
