@@ -10,7 +10,7 @@ function requiredText(value, label, limit) {
   if (text.length > limit) throw validationError(`${label} must use ${limit} characters or fewer`)
 }
 
-export function validateGlobalPagesContent(content) {
+export function validateFooterContent(content) {
   const settings = content.settings ?? {}
   requiredText(settings.footerName ?? content.profile?.name, 'Footer name', 60)
   requiredText(settings.footerDescription ?? content.profile?.tagline, 'Footer description', 180)

@@ -18,7 +18,7 @@ import {
 } from "../validation/contactContent.js";
 import { validateProjectsContent } from "../validation/projectContent.js";
 import { validateSkillsContent } from "../validation/skillsContent.js";
-import { validateGlobalPagesContent } from "../validation/globalPagesContent.js";
+import { validateFooterContent } from "../validation/footerContent.js";
 import { validateSettingsContent } from "../validation/settingsContent.js";
 import {
   ensureCertificateResources,
@@ -273,7 +273,7 @@ const editorModules = {
   contact: ["contact", "links"],
   links: ["links", "home", "settings"],
   settings: ["settings"],
-  globalPages: ["settings"],
+  footer: ["settings"],
 };
 
 function sanitizeLegacyContent(content) {
@@ -340,12 +340,11 @@ async function writeModules(
   if (names.includes("contact")) validateContactContent(normalizedContent);
   if (names.includes("links")) validateLinksContent(normalizedContent);
   if (names.includes("settings")) {
-    if (editorName === "globalPages")
-      validateGlobalPagesContent(normalizedContent);
+    if (editorName === "footer") validateFooterContent(normalizedContent);
     else if (editorName === "settings")
       validateSettingsContent(normalizedContent);
     else {
-      validateGlobalPagesContent(normalizedContent);
+      validateFooterContent(normalizedContent);
       validateSettingsContent(normalizedContent);
     }
   }

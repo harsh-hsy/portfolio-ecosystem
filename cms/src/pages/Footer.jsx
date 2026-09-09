@@ -40,7 +40,7 @@ function portfolioFromForm(portfolio, form) {
   }
 }
 
-function validateGlobalPages(form) {
+function validateFooter(form) {
   return validateForm(form, {
     footerName: [validators.required(), validators.maxLength(60)],
     footerTagline: [validators.required(), validators.maxLength(180)],
@@ -51,17 +51,17 @@ function validateGlobalPages(form) {
   })
 }
 
-function GlobalPages() {
+function Footer() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
   )
   const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), [])
   const editor = usePortfolioEditor({
-    moduleName: 'globalPages',
+    moduleName: 'footer',
     getForm,
     getPortfolio,
-    validate: validateGlobalPages,
+    validate: validateFooter,
     successMessage: 'Footer updated successfully.',
   })
   const savedHomeName = editor.portfolio?.profile?.name ?? ''
@@ -70,8 +70,8 @@ function GlobalPages() {
 
   return (
     <section className="page">
-      <form className="content-editor global-pages-editor" onSubmit={editor.saveForm}>
-        <section className="panel account-section global-pages-card">
+      <form className="content-editor footer-editor" onSubmit={editor.saveForm}>
+        <section className="panel account-section footer-card">
           <div className="editor-section-heading">
             <div>
               <h3>Footer</h3>
@@ -83,6 +83,16 @@ function GlobalPages() {
           </div>
           <div className="form-grid">
             <FormField
+              label="Footer Description"
+              name="footerTagline"
+              className="form-group--wide"
+              value={editor.form.footerTagline}
+              onChange={editor.updateField}
+              error={editor.errors.footerTagline}
+              maxLength={180}
+              required
+            />
+            <FormField
               label="Copyright Year"
               name="copyrightYear"
               value={editor.form.copyrightYear}
@@ -93,7 +103,7 @@ function GlobalPages() {
               maxLength={4}
               required
             />
-            <div className="availability-editor global-pages-name-editor">
+            <div className="availability-editor footer-name-editor">
               <FormField
                 label="Developed By"
                 name="footerName"
@@ -103,7 +113,7 @@ function GlobalPages() {
                 maxLength={60}
                 required
               />
-              <label className="toggle-field global-pages-name-source">
+              <label className="toggle-field footer-name-source">
                 <input
                   type="checkbox"
                   checked={usesHomeName}
@@ -121,16 +131,6 @@ function GlobalPages() {
                 </span>
               </label>
             </div>
-            <FormField
-              label="Footer Description"
-              name="footerTagline"
-              className="form-group--wide"
-              value={editor.form.footerTagline}
-              onChange={editor.updateField}
-              error={editor.errors.footerTagline}
-              maxLength={180}
-              required
-            />
           </div>
         </section>
 
@@ -146,4 +146,4 @@ function GlobalPages() {
   )
 }
 
-export default GlobalPages
+export default Footer

@@ -20,7 +20,7 @@ import Achievements from '../pages/Achievements'
 import Contact from '../pages/Contact'
 import Links from '../pages/Links'
 import Settings from '../pages/Settings'
-import GlobalPages from '../pages/GlobalPages'
+import Footer from '../pages/Footer'
 import Account from '../pages/Account'
 
 function AppRoutes() {
@@ -60,7 +60,7 @@ function AppRoutes() {
         <Route path="achievements" element={<Achievements />} />
         <Route path="contact" element={<Contact />} />
         <Route path="links" element={<Links />} />
-        <Route path="global-pages" element={<GlobalPages />} />
+        <Route path="footer" element={<Footer />} />
         <Route path="settings" element={<Settings />} />
         <Route path="/account" element={<Account />} />
       </Route>

@@ -90,9 +90,9 @@ const navigation = [
     icon: FiLink,
   },
   {
-    id: 'global-pages',
+    id: 'footer',
     label: 'Footer',
-    path: '/global-pages',
+    path: '/footer',
     icon: FiGlobe,
   },
   {
