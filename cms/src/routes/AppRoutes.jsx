@@ -67,7 +67,6 @@ function AppRoutes() {
         <Route path="settings" element={<SettingsHub />} />
         <Route path="settings/portfolio/experience" element={<Settings section="portfolio-experience" />} />
         <Route path="settings/portfolio/social-sharing" element={<Settings section="portfolio-social-sharing" />} />
-        <Route path="settings/cms/identity" element={<Settings section="cms-identity" />} />
         <Route path="settings/cms/experience" element={<Settings section="cms-experience" />} />
         <Route path="settings/cms/social-sharing" element={<Settings section="cms-social-sharing" />} />
         <Route path="settings/seo" element={<Settings section="seo" />} />

@@ -8,20 +8,13 @@ import ImageUploader from "../components/editor/ImageUploader";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { validateForm, validators } from "../utils/validation";
 import { resolveMediaUrl } from "../utils/media";
+import { cmsIdentity } from "../../config/cmsIdentity.js";
 
 const portfolioUrl = (
   import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
 ).replace(/\/$/, "");
 
 const emptyForm = {
-  cmsAppName: "Portfolio CMS",
-  cmsShortName: "CMS",
-  cmsDescription: "",
-  cmsUrl: "",
-  cmsDisplay: "standalone",
-  cmsThemeColor: "#111827",
-  cmsBackgroundColor: "#080c14",
-  cmsIcon: "",
   cmsDefaultTheme: "system",
   cmsDesktopAnimations: true,
   cmsMobileAnimations: false,
@@ -58,7 +51,6 @@ const emptyForm = {
 
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
-  const cmsManifest = settings.cmsManifest ?? {};
   const cmsExperience = settings.cmsExperience ?? {};
   const cmsSocialSharing = settings.cmsSocialSharing ?? {};
   const sharing = settings.socialSharing ?? {};
@@ -67,14 +59,6 @@ function formFromPortfolio(portfolio) {
   const seo = portfolio?.seo ?? {};
 
   return {
-    cmsAppName: cmsManifest.name ?? "Portfolio CMS",
-    cmsShortName: cmsManifest.shortName ?? "CMS",
-    cmsDescription: cmsManifest.description ?? "Private content management dashboard for the Harsh Singh portfolio.",
-    cmsUrl: cmsManifest.cmsUrl ?? "https://harsh-hsy-cms.onrender.com",
-    cmsDisplay: cmsManifest.display ?? "standalone",
-    cmsThemeColor: cmsManifest.themeColor ?? "#111827",
-    cmsBackgroundColor: cmsManifest.backgroundColor ?? "#080c14",
-    cmsIcon: cmsManifest.icon ?? "",
     cmsDefaultTheme: cmsExperience.defaultTheme ?? "system",
     cmsDesktopAnimations: cmsExperience.desktopAnimations ?? true,
     cmsMobileAnimations: cmsExperience.mobileAnimations ?? false,
@@ -115,17 +99,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      cmsManifest: {
-        ...(portfolio.settings?.cmsManifest ?? {}),
-        name: form.cmsAppName.trim(),
-        shortName: form.cmsShortName.trim(),
-        description: form.cmsDescription.trim(),
-        cmsUrl: form.cmsUrl.trim().replace(/\/$/, ""),
-        display: form.cmsDisplay,
-        themeColor: form.cmsThemeColor,
-        backgroundColor: form.cmsBackgroundColor,
-        icon: form.cmsIcon,
-      },
       cmsExperience: {
         ...(portfolio.settings?.cmsExperience ?? {}),
         defaultTheme: form.cmsDefaultTheme,
@@ -180,31 +153,8 @@ function portfolioFromForm(portfolio, form) {
   };
 }
 
-function validHttpUrl(value) {
-  try {
-    const url = new URL(String(value).trim());
-    return ["http:", "https:"].includes(url.protocol)
-      ? ""
-      : "Use a valid HTTP or HTTPS URL.";
-  } catch {
-    return "Use a valid HTTP or HTTPS URL.";
-  }
-}
-
-function validHexColor(value) {
-  return /^#[0-9a-f]{6}$/i.test(String(value).trim())
-    ? ""
-    : "Use a six-digit hex color, for example #111827.";
-}
-
 function validateSettings(form) {
   return validateForm(form, {
-    cmsAppName: [validators.required(), validators.maxLength(80)],
-    cmsShortName: [validators.required(), validators.maxLength(24)],
-    cmsDescription: [validators.required(), validators.maxLength(180)],
-    cmsUrl: [validators.required(), validHttpUrl],
-    cmsThemeColor: [validators.required(), validHexColor],
-    cmsBackgroundColor: [validators.required(), validHexColor],
     cmsOpenGraphTitle: [validators.required(), validators.maxLength(70)],
     cmsOpenGraphDescription: [validators.required(), validators.maxLength(200)],
     metaTitle: [validators.required(), validators.maxLength(70)],
@@ -263,12 +213,6 @@ const pageConfig = {
     description: "Manage link previews used by LinkedIn, WhatsApp, X, Telegram, and Facebook.",
     deployTarget: "frontend",
   },
-  "cms-identity": {
-    kicker: "CMS",
-    title: "CMS Identity",
-    description: "Manage the CMS installed-app identity, launch appearance, and icon.",
-    deployTarget: "cms",
-  },
   "cms-experience": {
     kicker: "CMS",
     title: "CMS Experience",
@@ -326,61 +270,6 @@ function Settings({ section }) {
       <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
 
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
-        {section === "cms-identity" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">CMS App Identity</h2>
-              <p>Control how the CMS appears when it is installed on a desktop or mobile device.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField label="App Name" name="cmsAppName" value={editor.form.cmsAppName} onChange={editor.updateField} error={editor.errors.cmsAppName} maxLength={80} required />
-            <FormField label="Short Name" name="cmsShortName" value={editor.form.cmsShortName} onChange={editor.updateField} error={editor.errors.cmsShortName} helpText="Used below the installed app icon." maxLength={24} required />
-            <FormField label="App Description" name="cmsDescription" className="form-group--wide" value={editor.form.cmsDescription} onChange={editor.updateField} error={editor.errors.cmsDescription} maxLength={180} required />
-            <FormField label="Primary CMS URL" name="cmsUrl" type="url" value={editor.form.cmsUrl} onChange={editor.updateField} error={editor.errors.cmsUrl} helpText="The installed app opens at this address." required />
-            <FormField
-              label="Display Mode"
-              name="cmsDisplay"
-              as="select"
-              value={editor.form.cmsDisplay}
-              onChange={editor.updateField}
-              options={[
-                { value: "standalone", label: "Standalone app" },
-                { value: "minimal-ui", label: "Minimal browser controls" },
-                { value: "browser", label: "Browser tab" },
-              ]}
-              required
-            />
-            <FormField label="Theme Color" name="cmsThemeColor" type="color" className="settings-color-field" value={editor.form.cmsThemeColor} onChange={editor.updateField} error={editor.errors.cmsThemeColor} helpText={editor.form.cmsThemeColor} required />
-            <FormField label="Launch Background" name="cmsBackgroundColor" type="color" className="settings-color-field" value={editor.form.cmsBackgroundColor} onChange={editor.updateField} error={editor.errors.cmsBackgroundColor} helpText={editor.form.cmsBackgroundColor} required />
-            <div className="form-group form-group--wide settings-manifest-layout">
-              <ImageUploader
-                value={editor.form.cmsIcon}
-                onChange={(value) => editor.updateForm((current) => ({ ...current, cmsIcon: value }))}
-                label="CMS App Icon"
-                section="settings"
-                aspectRatio={1}
-                outputWidth={512}
-                outputHeight={512}
-                alt="CMS app icon"
-                previewMaxWidth="240px"
-              />
-              <article className="manifest-preview-card" style={{ backgroundColor: editor.form.cmsBackgroundColor }}>
-                <div className="manifest-preview-card__icon" style={{ backgroundColor: editor.form.cmsThemeColor }}>
-                  {editor.form.cmsIcon ? (
-                    <img src={resolveMediaUrl(editor.form.cmsIcon)} alt="" />
-                  ) : (
-                    <span>{editor.form.cmsShortName || "CMS"}</span>
-                  )}
-                </div>
-                <strong>{editor.form.cmsAppName || "Portfolio CMS"}</strong>
-                <small>Installed app preview</small>
-              </article>
-            </div>
-          </div>
-        </section> : null}
-
         {section === "seo" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
@@ -537,7 +426,7 @@ function Settings({ section }) {
                   {editor.form.cmsSocialImage ? <img src={resolveMediaUrl(editor.form.cmsSocialImage)} alt="" /> : <span>1200 × 630 preview</span>}
                 </div>
                 <div>
-                  <small>{editor.form.cmsUrl || "cms.example"}</small>
+                  <small>{cmsIdentity.cmsUrl}</small>
                   <strong>{editor.form.cmsOpenGraphTitle || "CMS preview title"}</strong>
                   <p>{editor.form.cmsOpenGraphDescription || "CMS preview description"}</p>
                 </div>

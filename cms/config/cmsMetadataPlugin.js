@@ -39,7 +39,7 @@ export function cmsMetadataPlugin({ apiBaseUrl, defaults }) {
     name: 'cms-crawler-metadata',
     async transformIndexHtml(html) {
       const content = await fetchPortfolio(apiBaseUrl)
-      const manifest = content?.settings?.cmsManifest ?? defaults.manifest
+      const manifest = defaults.manifest
       const sharing = content?.settings?.cmsSocialSharing ?? defaults.sharing
       const cmsUrl = String(manifest.cmsUrl || defaults.manifest.cmsUrl).replace(/\/$/, '')
       const title = sharing.openGraphTitle || manifest.name || defaults.sharing.openGraphTitle

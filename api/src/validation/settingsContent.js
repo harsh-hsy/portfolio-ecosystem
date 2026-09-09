@@ -27,34 +27,14 @@ function requiredBoolean(value, label) {
   if (typeof value !== 'boolean') throw validationError(`${label} must be true or false`)
 }
 
-function requiredHexColor(value, label) {
-  const color = requiredText(value, label, 7)
-  if (!/^#[0-9a-f]{6}$/i.test(color)) {
-    throw validationError(`${label} must be a six-digit hex color`)
-  }
-}
-
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const cmsManifest = settings.cmsManifest ?? {}
   const cmsExperience = settings.cmsExperience ?? {}
   const cmsSocialSharing = settings.cmsSocialSharing ?? {}
   const sharing = settings.socialSharing ?? {}
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
   const seo = content.seo ?? {}
-
-  requiredText(cmsManifest.name, 'CMS app name', 80)
-  requiredText(cmsManifest.shortName, 'CMS short name', 24)
-  requiredText(cmsManifest.description, 'CMS app description', 180)
-  requiredText(cmsManifest.cmsUrl, 'Primary CMS URL', 240)
-  optionalUrl(cmsManifest.cmsUrl, 'Primary CMS URL')
-  optionalUrl(cmsManifest.icon, 'CMS app icon URL')
-  requiredHexColor(cmsManifest.themeColor, 'CMS theme color')
-  requiredHexColor(cmsManifest.backgroundColor, 'CMS background color')
-  if (!['standalone', 'minimal-ui', 'browser'].includes(cmsManifest.display)) {
-    throw validationError('Select a supported CMS display mode')
-  }
 
   if (!['system', 'dark', 'light'].includes(cmsExperience.defaultTheme)) {
     throw validationError('Select a supported CMS default theme')

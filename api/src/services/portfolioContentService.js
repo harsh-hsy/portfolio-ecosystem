@@ -77,8 +77,10 @@ function withoutEyebrow(section = {}) {
 }
 
 function withCodeOwnedIdentity(settings = {}) {
+  const { cmsManifest: _cmsManifest, ...settingsWithoutCmsIdentity } = settings;
+
   return {
-    ...settings,
+    ...settingsWithoutCmsIdentity,
     brandInitials: portfolioIdentity.brandInitials,
     loadingMark: portfolioIdentity.brandInitials,
     siteIdentity: {
@@ -96,6 +98,7 @@ function withoutCodeOwnedIdentity(settings = {}) {
     brandInitials: _brandInitials,
     loadingMark: _loadingMark,
     siteIdentity: _siteIdentity,
+    cmsManifest: _cmsManifest,
     ...cmsManagedSettings
   } = settings;
 
@@ -321,10 +324,6 @@ async function writeModules(
     settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      cmsManifest: {
-        ...defaultPortfolio.settings.cmsManifest,
-        ...(content.settings?.cmsManifest ?? {}),
-      },
       cmsExperience: {
         ...defaultPortfolio.settings.cmsExperience,
         ...(content.settings?.cmsExperience ?? {}),
@@ -425,10 +424,6 @@ function composePortfolio(documents) {
   const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    cmsManifest: {
-      ...defaultPortfolio.settings.cmsManifest,
-      ...(rawSettings.cmsManifest ?? {}),
-    },
     cmsExperience: {
       ...defaultPortfolio.settings.cmsExperience,
       ...(rawSettings.cmsExperience ?? {}),

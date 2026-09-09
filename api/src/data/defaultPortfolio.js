@@ -654,16 +654,6 @@ export const defaultPortfolio = {
       "authorName": portfolioIdentity.authorName,
       "portfolioUrl": portfolioIdentity.portfolioUrl
     },
-    "cmsManifest": {
-      "name": "Portfolio CMS",
-      "shortName": "CMS",
-      "description": "Private content management dashboard for the Harsh Singh portfolio.",
-      "cmsUrl": "https://harsh-hsy-cms.onrender.com",
-      "display": "standalone",
-      "themeColor": "#111827",
-      "backgroundColor": "#080c14",
-      "icon": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/f98ssjqdo4kq6ng23xep?_a=BAMAPqWQ0"
-    },
     "cmsExperience": {
       "defaultTheme": "system",
       "desktopAnimations": true,
