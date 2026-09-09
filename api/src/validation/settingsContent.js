@@ -29,25 +29,11 @@ function requiredBoolean(value, label) {
 
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const cmsExperience = settings.cmsExperience ?? {}
   const cmsSocialSharing = settings.cmsSocialSharing ?? {}
   const sharing = settings.socialSharing ?? {}
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
   const seo = content.seo ?? {}
-
-  if (!['system', 'dark', 'light'].includes(cmsExperience.defaultTheme)) {
-    throw validationError('Select a supported CMS default theme')
-  }
-  ;[
-    ['desktopAnimations', 'CMS desktop animations'],
-    ['mobileAnimations', 'CMS mobile animations'],
-    ['stickyHeader', 'CMS sticky header'],
-    ['respectReducedMotion', 'CMS reduced-motion preference'],
-  ].forEach(([key, label]) => requiredBoolean(cmsExperience[key], label))
-  if (!['compact', 'expanded'].includes(cmsExperience.mobileSidebarMode)) {
-    throw validationError('Select a supported mobile sidebar mode')
-  }
 
   requiredText(cmsSocialSharing.openGraphTitle, 'CMS Open Graph title', 70)
   requiredText(cmsSocialSharing.openGraphDescription, 'CMS Open Graph description', 200)

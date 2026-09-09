@@ -15,12 +15,6 @@ const portfolioUrl = (
 ).replace(/\/$/, "");
 
 const emptyForm = {
-  cmsDefaultTheme: "system",
-  cmsDesktopAnimations: true,
-  cmsMobileAnimations: false,
-  cmsStickyHeader: true,
-  cmsRespectReducedMotion: true,
-  cmsMobileSidebarMode: "compact",
   cmsOpenGraphTitle: "",
   cmsOpenGraphDescription: "",
   cmsSocialImage: "",
@@ -51,7 +45,6 @@ const emptyForm = {
 
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
-  const cmsExperience = settings.cmsExperience ?? {};
   const cmsSocialSharing = settings.cmsSocialSharing ?? {};
   const sharing = settings.socialSharing ?? {};
   const experience = settings.experience ?? {};
@@ -59,12 +52,6 @@ function formFromPortfolio(portfolio) {
   const seo = portfolio?.seo ?? {};
 
   return {
-    cmsDefaultTheme: cmsExperience.defaultTheme ?? "system",
-    cmsDesktopAnimations: cmsExperience.desktopAnimations ?? true,
-    cmsMobileAnimations: cmsExperience.mobileAnimations ?? false,
-    cmsStickyHeader: cmsExperience.stickyHeader ?? true,
-    cmsRespectReducedMotion: cmsExperience.respectReducedMotion ?? true,
-    cmsMobileSidebarMode: cmsExperience.mobileSidebarMode ?? "compact",
     cmsOpenGraphTitle: cmsSocialSharing.openGraphTitle ?? "Portfolio CMS | Harsh Singh",
     cmsOpenGraphDescription: cmsSocialSharing.openGraphDescription ?? "Private content management dashboard for the Harsh Singh portfolio.",
     cmsSocialImage: cmsSocialSharing.image ?? "",
@@ -99,15 +86,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      cmsExperience: {
-        ...(portfolio.settings?.cmsExperience ?? {}),
-        defaultTheme: form.cmsDefaultTheme,
-        desktopAnimations: form.cmsDesktopAnimations,
-        mobileAnimations: form.cmsMobileAnimations,
-        stickyHeader: form.cmsStickyHeader,
-        respectReducedMotion: form.cmsRespectReducedMotion,
-        mobileSidebarMode: form.cmsMobileSidebarMode,
-      },
       cmsSocialSharing: {
         ...(portfolio.settings?.cmsSocialSharing ?? {}),
         openGraphTitle: form.cmsOpenGraphTitle.trim(),
@@ -212,11 +190,6 @@ const pageConfig = {
     title: "Portfolio Social Sharing",
     description: "Manage link previews used by LinkedIn, WhatsApp, X, Telegram, and Facebook.",
     deployTarget: "frontend",
-  },
-  "cms-experience": {
-    kicker: "CMS",
-    title: "CMS Experience",
-    description: "Keep the dashboard comfortable and lightweight across desktop and mobile devices.",
   },
   "cms-social-sharing": {
     kicker: "CMS",
@@ -350,50 +323,6 @@ function Settings({ section }) {
             <ToggleField checked={editor.form.rotatingRole} label="Rotating job title" recommended="Enabled" onChange={(value) => updateToggle("rotatingRole", value)} />
             <ToggleField checked={editor.form.stickyHeader} label="Sticky header" description="Keep navigation visible while scrolling." recommended="Enabled" onChange={(value) => updateToggle("stickyHeader", value)} />
             <ToggleField checked={editor.form.respectReducedMotion} label="Respect reduced-motion preference" description="Reduce animation for visitors who request it in their device settings." recommended="Enabled" onChange={(value) => updateToggle("respectReducedMotion", value)} />
-          </div>
-        </section> : null}
-
-        {section === "cms-experience" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">CMS Experience</h2>
-              <p>Choose lightweight dashboard defaults for desktop and mobile devices.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField
-              label="Default Theme"
-              name="cmsDefaultTheme"
-              as="select"
-              value={editor.form.cmsDefaultTheme}
-              onChange={editor.updateField}
-              options={[
-                { value: "system", label: "Follow device" },
-                { value: "dark", label: "Dark" },
-                { value: "light", label: "Light" },
-              ]}
-              helpText="A manually selected theme still takes priority on that device."
-              required
-            />
-            <FormField
-              label="Mobile Sidebar"
-              name="cmsMobileSidebarMode"
-              as="select"
-              value={editor.form.cmsMobileSidebarMode}
-              onChange={editor.updateField}
-              options={[
-                { value: "compact", label: "Compact by default" },
-                { value: "expanded", label: "Expanded by default" },
-              ]}
-              required
-            />
-          </div>
-          <div className="settings-toggle-grid settings-toggle-grid--spaced">
-            <ToggleField checked={editor.form.cmsDesktopAnimations} label="Desktop transitions" description="Keep lightweight dashboard transitions on larger screens." recommended="Enabled" onChange={(value) => updateToggle("cmsDesktopAnimations", value)} />
-            <ToggleField checked={editor.form.cmsMobileAnimations} label="Mobile transitions" description="Enable decorative dashboard motion on phones." recommended="Disabled" warning="Disabling motion gives the smoothest mobile editing experience." onChange={(value) => updateToggle("cmsMobileAnimations", value)} />
-            <ToggleField checked={editor.form.cmsStickyHeader} label="Sticky CMS header" description="Keep the toolbar visible while editing long pages." recommended="Enabled" onChange={(value) => updateToggle("cmsStickyHeader", value)} />
-            <ToggleField checked={editor.form.cmsRespectReducedMotion} label="Respect reduced-motion preference" description="Follow the accessibility preference configured on the device." recommended="Enabled" onChange={(value) => updateToggle("cmsRespectReducedMotion", value)} />
           </div>
         </section> : null}
 

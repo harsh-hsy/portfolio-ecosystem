@@ -23,7 +23,6 @@ const groups = [
     title: "CMS Settings",
     description: "Configure how the CMS looks, behaves, installs, and appears when shared.",
     items: [
-      { title: "Experience", description: "Theme, mobile performance, sidebar, header, and accessibility.", icon: FiActivity, path: "/settings/cms/experience" },
       { title: "Social Sharing", description: "Private CMS link title, description, and preview image.", icon: FiShare2, path: "/settings/cms/social-sharing" },
     ],
   },

@@ -1415,10 +1415,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
   transform: translateX(5px);
 }
 
-.settings-toggle-grid--spaced {
-  margin-top: 20px;
-}
-
 .settings-card {
   gap: 26px;
 

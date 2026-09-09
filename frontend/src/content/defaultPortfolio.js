@@ -654,14 +654,6 @@ export const defaultPortfolio = {
       "authorName": portfolioIdentity.authorName,
       "portfolioUrl": portfolioIdentity.portfolioUrl
     },
-    "cmsExperience": {
-      "defaultTheme": "system",
-      "desktopAnimations": true,
-      "mobileAnimations": false,
-      "stickyHeader": true,
-      "respectReducedMotion": true,
-      "mobileSidebarMode": "compact"
-    },
     "cmsSocialSharing": {
       "openGraphTitle": "Portfolio CMS | Harsh Singh",
       "openGraphDescription": "Private content management dashboard for the Harsh Singh portfolio.",

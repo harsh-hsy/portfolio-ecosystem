@@ -77,10 +77,14 @@ function withoutEyebrow(section = {}) {
 }
 
 function withCodeOwnedIdentity(settings = {}) {
-  const { cmsManifest: _cmsManifest, ...settingsWithoutCmsIdentity } = settings;
+  const {
+    cmsManifest: _cmsManifest,
+    cmsExperience: _cmsExperience,
+    ...settingsWithoutCmsConfiguration
+  } = settings;
 
   return {
-    ...settingsWithoutCmsIdentity,
+    ...settingsWithoutCmsConfiguration,
     brandInitials: portfolioIdentity.brandInitials,
     loadingMark: portfolioIdentity.brandInitials,
     siteIdentity: {
@@ -99,6 +103,7 @@ function withoutCodeOwnedIdentity(settings = {}) {
     loadingMark: _loadingMark,
     siteIdentity: _siteIdentity,
     cmsManifest: _cmsManifest,
+    cmsExperience: _cmsExperience,
     ...cmsManagedSettings
   } = settings;
 
@@ -324,10 +329,6 @@ async function writeModules(
     settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      cmsExperience: {
-        ...defaultPortfolio.settings.cmsExperience,
-        ...(content.settings?.cmsExperience ?? {}),
-      },
       cmsSocialSharing: {
         ...defaultPortfolio.settings.cmsSocialSharing,
         ...(content.settings?.cmsSocialSharing ?? {}),
@@ -424,10 +425,6 @@ function composePortfolio(documents) {
   const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    cmsExperience: {
-      ...defaultPortfolio.settings.cmsExperience,
-      ...(rawSettings.cmsExperience ?? {}),
-    },
     cmsSocialSharing: {
       ...defaultPortfolio.settings.cmsSocialSharing,
       ...(rawSettings.cmsSocialSharing ?? {}),
