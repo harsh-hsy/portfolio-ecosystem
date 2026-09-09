@@ -12,9 +12,8 @@ const groups = [
     id: "portfolio",
     eyebrow: "Public website",
     title: "Portfolio Settings",
-    description: "Manage the identity, experience, and shared-link appearance of your public portfolio.",
+    description: "Manage the experience and shared-link appearance of your public portfolio.",
     items: [
-      { title: "Identity", description: "Brand, browser title, favicon, author, and public URL.", icon: FiGlobe, path: "/settings/portfolio/identity" },
       { title: "Experience", description: "Loading, animation, scrolling, navigation, and motion controls.", icon: FiActivity, path: "/settings/portfolio/experience" },
       { title: "Social Sharing", description: "Portfolio preview shown on LinkedIn, WhatsApp, X, and Telegram.", icon: FiShare2, path: "/settings/portfolio/social-sharing" },
     ],

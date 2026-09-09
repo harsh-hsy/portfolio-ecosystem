@@ -1,19 +1,20 @@
 import { profile } from './profile.js'
+import { portfolioIdentity } from './portfolioIdentity.js'
 
 export const siteSettings = {
-  brandInitials: 'HS',
+  brandInitials: portfolioIdentity.brandInitials,
   copyrightPrefix: '©',
   developedByLabel: 'Developed by',
   footerName: '',
   footerDescription: '',
-  loadingMark: 'HS',
+  loadingMark: portfolioIdentity.brandInitials,
   footerBackToTopLabel: 'Back to top',
   siteIdentity: {
-    siteName: `${profile.name} Portfolio`,
-    titleSuffix: profile.name,
-    favicon: '',
-    authorName: profile.name,
-    portfolioUrl: 'https://harsh-hsy.onrender.com',
+    siteName: portfolioIdentity.siteName,
+    titleSuffix: portfolioIdentity.titleSuffix,
+    favicon: portfolioIdentity.favicon,
+    authorName: portfolioIdentity.authorName,
+    portfolioUrl: portfolioIdentity.portfolioUrl,
   },
   socialSharing: {
     openGraphTitle: `${profile.name} | ${profile.role}`,

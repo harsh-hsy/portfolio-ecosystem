@@ -1,3 +1,5 @@
+import { portfolioIdentity } from './portfolioIdentity.js'
+
 export const defaultPortfolio = {
   "profile": {
     "name": "Harsh Singh",
@@ -638,19 +640,19 @@ export const defaultPortfolio = {
     }
   ],
   "settings": {
-    "brandInitials": "HS",
+    "brandInitials": portfolioIdentity.brandInitials,
     "copyrightPrefix": "©",
     "developedByLabel": "Developed by",
     "footerName": "Harsh Singh",
     "footerDescription": "Building polished, accessible, high-performance web experiences.",
-    "loadingMark": "HS",
+    "loadingMark": portfolioIdentity.brandInitials,
     "footerBackToTopLabel": "Back to top",
     "siteIdentity": {
-      "siteName": "Harsh Singh Portfolio",
-      "titleSuffix": "Harsh Singh",
-      "favicon": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/af5ci5dxwbrd3cd32gzh?_a=BAMAPqWQ0",
-      "authorName": "Harsh Singh",
-      "portfolioUrl": "https://harsh-hsy.onrender.com"
+      "siteName": portfolioIdentity.siteName,
+      "titleSuffix": portfolioIdentity.titleSuffix,
+      "favicon": portfolioIdentity.favicon,
+      "authorName": portfolioIdentity.authorName,
+      "portfolioUrl": portfolioIdentity.portfolioUrl
     },
     "cmsManifest": {
       "name": "Portfolio CMS",
@@ -819,13 +821,13 @@ export const defaultPortfolio = {
     }
   },
   "seo": {
-    "siteUrl": "https://harsh-hsy.onrender.com",
+    "siteUrl": portfolioIdentity.portfolioUrl,
     "title": "Harsh Singh | Frontend Developer",
     "description": "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
     "keywords": "Harsh Singh, Harsh Kumar Singh, Harsh HSY, harsh-hsy, harsh.hsy, codewithharshsingh, Frontend Developer, React Developer, JavaScript Developer, MERN Stack Developer, Web Developer, UI Developer, Portfolio, Kanpur, Uttar Pradesh, India, Responsive Web Design, HTML, CSS, JavaScript, React, Vite, Node.js, Express.js, MongoDB, GitHub, QR Fusion, QR Code Generator, harsh-hsy portfolio, harsh-hsy.netlify.app, harsh-hsy.onrender.com",
-    "author": "Harsh Singh",
+    "author": portfolioIdentity.authorName,
     "bingVerification": "7821903C0AC68D3A01EAD5788B45656C",
     "allowIndexing": true,
-    "projectTitleSuffix": " | Harsh Singh"
+    "projectTitleSuffix": ` | ${portfolioIdentity.titleSuffix}`
   }
 }

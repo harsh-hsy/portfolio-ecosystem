@@ -9,13 +9,11 @@ import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { validateForm, validators } from "../utils/validation";
 import { resolveMediaUrl } from "../utils/media";
 
+const portfolioUrl = (
+  import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
+).replace(/\/$/, "");
+
 const emptyForm = {
-  siteName: "",
-  brandInitials: "",
-  titleSuffix: "",
-  favicon: "",
-  authorName: "",
-  portfolioUrl: "",
   cmsAppName: "Portfolio CMS",
   cmsShortName: "CMS",
   cmsDescription: "",
@@ -60,7 +58,6 @@ const emptyForm = {
 
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
-  const identity = settings.siteIdentity ?? {};
   const cmsManifest = settings.cmsManifest ?? {};
   const cmsExperience = settings.cmsExperience ?? {};
   const cmsSocialSharing = settings.cmsSocialSharing ?? {};
@@ -70,12 +67,6 @@ function formFromPortfolio(portfolio) {
   const seo = portfolio?.seo ?? {};
 
   return {
-    siteName: identity.siteName ?? "Harsh Singh Portfolio",
-    brandInitials: settings.brandInitials ?? "HS",
-    titleSuffix: identity.titleSuffix ?? "Harsh Singh",
-    favicon: identity.favicon ?? "",
-    authorName: identity.authorName ?? portfolio?.profile?.name ?? "",
-    portfolioUrl: identity.portfolioUrl ?? seo.siteUrl ?? "",
     cmsAppName: cmsManifest.name ?? "Portfolio CMS",
     cmsShortName: cmsManifest.shortName ?? "CMS",
     cmsDescription: cmsManifest.description ?? "Private content management dashboard for the Harsh Singh portfolio.",
@@ -120,23 +111,10 @@ function formFromPortfolio(portfolio) {
 }
 
 function portfolioFromForm(portfolio, form) {
-  const titleSuffix = form.titleSuffix.trim();
-  const portfolioUrl = form.portfolioUrl.trim().replace(/\/$/, "");
-
   return {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      brandInitials: form.brandInitials.trim(),
-      loadingMark: form.brandInitials.trim(),
-      siteIdentity: {
-        ...(portfolio.settings?.siteIdentity ?? {}),
-        siteName: form.siteName.trim(),
-        titleSuffix,
-        favicon: form.favicon,
-        authorName: form.authorName.trim(),
-        portfolioUrl,
-      },
       cmsManifest: {
         ...(portfolio.settings?.cmsManifest ?? {}),
         name: form.cmsAppName.trim(),
@@ -193,14 +171,11 @@ function portfolioFromForm(portfolio, form) {
     },
     seo: {
       ...(portfolio.seo ?? {}),
-      siteUrl: portfolioUrl,
       title: form.metaTitle.trim(),
       description: form.metaDescription.trim(),
       keywords: form.seoKeywords.trim(),
       bingVerification: form.bingVerification.trim(),
-      author: form.authorName.trim(),
       allowIndexing: form.allowIndexing,
-      projectTitleSuffix: titleSuffix ? ` | ${titleSuffix}` : "",
     },
   };
 }
@@ -224,11 +199,6 @@ function validHexColor(value) {
 
 function validateSettings(form) {
   return validateForm(form, {
-    siteName: [validators.required(), validators.maxLength(80)],
-    brandInitials: [validators.required(), validators.maxLength(4)],
-    titleSuffix: [validators.required(), validators.maxLength(60)],
-    authorName: [validators.required(), validators.maxLength(80)],
-    portfolioUrl: [validators.required(), validHttpUrl],
     cmsAppName: [validators.required(), validators.maxLength(80)],
     cmsShortName: [validators.required(), validators.maxLength(24)],
     cmsDescription: [validators.required(), validators.maxLength(180)],
@@ -282,12 +252,6 @@ function ConnectionBadge({ isLoading }) {
 }
 
 const pageConfig = {
-  "portfolio-identity": {
-    kicker: "Portfolio",
-    title: "Portfolio Identity",
-    description: "Manage the public portfolio brand, browser identity, and primary URL.",
-    deployTarget: "frontend",
-  },
   "portfolio-experience": {
     kicker: "Portfolio",
     title: "Portfolio Experience",
@@ -330,7 +294,7 @@ const pageConfig = {
 };
 
 function Settings({ section }) {
-  const currentPage = pageConfig[section] ?? pageConfig["portfolio-identity"];
+  const currentPage = pageConfig[section] ?? pageConfig["portfolio-experience"];
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
@@ -362,36 +326,6 @@ function Settings({ section }) {
       <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
 
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
-        {section === "portfolio-identity" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">Site Identity</h2>
-              <p>Control the public brand and browser identity used across the portfolio.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField label="Site Name" name="siteName" value={editor.form.siteName} onChange={editor.updateField} error={editor.errors.siteName} maxLength={80} required />
-            <FormField label="Brand Initials" name="brandInitials" value={editor.form.brandInitials} onChange={editor.updateField} error={editor.errors.brandInitials} maxLength={4} required />
-            <FormField label="Browser Title Suffix" name="titleSuffix" value={editor.form.titleSuffix} onChange={editor.updateField} error={editor.errors.titleSuffix} helpText={`Preview: Projects | ${editor.form.titleSuffix || "Name"}`} maxLength={60} required />
-            <FormField label="Default Author Name" name="authorName" value={editor.form.authorName} onChange={editor.updateField} error={editor.errors.authorName} maxLength={80} required />
-            <FormField label="Primary Portfolio URL" name="portfolioUrl" type="url" className="form-group--wide" value={editor.form.portfolioUrl} onChange={editor.updateField} error={editor.errors.portfolioUrl} required />
-            <div className="form-group form-group--wide">
-              <ImageUploader
-                value={editor.form.favicon}
-                onChange={(value) => editor.updateForm((current) => ({ ...current, favicon: value }))}
-                label="Favicon"
-                section="settings"
-                aspectRatio={1}
-                outputWidth={512}
-                outputHeight={512}
-                alt="Portfolio favicon"
-                previewMaxWidth="180px"
-              />
-            </div>
-          </div>
-        </section> : null}
-
         {section === "cms-identity" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>
@@ -501,7 +435,7 @@ function Settings({ section }) {
                   {editor.form.socialImage ? <img src={resolveMediaUrl(editor.form.socialImage)} alt="" /> : <span>1200 × 630 preview</span>}
                 </div>
                 <div>
-                  <small>{editor.form.portfolioUrl || "portfolio.example"}</small>
+                  <small>{portfolioUrl}</small>
                   <strong>{editor.form.openGraphTitle || "Open Graph title"}</strong>
                   <p>{editor.form.openGraphDescription || "Open Graph description"}</p>
                 </div>

@@ -36,7 +36,6 @@ function requiredHexColor(value, label) {
 
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const identity = settings.siteIdentity ?? {}
   const cmsManifest = settings.cmsManifest ?? {}
   const cmsExperience = settings.cmsExperience ?? {}
   const cmsSocialSharing = settings.cmsSocialSharing ?? {}
@@ -44,13 +43,6 @@ export function validateSettingsContent(content) {
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
   const seo = content.seo ?? {}
-
-  requiredText(identity.siteName, 'Site name', 80)
-  requiredText(settings.brandInitials, 'Brand initials', 4)
-  requiredText(identity.titleSuffix, 'Browser title suffix', 60)
-  requiredText(identity.authorName, 'Default author name', 80)
-  optionalUrl(identity.portfolioUrl, 'Primary portfolio URL')
-  optionalUrl(identity.favicon, 'Favicon URL')
 
   requiredText(cmsManifest.name, 'CMS app name', 80)
   requiredText(cmsManifest.shortName, 'CMS short name', 24)

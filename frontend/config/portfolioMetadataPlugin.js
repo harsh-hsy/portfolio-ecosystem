@@ -44,7 +44,7 @@ async function fetchPortfolio(apiBaseUrl) {
 function metadataFrom(content, defaults) {
   const profile = content?.profile ?? defaults.profile;
   const settings = content?.settings ?? defaults.settings;
-  const identity = settings.siteIdentity ?? defaults.settings.siteIdentity;
+  const identity = defaults.settings.siteIdentity;
   const sharing = settings.socialSharing ?? defaults.settings.socialSharing;
   const seo = content?.seo ?? defaults.seo;
   const defaultSiteUrl = String(defaults.seo.siteUrl).replace(/\/$/, "");
@@ -57,11 +57,10 @@ function metadataFrom(content, defaults) {
     seo.description || sharing.openGraphDescription || profile.tagline;
 
   return {
-    author: seo.author || identity.authorName || profile.name,
+    author: identity.authorName || seo.author || profile.name,
     bingVerification:
       seo.bingVerification || defaults.seo.bingVerification || "",
     description,
-    favicon: absoluteUrl(identity.favicon || "/favicon.svg", siteUrl),
     image: absoluteUrl(sharing.image, siteUrl),
     keywords: seo.keywords || "",
     robots: seo.allowIndexing === false ? "noindex, nofollow" : "index, follow",
@@ -102,15 +101,6 @@ export function portfolioMetadataPlugin({ apiBaseUrl, defaults }) {
           attrs: {
             rel: "canonical",
             href: metadata.siteUrl,
-            "data-build-seo": "true",
-          },
-          injectTo: "head",
-        },
-        {
-          tag: "link",
-          attrs: {
-            rel: "icon",
-            href: metadata.favicon,
             "data-build-seo": "true",
           },
           injectTo: "head",

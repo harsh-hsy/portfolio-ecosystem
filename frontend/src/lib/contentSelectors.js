@@ -53,7 +53,14 @@ function getStructuredData(profile) {
 }
 
 export function getSiteSettings(portfolio) {
-  return withDefaults(resolvePortfolio(portfolio).settings, defaultSettings)
+  const settings = withDefaults(resolvePortfolio(portfolio).settings, defaultSettings)
+
+  return {
+    ...settings,
+    brandInitials: defaultSettings.brandInitials,
+    loadingMark: defaultSettings.loadingMark,
+    siteIdentity: { ...defaultSettings.siteIdentity },
+  }
 }
 
 export function getProfileContent(portfolio) {
@@ -116,11 +123,12 @@ export function getProjectsContent(portfolio) {
 export function getProjectDetailsContent(project, portfolio) {
   const safeProject = withDefaults(project, defaultProject)
   const resolvedPortfolio = resolvePortfolio(portfolio)
+  const titleSuffix = defaultSettings.siteIdentity.titleSuffix
 
   return {
     project: safeProject,
     seo: {
-      title: `${safeProject.shortTitle}${resolvedPortfolio.seo?.projectTitleSuffix ?? ''}`,
+      title: `${safeProject.shortTitle}${titleSuffix ? ` | ${titleSuffix}` : ''}`,
       description: safeProject.desc,
     },
     ui: resolvedPortfolio.ui?.projectDetails ?? emptyPortfolio.ui.projectDetails,
@@ -208,9 +216,10 @@ export function getProjectCardContent(portfolio) {
 
 export function getNotFoundContent(portfolio) {
   const resolvedPortfolio = resolvePortfolio(portfolio)
+  const titleSuffix = defaultSettings.siteIdentity.titleSuffix
 
   return {
-    seoTitle: `Page Not Found${resolvedPortfolio.seo?.projectTitleSuffix ?? ''}`,
+    seoTitle: `Page Not Found${titleSuffix ? ` | ${titleSuffix}` : ''}`,
     section: resolvedPortfolio.sections.notFound,
   }
 }

@@ -1,4 +1,5 @@
 import { defaultPortfolio } from "../data/defaultPortfolio.js";
+import { portfolioIdentity } from "../config/portfolioIdentity.js";
 import { PortfolioContent } from "../models/PortfolioContent.js";
 import { validateAboutContent } from "../validation/aboutContent.js";
 import { validateCertificatesContent } from "../validation/certificateContent.js";
@@ -69,22 +70,58 @@ function pick(source, fields) {
   );
 }
 
-const legacyPortfolioUrls = new Set([
-  "https://harsh-hsy.onrender.com",
-  "https://harsh-hsy.onrender.com/",
-]);
-
-function normalizePortfolioUrl(value) {
-  const url = String(value ?? "").trim();
-  if (!url || legacyPortfolioUrls.has(url))
-    return defaultPortfolio.settings.siteIdentity.portfolioUrl;
-  return url.replace(/\/$/, "");
-}
-
 function withoutEyebrow(section = {}) {
   return Object.fromEntries(
     Object.entries(section).filter(([key]) => key !== "eyebrow"),
   );
+}
+
+function withCodeOwnedIdentity(settings = {}) {
+  return {
+    ...settings,
+    brandInitials: portfolioIdentity.brandInitials,
+    loadingMark: portfolioIdentity.brandInitials,
+    siteIdentity: {
+      siteName: portfolioIdentity.siteName,
+      titleSuffix: portfolioIdentity.titleSuffix,
+      favicon: portfolioIdentity.favicon,
+      authorName: portfolioIdentity.authorName,
+      portfolioUrl: portfolioIdentity.portfolioUrl,
+    },
+  };
+}
+
+function withoutCodeOwnedIdentity(settings = {}) {
+  const {
+    brandInitials: _brandInitials,
+    loadingMark: _loadingMark,
+    siteIdentity: _siteIdentity,
+    ...cmsManagedSettings
+  } = settings;
+
+  return cmsManagedSettings;
+}
+
+function withCodeOwnedIdentitySeo(seo = {}) {
+  return {
+    ...seo,
+    siteUrl: portfolioIdentity.portfolioUrl,
+    author: portfolioIdentity.authorName,
+    projectTitleSuffix: portfolioIdentity.titleSuffix
+      ? ` | ${portfolioIdentity.titleSuffix}`
+      : "",
+  };
+}
+
+function withoutCodeOwnedIdentitySeo(seo = {}) {
+  const {
+    siteUrl: _siteUrl,
+    author: _author,
+    projectTitleSuffix: _projectTitleSuffix,
+    ...cmsManagedSeo
+  } = seo;
+
+  return cmsManagedSeo;
 }
 
 const modules = {
@@ -169,11 +206,13 @@ const modules = {
     extract: (content) => ({
       profile: pick(content.profile, profileFields.settings),
       section: withoutEyebrow(content.sections?.notFound),
-      settings: content.settings ?? defaultPortfolio.settings,
+      settings: withoutCodeOwnedIdentity(
+        content.settings ?? defaultPortfolio.settings,
+      ),
       navigation: content.navigation ?? defaultPortfolio.navigation,
       commands: content.commands ?? defaultPortfolio.commands,
       ui: content.ui ?? defaultPortfolio.ui,
-      seo: content.seo ?? defaultPortfolio.seo,
+      seo: withoutCodeOwnedIdentitySeo(content.seo ?? defaultPortfolio.seo),
     }),
   },
 };
@@ -279,13 +318,9 @@ async function writeModules(
 ) {
   const normalizedContent = {
     ...content,
-    settings: {
+    settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      siteIdentity: {
-        ...defaultPortfolio.settings.siteIdentity,
-        ...(content.settings?.siteIdentity ?? {}),
-      },
       cmsManifest: {
         ...defaultPortfolio.settings.cmsManifest,
         ...(content.settings?.cmsManifest ?? {}),
@@ -310,11 +345,11 @@ async function writeModules(
         ...defaultPortfolio.settings.maintenance,
         ...(content.settings?.maintenance ?? {}),
       },
-    },
-    seo: {
+    }),
+    seo: withCodeOwnedIdentitySeo({
       ...defaultPortfolio.seo,
       ...(content.seo ?? {}),
-    },
+    }),
     sections: {
       ...defaultPortfolio.sections,
       ...(content.sections ?? {}),
@@ -386,16 +421,10 @@ function composePortfolio(documents) {
   const links = data("links");
   const settings = data("settings");
   const rawSettings = settings.settings ?? {};
-  const rawIdentity = rawSettings.siteIdentity ?? {};
   const rawSeo = settings.seo ?? {};
-  const portfolioSettings = {
+  const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    siteIdentity: {
-      ...defaultPortfolio.settings.siteIdentity,
-      ...rawIdentity,
-      portfolioUrl: normalizePortfolioUrl(rawIdentity.portfolioUrl),
-    },
     cmsManifest: {
       ...defaultPortfolio.settings.cmsManifest,
       ...(rawSettings.cmsManifest ?? {}),
@@ -420,12 +449,11 @@ function composePortfolio(documents) {
       ...defaultPortfolio.settings.maintenance,
       ...(rawSettings.maintenance ?? {}),
     },
-  };
-  const portfolioSeo = {
+  });
+  const portfolioSeo = withCodeOwnedIdentitySeo({
     ...defaultPortfolio.seo,
     ...rawSeo,
-    siteUrl: normalizePortfolioUrl(rawSeo.siteUrl),
-  };
+  });
 
   return {
     profile: {

@@ -51,11 +51,10 @@ export default function SiteMetadata() {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={seo.keywords || 'Harsh Singh, Harsh Kumar Singh, Harsh HSY, harsh-hsy, harsh.hsy, codewithharshsingh, Frontend Developer, React Developer, JavaScript Developer, MERN Stack Developer, Web Developer, UI Developer, Portfolio, Kanpur, Uttar Pradesh, India, Responsive Web Design, HTML, CSS, JavaScript, React, Vite, Node.js, Express.js, MongoDB, GitHub, QR Fusion, QR Code Generator, harsh-hsy portfolio, harsh-hsy.netlify.app, harsh-hsy.onrender.com'} />
-      <meta name="author" content={seo.author || identity.authorName || ''} />
+      <meta name="author" content={identity.authorName || seo.author || ''} />
       <meta name="robots" content={robots} />
       {seo.bingVerification ? <meta name="msvalidate.01" content={seo.bingVerification} /> : null}
       {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
-      {identity.favicon ? <link rel="icon" href={identity.favicon} /> : null}
       <meta property="og:title" content={location.pathname === '/' ? sharing.openGraphTitle || title : title} />
       <meta property="og:description" content={location.pathname === '/' ? sharing.openGraphDescription || description : description} />
       <meta property="og:type" content="website" />
