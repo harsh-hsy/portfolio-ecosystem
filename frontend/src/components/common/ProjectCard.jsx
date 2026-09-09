@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { FiArrowUpRight, FiGithub } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
-import { fadeUp } from '../../animations/variants.js'
-import { getProjectCardContent } from '../../lib/contentSelectors.js'
+import { fadeUp } from '../../motion/variants.js'
+import { getProjectCardContent } from '../../content/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
-import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
+import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../services/cloudinary.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
 export default function ProjectCard({ project }) {
@@ -19,7 +19,11 @@ export default function ProjectCard({ project }) {
       whileHover={simplifyMotion ? undefined : { y: -8, rotateX: 1.5, rotateY: -1.5 }}
       transition={simplifyMotion ? undefined : { type: 'spring', stiffness: 220, damping: 22 }}
     >
-      <Link to={`/projects/${project.slug}`} className="project-image" aria-label={`${ui.detailsAriaPrefix} ${project.shortTitle} ${ui.detailsAriaSuffix}, ${project.category}`}>
+      <Link
+        to={`/projects/${project.slug}`}
+        className="project-image"
+        aria-label={`${ui.detailsAriaPrefix} ${project.shortTitle} ${ui.detailsAriaSuffix}, ${project.category}`}
+      >
         <img
           src={getCloudinaryImageUrl(project.images[0], 800)}
           srcSet={getCloudinarySrcSet(project.images[0], [400, 640, 800])}
@@ -44,14 +48,23 @@ export default function ProjectCard({ project }) {
           ))}
         </div>
         <div className="project-actions">
-          <Link to={`/projects/${project.slug}`}>{ui.caseStudyLabel} <FiArrowUpRight /></Link>
+          <Link to={`/projects/${project.slug}`}>
+            {ui.caseStudyLabel} <FiArrowUpRight />
+          </Link>
           {project.github ? (
-            <a href={project.github} target="_blank" rel="noreferrer" aria-label={`${project.shortTitle} ${ui.githubLabel}`}>
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${project.shortTitle} ${ui.githubLabel}`}
+            >
               <FiGithub />
             </a>
           ) : null}
           {project.live ? (
-            <a href={project.live} target="_blank" rel="noreferrer">{ui.liveDemoLabel}</a>
+            <a href={project.live} target="_blank" rel="noreferrer">
+              {ui.liveDemoLabel}
+            </a>
           ) : null}
         </div>
       </div>

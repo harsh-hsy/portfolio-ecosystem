@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
-import { fadeUp, stagger } from '../../animations/variants.js'
-import { getSkillsContent } from '../../lib/contentSelectors.js'
-import { getIcon } from '../../lib/icons.js'
+import { fadeUp, stagger } from '../../motion/variants.js'
+import { getSkillsContent } from '../../content/contentSelectors.js'
+import { getIcon } from '../../config/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
-import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
+import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../services/cloudinary.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
 export default function Skills() {
@@ -49,7 +49,11 @@ export default function Skills() {
                 <div className="skill-list">
                   {group.items.map((skill) => {
                     const Icon = getIcon(skill.icon)
-                    return <span key={skill.name}><Icon aria-hidden="true" focusable="false" /> {skill.name}</span>
+                    return (
+                      <span key={skill.name}>
+                        <Icon aria-hidden="true" focusable="false" /> {skill.name}
+                      </span>
+                    )
                   })}
                 </div>
               </motion.article>

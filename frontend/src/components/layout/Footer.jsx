@@ -1,6 +1,6 @@
 import { FiArrowUp } from 'react-icons/fi'
-import { getHomeContent, getSiteSettings } from '../../lib/contentSelectors.js'
-import { getIcon } from '../../lib/icons.js'
+import { getHomeContent, getSiteSettings } from '../../content/contentSelectors.js'
+import { getIcon } from '../../config/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Footer() {
@@ -13,22 +13,34 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div>
-        <a className="brand footer-brand" href="#home"><span>{settings.brandInitials}</span><strong>{footerName}</strong></a>
+        <a className="brand footer-brand" href="#home">
+          <span>{settings.brandInitials}</span>
+          <strong>{footerName}</strong>
+        </a>
         <p>{footerDescription}</p>
       </div>
       <div className="footer-links">
         {socials.map((social) => {
           const Icon = getIcon(social.icon)
           return (
-            <a key={social.label} href={social.href} target={social.href.startsWith('mailto:') ? undefined : '_blank'} rel="noreferrer">
+            <a
+              key={social.label}
+              href={social.href}
+              target={social.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel="noreferrer"
+            >
               <Icon /> {social.label}
             </a>
           )
         })}
       </div>
       <div className="footer-bottom">
-        <span>© {profile.copyrightYear} Developed by {footerName}.</span>
-        <a href="#home" className="back-top" aria-label="Back to top"><FiArrowUp /></a>
+        <span>
+          © {profile.copyrightYear} Developed by {footerName}.
+        </span>
+        <a href="#home" className="back-top" aria-label="Back to top">
+          <FiArrowUp />
+        </a>
       </div>
     </footer>
   )

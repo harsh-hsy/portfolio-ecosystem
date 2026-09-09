@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { PortfolioContentContext } from '../context/portfolio-content-context.js'
+import { PortfolioContentContext } from '../state/PortfolioContentContext.js'
 
 export function usePortfolioContent() {
   return useContext(PortfolioContentContext)

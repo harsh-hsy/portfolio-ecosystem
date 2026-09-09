@@ -1,7 +1,15 @@
 import { motion } from 'framer-motion'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 
-export default function MagneticButton({ href, children, className = '', download, target, onClick, type = 'button' }) {
+export default function MagneticButton({
+  href,
+  children,
+  className = '',
+  download,
+  target,
+  onClick,
+  type = 'button',
+}) {
   const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
   const content = (
     <motion.span

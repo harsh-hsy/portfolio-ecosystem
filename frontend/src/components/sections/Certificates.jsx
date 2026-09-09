@@ -1,7 +1,7 @@
 import { FiDownload, FiEye } from 'react-icons/fi'
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
-import { getCertificatesContent } from '../../lib/contentSelectors.js'
+import { getCertificatesContent } from '../../content/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || ''
@@ -37,10 +37,18 @@ export default function Certificates() {
               <p>{certificate.issuer}</p>
               <div className="mini-actions">
                 {(certificate.credentialUrl || certificate.file) && (
-                  <a href={certificate.credentialUrl || certificate.file} target="_blank" rel="noreferrer"><FiEye /> {section.viewLabel}</a>
+                  <a
+                    href={certificate.credentialUrl || certificate.file}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FiEye /> {section.viewLabel}
+                  </a>
                 )}
                 {certificate.file && (
-                  <a href={certificate.file} target="_blank" rel="noreferrer"><FiDownload /> {section.downloadLabel}</a>
+                  <a href={certificate.file} target="_blank" rel="noreferrer">
+                    <FiDownload /> {section.downloadLabel}
+                  </a>
                 )}
               </div>
             </Reveal>

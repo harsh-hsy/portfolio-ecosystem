@@ -1,7 +1,7 @@
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
-import { getMilestonesContent } from '../../lib/contentSelectors.js'
+import { getMilestonesContent } from '../../content/contentSelectors.js'
 
 export default function Milestones() {
   const contentState = usePortfolioContent()
@@ -12,11 +12,7 @@ export default function Milestones() {
   return (
     <section id={section.id || 'milestones'} className="section compact-section milestone-section">
       <div className="container">
-        <SectionHeader
-          eyebrow={section.eyebrow}
-          title={section.title}
-          copy={section.copy}
-        />
+        <SectionHeader eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
 
         <div className="horizontal-cards milestone-grid">
           {milestones.map((milestone, index) => (

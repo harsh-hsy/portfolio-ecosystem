@@ -1,9 +1,9 @@
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
-import { getAboutContent } from '../../lib/contentSelectors.js'
-import { getIcon } from '../../lib/icons.js'
+import { getAboutContent } from '../../content/contentSelectors.js'
+import { getIcon } from '../../config/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
-import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../lib/cloudinary.js'
+import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../services/cloudinary.js'
 
 export default function About() {
   const contentState = usePortfolioContent()
@@ -34,13 +34,27 @@ export default function About() {
                 const isLocation = fact.label?.trim().toLowerCase() === 'location'
                 const useProfileLocation = fact.useProfileLocation ?? isLocation
                 const value = useProfileLocation ? profile.location : fact.value
-                return <article key={fact.label}><Icon /><span>{fact.label}</span><strong>{value}</strong></article>
+                return (
+                  <article key={fact.label}>
+                    <Icon />
+                    <span>{fact.label}</span>
+                    <strong>{value}</strong>
+                  </article>
+                )
               })}
             </div>
           </Reveal>
         </div>
         <div className="stats-grid">
-          {stats.map((stat) => <Reveal as="article" className="stat-card" key={stat.label}><strong>{stat.value}{stat.suffix}</strong><span>{stat.label}</span></Reveal>)}
+          {stats.map((stat) => (
+            <Reveal as="article" className="stat-card" key={stat.label}>
+              <strong>
+                {stat.value}
+                {stat.suffix}
+              </strong>
+              <span>{stat.label}</span>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

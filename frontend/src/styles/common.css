@@ -1,0 +1,195 @@
+/* Reusable UI: maintenance, command palette, loading, and section headings. */
+/* Maintenance state */
+.maintenance-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: var(--bg);
+}
+.maintenance-card {
+  width: min(620px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: clamp(30px, 7vw, 64px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.maintenance-card__mark {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  font-weight: 900;
+}
+.maintenance-card > p {
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.maintenance-card h1 {
+  font-size: clamp(2rem, 7vw, 4.2rem);
+  line-height: 1;
+}
+.maintenance-card > div {
+  max-width: 480px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.portfolio-motion-disabled *,
+.portfolio-motion-disabled *::before,
+.portfolio-motion-disabled *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Command palette */
+.command-trigger {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  color: var(--heading);
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.command-trigger span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: start center;
+  padding-top: 13vh;
+  background: rgba(2, 6, 23, 0.52);
+}
+.palette {
+  width: min(620px, calc(100% - 32px));
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.palette label {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.palette input {
+  width: 100%;
+  margin: 8px 0 10px;
+  padding: 15px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--heading);
+  outline: none;
+}
+.palette-list {
+  display: grid;
+  gap: 6px;
+}
+.palette-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 12px;
+  color: var(--heading);
+  background: transparent;
+}
+.palette-list button:hover {
+  background: rgba(99, 102, 241, 0.12);
+}
+
+/* Loading state */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 20px;
+  background: var(--bg);
+}
+.loading-mark {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  border: 1px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  color: var(--heading);
+  font-family: 'Space Grotesk';
+  font-weight: 800;
+}
+.loading-bar {
+  width: 180px;
+  height: 4px;
+  background: var(--border);
+  overflow: hidden;
+  border-radius: 999px;
+}
+.loading-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* Section heading */
+.section-header {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+.eyebrow,
+.availability {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.09);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.section-header h1,
+.section-header h2 {
+  font-size: clamp(2rem, 4vw, 4.25rem);
+  line-height: 1.02;
+  max-width: 780px;
+}
+.section-header p {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 1.04rem;
+}

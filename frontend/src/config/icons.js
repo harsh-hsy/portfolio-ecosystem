@@ -15,12 +15,7 @@ import {
   FaPalette,
   FaReact,
 } from 'react-icons/fa'
-import {
-  FiBriefcase,
-  FiGlobe,
-  FiMapPin,
-  FiUser,
-} from 'react-icons/fi'
+import { FiBriefcase, FiGlobe, FiMapPin, FiUser } from 'react-icons/fi'
 import {
   SiAngular,
   SiCloudflare,
@@ -53,9 +48,7 @@ import {
   SiVite,
   SiVuedotjs,
 } from 'react-icons/si'
-import {
-  VscCode,
-} from 'react-icons/vsc'
+import { VscCode } from 'react-icons/vsc'
 
 export const iconRegistry = {
   user: FiUser,

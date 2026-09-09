@@ -9,7 +9,7 @@ import Certificates from '../components/sections/Certificates.jsx'
 import Services from '../components/sections/Services.jsx'
 import Achievements from '../components/sections/Achievements.jsx'
 import Contact from '../components/sections/Contact.jsx'
-import { pageTransition } from '../animations/variants.js'
+import { pageTransition } from '../motion/variants.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function Home({ entranceReady }) {

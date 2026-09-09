@@ -14,7 +14,9 @@ export default function LandingIntro({ show, mark = 'HS', durationMs = 2400 }) {
           role="status"
           aria-label="Loading portfolio"
         >
-          <div className="landing-intro-mark" aria-hidden="true">{mark}</div>
+          <div className="landing-intro-mark" aria-hidden="true">
+            {mark}
+          </div>
           <div className="landing-intro-progress" aria-hidden="true">
             <span />
           </div>

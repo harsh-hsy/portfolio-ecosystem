@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import LandingIntro from './components/common/LandingIntro.jsx'
-import { PortfolioContentProvider } from './context/PortfolioContentContext.jsx'
-import { ThemeProvider } from './context/ThemeContext.jsx'
-import { usePortfolioContent } from './hooks/usePortfolioContent.js'
-import { getSiteSettings } from './lib/contentSelectors.js'
+import LandingIntro from '../components/common/LandingIntro.jsx'
+import { PortfolioContentProvider } from '../state/PortfolioContentProvider.jsx'
+import { ThemeProvider } from '../state/ThemeProvider.jsx'
+import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
+import { getSiteSettings } from '../content/contentSelectors.js'
 import App from './App.jsx'
 
 function PortfolioExperience() {

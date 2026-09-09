@@ -1,150 +1,146 @@
 export const sectionContent = {
-  "hero": {
-    "id": "hero",
-    "showAvailability": true,
-    "availability": "Available for opportunities",
-    "intro": "Hi, I am",
-    "description": "Building polished, accessible, high-performance React experiences with UI design and clean frontend architecture.",
-    "primaryAction": "Download Resume",
-    "secondaryAction": "View Projects",
-    "contactAction": "Let's Connect",
-    "orbitLocation": "Kanpur, India",
-    "orbitLocationIcon": "mapPin",
-    "orbitRole": "React Developer",
-    "strip": [
-      "React",
-      "Accessible UI",
-      "Responsive Design",
-      "Performance"
-    ]
+  hero: {
+    id: 'hero',
+    showAvailability: true,
+    availability: 'Available for opportunities',
+    intro: 'Hi, I am',
+    description:
+      'Building polished, accessible, high-performance React experiences with UI design and clean frontend architecture.',
+    primaryAction: 'Download Resume',
+    secondaryAction: 'View Projects',
+    contactAction: "Let's Connect",
+    orbitLocation: 'Kanpur, India',
+    orbitLocationIcon: 'mapPin',
+    orbitRole: 'React Developer',
+    strip: ['React', 'Accessible UI', 'Responsive Design', 'Performance'],
   },
-  "about": {
-    "id": "about",
-    "eyebrow": "About",
-    "title": "A frontend developer with a designer's eye.",
-    "copy": "I build modern, responsive web experiences with frontend development and thoughtful design.",
-    "facts": [
+  about: {
+    id: 'about',
+    eyebrow: 'About',
+    title: "A frontend developer with a designer's eye.",
+    copy: 'I build modern, responsive web experiences with frontend development and thoughtful design.',
+    facts: [
       {
-        "label": "Education",
-        "value": "B.Tech in Computer Science & Engineering",
-        "icon": "user",
-        "useProfileLocation": false
+        label: 'Education',
+        value: 'B.Tech in Computer Science & Engineering',
+        icon: 'user',
+        useProfileLocation: false,
       },
       {
-        "label": "Internship",
-        "value": "Software Engineer Internship",
-        "icon": "briefcase",
-        "useProfileLocation": false
+        label: 'Internship',
+        value: 'Software Engineer Internship',
+        icon: 'briefcase',
+        useProfileLocation: false,
       },
       {
-        "label": "Location",
-        "value": "Kanpur, India",
-        "icon": "mapPin",
-        "useProfileLocation": true
+        label: 'Location',
+        value: 'Kanpur, India',
+        icon: 'mapPin',
+        useProfileLocation: true,
       },
       {
-        "label": "Languages",
-        "value": "English, Hindi",
-        "icon": "globe",
-        "useProfileLocation": false
-      }
-    ]
+        label: 'Languages',
+        value: 'English, Hindi',
+        icon: 'globe',
+        useProfileLocation: false,
+      },
+    ],
   },
-  "skills": {
-    "id": "skills",
-    "eyebrow": "Skills",
-    "title": "Modern frontend toolkit for web development.",
-    "copy": "Core technologies and tools I use to build modern, responsive web applications."
+  skills: {
+    id: 'skills',
+    eyebrow: 'Skills',
+    title: 'Modern frontend toolkit for web development.',
+    copy: 'Core technologies and tools I use to build modern, responsive web applications.',
   },
-  "projects": {
-    "id": "projects",
-    "eyebrow": "Selected Projects",
-    "title": "Projects with real-world impact.",
-    "copy": "Explore projects that reflect my skills, creativity, and passion for modern web experiences.",
-    "allFilterLabel": "All",
-    "filterAriaLabel": "Filter projects",
-    "searchPlaceholder": "Search projects"
+  projects: {
+    id: 'projects',
+    eyebrow: 'Selected Projects',
+    title: 'Projects with real-world impact.',
+    copy: 'Explore projects that reflect my skills, creativity, and passion for modern web experiences.',
+    allFilterLabel: 'All',
+    filterAriaLabel: 'Filter projects',
+    searchPlaceholder: 'Search projects',
   },
-  "certificates": {
-    "id": "certificates",
-    "eyebrow": "Certificates",
-    "title": "Certifications that reflect my learning.",
-    "copy": "A collection of certifications showcasing my skills, continuous learning, and professional growth.",
-    "viewLabel": "View",
-    "downloadLabel": "Download"
+  certificates: {
+    id: 'certificates',
+    eyebrow: 'Certificates',
+    title: 'Certifications that reflect my learning.',
+    copy: 'A collection of certifications showcasing my skills, continuous learning, and professional growth.',
+    viewLabel: 'View',
+    downloadLabel: 'Download',
   },
-  "experience": {
-    "id": "experience",
-    "eyebrow": "Journey",
-    "title": "My journey in frontend development.",
-    "copy": "A timeline of my education, internship, continuous learning, and professional growth."
+  experience: {
+    id: 'experience',
+    eyebrow: 'Journey',
+    title: 'My journey in frontend development.',
+    copy: 'A timeline of my education, internship, continuous learning, and professional growth.',
   },
-  "milestones": {
-    "id": "milestones",
-    "eyebrow": "Milestones",
-    "title": "Milestones from my development journey.",
-    "copy": "Key milestones highlighting my learning, projects, and professional growth."
+  milestones: {
+    id: 'milestones',
+    eyebrow: 'Milestones',
+    title: 'Milestones from my development journey.',
+    copy: 'Key milestones highlighting my learning, projects, and professional growth.',
   },
-  "services": {
-    "id": "services",
-    "eyebrow": "Services",
-    "title": "What I Build"
+  services: {
+    id: 'services',
+    eyebrow: 'Services',
+    title: 'What I Build',
   },
-  "achievements": {
-    "id": "achievements",
-    "eyebrow": "Achievements",
-    "title": "Achievements from my development journey."
+  achievements: {
+    id: 'achievements',
+    eyebrow: 'Achievements',
+    title: 'Achievements from my development journey.',
   },
-  "contact": {
-    "id": "contact",
-    "eyebrow": "Contact",
-    "title": "Let's build something meaningful.",
-    "copy": "Open to frontend development, React applications, responsive websites, and polished UI work.",
-    "useHomeAvailability": true,
-    "availability": "Available for opportunities",
-    "panelTitle": "Send me a message and I'll get back to you soon.",
-    "errorMessage": "Please complete every field.",
-    "successMessage": "Message sent successfully.",
-    "failureMessage": "Failed to send message.",
-    "submitLabel": "Send Message",
-    "fields": {
-      "name": "Name",
-      "email": "Email",
-      "subject": "Subject",
-      "message": "Message"
-    }
+  contact: {
+    id: 'contact',
+    eyebrow: 'Contact',
+    title: "Let's build something meaningful.",
+    copy: 'Open to frontend development, React applications, responsive websites, and polished UI work.',
+    useHomeAvailability: true,
+    availability: 'Available for opportunities',
+    panelTitle: "Send me a message and I'll get back to you soon.",
+    errorMessage: 'Please complete every field.',
+    successMessage: 'Message sent successfully.',
+    failureMessage: 'Failed to send message.',
+    submitLabel: 'Send Message',
+    fields: {
+      name: 'Name',
+      email: 'Email',
+      subject: 'Subject',
+      message: 'Message',
+    },
   },
-  "notFound": {
-    "id": "not-found",
-    "title": "Page not found.",
-    "copy": "Looks like this page doesn't exist. Let's get you back to the portfolio.",
-    "action": "Back Home"
-  }
+  notFound: {
+    id: 'not-found',
+    title: 'Page not found.',
+    copy: "Looks like this page doesn't exist. Let's get you back to the portfolio.",
+    action: 'Back Home',
+  },
 }
 
 export const stats = [
   {
-    "id": "projects",
-    "value": 6,
-    "suffix": "+",
-    "label": "Projects Completed"
+    id: 'projects',
+    value: 6,
+    suffix: '+',
+    label: 'Projects Completed',
   },
   {
-    "id": "technologies",
-    "value": 20,
-    "suffix": "+",
-    "label": "Technologies Used"
+    id: 'technologies',
+    value: 20,
+    suffix: '+',
+    label: 'Technologies Used',
   },
   {
-    "id": "disciplines",
-    "value": 4,
-    "suffix": "+",
-    "label": "Frontend Focus Areas"
+    id: 'disciplines',
+    value: 4,
+    suffix: '+',
+    label: 'Frontend Focus Areas',
   },
   {
-    "id": "internship",
-    "value": 1,
-    "suffix": "",
-    "label": "Internship Completed"
-  }
+    id: 'internship',
+    value: 1,
+    suffix: '',
+    label: 'Internship Completed',
+  },
 ]

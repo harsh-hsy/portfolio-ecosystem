@@ -1,6 +1,6 @@
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
-import { getExperienceContent } from '../../lib/contentSelectors.js'
+import { getExperienceContent } from '../../content/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Experience() {

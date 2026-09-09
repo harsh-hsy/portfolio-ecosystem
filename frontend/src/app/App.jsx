@@ -2,22 +2,22 @@ import { lazy, Suspense, useEffect, useRef } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import Lenis from 'lenis'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import Navbar from './components/layout/Navbar.jsx'
-import Footer from './components/layout/Footer.jsx'
-import ScrollProgress from './components/layout/ScrollProgress.jsx'
-import CustomCursor from './components/layout/CustomCursor.jsx'
-import CommandPalette from './components/common/CommandPalette.jsx'
-import LoadingScreen from './components/common/LoadingScreen.jsx'
-import MaintenancePage from './components/common/MaintenancePage.jsx'
-import SiteMetadata from './components/common/SiteMetadata.jsx'
-import Home from './pages/Home.jsx'
-import NotFound from './pages/NotFound.jsx'
-import { getSiteSettings } from './lib/contentSelectors.js'
-import { usePortfolioContent } from './hooks/usePortfolioContent.js'
-import { useMediaQuery } from './hooks/useMediaQuery.js'
+import Navbar from '../components/layout/Navbar.jsx'
+import Footer from '../components/layout/Footer.jsx'
+import ScrollProgress from '../components/layout/ScrollProgress.jsx'
+import CustomCursor from '../components/layout/CustomCursor.jsx'
+import CommandPalette from '../components/common/CommandPalette.jsx'
+import LoadingScreen from '../components/common/LoadingScreen.jsx'
+import MaintenancePage from '../components/common/MaintenancePage.jsx'
+import Home from '../pages/Home.jsx'
+import NotFound from '../pages/NotFound.jsx'
+import { getSiteSettings } from '../content/contentSelectors.js'
+import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
+import { useMediaQuery } from '../hooks/useMediaQuery.js'
+import SiteMetadata from './SiteMetadata.jsx'
 
-const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'))
-const ProjectsPage = lazy(() => import('./pages/Projects.jsx'))
+const ProjectDetails = lazy(() => import('../pages/ProjectDetails.jsx'))
+const ProjectsPage = lazy(() => import('../pages/Projects.jsx'))
 
 function App({ entranceReady }) {
   const location = useLocation()
@@ -31,16 +31,16 @@ function App({ entranceReady }) {
   const animationsEnabled = isMobile
     ? experience.mobileAnimations === true
     : experience.desktopAnimations !== false
-  const disableMotion = !animationsEnabled
-    || (experience.respectReducedMotion !== false && systemReducedMotion)
+  const disableMotion =
+    !animationsEnabled || (experience.respectReducedMotion !== false && systemReducedMotion)
   const showAnnouncement = maintenance.announcementEnabled && maintenance.announcementText
 
   useEffect(() => {
-    const reducedMotionQuery = experience.respectReducedMotion !== false
-      ? ', (prefers-reduced-motion: reduce)'
-      : ''
-    const useNativeScroll = experience.smoothScroll === false
-      || window.matchMedia(`(max-width: 768px), (pointer: coarse)${reducedMotionQuery}`).matches
+    const reducedMotionQuery =
+      experience.respectReducedMotion !== false ? ', (prefers-reduced-motion: reduce)' : ''
+    const useNativeScroll =
+      experience.smoothScroll === false ||
+      window.matchMedia(`(max-width: 768px), (pointer: coarse)${reducedMotionQuery}`).matches
     if (useNativeScroll) return undefined
 
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true })
@@ -59,7 +59,10 @@ function App({ entranceReady }) {
   }, [experience.respectReducedMotion, experience.smoothScroll])
 
   useEffect(() => {
-    document.documentElement.classList.toggle('portfolio-native-scroll', experience.smoothScroll === false)
+    document.documentElement.classList.toggle(
+      'portfolio-native-scroll',
+      experience.smoothScroll === false,
+    )
     return () => document.documentElement.classList.remove('portfolio-native-scroll')
   }, [experience.smoothScroll])
 
@@ -98,10 +101,20 @@ function App({ entranceReady }) {
   }
 
   return (
-    <MotionConfig reducedMotion={disableMotion ? 'always' : experience.respectReducedMotion !== false ? 'user' : 'never'}>
-      <div className={`portfolio-app ${disableMotion ? 'portfolio-motion-disabled' : ''} ${showAnnouncement ? 'has-announcement' : ''}`.trim()}>
+    <MotionConfig
+      reducedMotion={
+        disableMotion ? 'always' : experience.respectReducedMotion !== false ? 'user' : 'never'
+      }
+    >
+      <div
+        className={`portfolio-app ${disableMotion ? 'portfolio-motion-disabled' : ''} ${showAnnouncement ? 'has-announcement' : ''}`.trim()}
+      >
         <SiteMetadata />
-        {showAnnouncement ? <aside className="announcement-banner" role="status">{maintenance.announcementText}</aside> : null}
+        {showAnnouncement ? (
+          <aside className="announcement-banner" role="status">
+            {maintenance.announcementText}
+          </aside>
+        ) : null}
         <ScrollProgress />
         <CustomCursor />
         <Navbar entranceReady={entranceReady} sticky={experience.stickyHeader !== false} />

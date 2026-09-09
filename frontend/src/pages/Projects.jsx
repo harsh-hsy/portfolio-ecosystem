@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiSearch } from 'react-icons/fi'
 
-import { pageTransition, stagger } from '../animations/variants.js'
+import { pageTransition, stagger } from '../motion/variants.js'
 import ProjectCard from '../components/common/ProjectCard.jsx'
 import SectionHeader from '../components/common/SectionHeader.jsx'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
-import { getProjectsContent } from '../lib/contentSelectors.js'
+import { getProjectsContent } from '../content/contentSelectors.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function ProjectsPage() {
@@ -18,11 +18,13 @@ export default function ProjectsPage() {
   const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
   const categories = [allLabel, ...new Set(projects.map((project) => project.category))]
   const filtered = useMemo(
-    () => projects.filter((project) => {
-      const matchesCategory = category === allLabel || project.category === category
-      const searchValue = `${project.title} ${project.shortTitle} ${project.tech.join(' ')}`.toLowerCase()
-      return matchesCategory && searchValue.includes(query.trim().toLowerCase())
-    }),
+    () =>
+      projects.filter((project) => {
+        const matchesCategory = category === allLabel || project.category === category
+        const searchValue =
+          `${project.title} ${project.shortTitle} ${project.tech.join(' ')}`.toLowerCase()
+        return matchesCategory && searchValue.includes(query.trim().toLowerCase())
+      }),
     [allLabel, category, projects, query],
   )
 
@@ -55,20 +57,20 @@ export default function ProjectsPage() {
             ))}
           </div>
           <label className="search-field" htmlFor="projects-page-search">
-  <FiSearch aria-hidden="true" />
+            <FiSearch aria-hidden="true" />
 
-  <span className="sr-only">Search projects</span>
+            <span className="sr-only">Search projects</span>
 
-  <input
-    id="projects-page-search"
-    name="projectsPageSearch"
-    type="search"
-    autoComplete="off"
-    value={query}
-    onChange={(event) => setQuery(event.target.value)}
-    placeholder="Search projects"
-  />
-</label>
+            <input
+              id="projects-page-search"
+              name="projectsPageSearch"
+              type="search"
+              autoComplete="off"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search projects"
+            />
+          </label>
         </div>
 
         <motion.div
@@ -77,7 +79,9 @@ export default function ProjectsPage() {
           initial={simplifyMotion ? false : 'hidden'}
           animate={simplifyMotion ? undefined : 'visible'}
         >
-          {filtered.map((project) => <ProjectCard key={project.slug} project={project} />)}
+          {filtered.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
         </motion.div>
 
         {!filtered.length ? (

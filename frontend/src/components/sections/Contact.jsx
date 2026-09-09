@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { FiCheck, FiLoader, FiMail, FiMapPin, FiSend } from 'react-icons/fi'
 import SectionHeader from '../common/SectionHeader.jsx'
 import MagneticButton from '../common/MagneticButton.jsx'
-import { getContactContent } from '../../lib/contentSelectors.js'
-import { getIcon } from '../../lib/icons.js'
+import { getContactContent } from '../../content/contentSelectors.js'
+import { getIcon } from '../../config/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 const initialForm = {
@@ -69,11 +69,7 @@ export default function Contact() {
   return (
     <section id="contact" className="section contact-section">
       <div className="container">
-        <SectionHeader
-          eyebrow={section.eyebrow}
-          title={section.title}
-          copy={section.copy}
-        />
+        <SectionHeader eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
 
         <div className="contact-grid">
           <aside className="contact-panel">
@@ -87,7 +83,10 @@ export default function Contact() {
             </a>
 
             <a
-              href={profile.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.location)}`}
+              href={
+                profile.mapUrl ||
+                `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.location)}`
+              }
               target="_blank"
               rel="noreferrer"
             >
@@ -103,11 +102,7 @@ export default function Contact() {
                   <a
                     key={social.label}
                     href={social.href}
-                    target={
-                      social.href.startsWith('mailto:')
-                        ? undefined
-                        : '_blank'
-                    }
+                    target={social.href.startsWith('mailto:') ? undefined : '_blank'}
                     rel="noreferrer"
                     aria-label={social.label}
                   >
@@ -122,13 +117,7 @@ export default function Contact() {
             <label>
               <span>{section.fields.name}</span>
 
-              <input
-                name="name"
-                value={form.name}
-                onChange={update}
-                autoComplete="name"
-                required
-              />
+              <input name="name" value={form.name} onChange={update} autoComplete="name" required />
             </label>
 
             <label>
@@ -147,31 +136,16 @@ export default function Contact() {
             <label>
               <span>{section.fields.subject}</span>
 
-              <input
-                name="subject"
-                value={form.subject}
-                onChange={update}
-                required
-              />
+              <input name="subject" value={form.subject} onChange={update} required />
             </label>
 
             <label>
               <span>{section.fields.message}</span>
 
-              <textarea
-                name="message"
-                rows="5"
-                value={form.message}
-                onChange={update}
-                required
-              />
+              <textarea name="message" rows="5" value={form.message} onChange={update} required />
             </label>
 
-            {error && (
-              <p className="form-error">
-                {error}
-              </p>
-            )}
+            {error && <p className="form-error">{error}</p>}
 
             {status === 'success' && (
               <p className="form-success">
@@ -180,19 +154,10 @@ export default function Contact() {
               </p>
             )}
 
-            <MagneticButton
-              type="submit"
-              className="primary"
-              disabled={status === 'loading'}
-            >
-              {status === 'loading'
-                ? <FiLoader className="spin" />
-                : <FiSend />
-              }
+            <MagneticButton type="submit" className="primary" disabled={status === 'loading'}>
+              {status === 'loading' ? <FiLoader className="spin" /> : <FiSend />}
 
-              {status === 'loading'
-                ? 'Sending...'
-                : section.submitLabel}
+              {status === 'loading' ? 'Sending...' : section.submitLabel}
             </MagneticButton>
           </form>
         </div>

@@ -1,0 +1,212 @@
+/* Shared site chrome: navigation, announcements, footer, and cursor. */
+/* Scroll progress */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  transform-origin: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  z-index: 1000;
+}
+/* Navigation */
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  transition: transform 0.3s ease;
+}
+.navbar.navbar--static {
+  position: absolute;
+}
+.nav-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 12px 0 16px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: var(--heading);
+  white-space: nowrap;
+}
+.brand span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius);
+  color: white;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-links a {
+  position: relative;
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 5px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: transform 0.2s ease;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--heading);
+}
+.nav-links a.active::after,
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.icon-button,
+.resume-link {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--heading);
+  height: 42px;
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+.icon-button {
+  width: 42px;
+}
+.resume-link {
+  padding: 0 14px;
+  font-weight: 800;
+}
+.menu-button {
+  display: none;
+}
+
+/* Site announcement */
+.announcement-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 920;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 9px 20px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+.has-announcement .navbar {
+  top: 56px;
+}
+.has-announcement .hero-section {
+  padding-top: 176px;
+}
+.has-announcement .projects-page,
+.has-announcement .project-page {
+  padding-top: 170px;
+}
+
+/* Footer */
+.footer {
+  width: min(1160px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 38px 0 28px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+.footer {
+  display: grid;
+  gap: 22px;
+}
+.footer-brand {
+  margin-bottom: 10px;
+}
+.footer-links,
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  color: var(--heading);
+}
+.back-top {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--heading);
+  background: var(--surface);
+}
+
+/* Custom pointer */
+.cursor-wrap {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+}
+.cursor-ring,
+.cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--primary);
+  opacity: 0.55;
+}
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+}

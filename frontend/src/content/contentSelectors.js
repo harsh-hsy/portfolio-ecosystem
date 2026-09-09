@@ -176,7 +176,7 @@ export function getContactContent(portfolio) {
     section: {
       ...section,
       availability: section?.useHomeAvailability
-        ? hero?.availability ?? section.availability
+        ? (hero?.availability ?? section.availability)
         : section?.availability,
     },
   }

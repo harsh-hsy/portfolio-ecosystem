@@ -3,8 +3,12 @@ import { FiDownload, FiMenu, FiX } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ThemeToggle from './ThemeToggle.jsx'
-import { fadeDown } from '../../animations/variants.js'
-import { getNavigationContent, getProfileContent, getSiteSettings } from '../../lib/contentSelectors.js'
+import { fadeDown } from '../../motion/variants.js'
+import {
+  getNavigationContent,
+  getProfileContent,
+  getSiteSettings,
+} from '../../content/contentSelectors.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
@@ -22,15 +26,28 @@ export default function Navbar({ entranceReady, sticky = true }) {
 
   return (
     <header className={`navbar ${sticky ? '' : 'navbar--static'}`.trim()}>
-      <a className="skip-link" href="#main-content">{settings.nav.skipLabel}</a>
-      <motion.nav className="nav-shell" aria-label={settings.nav.ariaLabel} variants={fadeDown} initial="hidden" animate={entranceReady ? 'visible' : 'hidden'}>
+      <a className="skip-link" href="#main-content">
+        {settings.nav.skipLabel}
+      </a>
+      <motion.nav
+        className="nav-shell"
+        aria-label={settings.nav.ariaLabel}
+        variants={fadeDown}
+        initial="hidden"
+        animate={entranceReady ? 'visible' : 'hidden'}
+      >
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <span>{settings.brandInitials}</span>
           <strong>{profile.name}</strong>
         </Link>
         <div className={`nav-links ${open ? 'is-open' : ''}`}>
           {navigation.map((link) => (
-            <a key={link.id} href={hrefFor(link.id)} className={active === link.id && location.pathname === '/' ? 'active' : ''} onClick={() => setOpen(false)}>
+            <a
+              key={link.id}
+              href={hrefFor(link.id)}
+              className={active === link.id && location.pathname === '/' ? 'active' : ''}
+              onClick={() => setOpen(false)}
+            >
               {link.label}
             </a>
           ))}
@@ -40,7 +57,12 @@ export default function Navbar({ entranceReady, sticky = true }) {
           <a className="resume-link" href={profile.resume} target="_blank" rel="noreferrer">
             <FiDownload /> {settings.nav.resumeLabel}
           </a>
-          <button className="icon-button menu-button" type="button" onClick={() => setOpen((value) => !value)} aria-label={settings.nav.menuToggleLabel}>
+          <button
+            className="icon-button menu-button"
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-label={settings.nav.menuToggleLabel}
+          >
             {open ? <FiX /> : <FiMenu />}
           </button>
         </div>

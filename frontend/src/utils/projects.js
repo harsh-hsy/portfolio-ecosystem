@@ -7,5 +7,7 @@ export function getProjectBySlug(slug, projects) {
 }
 
 export function getRelatedProjects(currentSlug, limit = 3, projects) {
-  return resolveProjects(projects).filter((project) => project.slug !== currentSlug).slice(0, limit)
+  return resolveProjects(projects)
+    .filter((project) => project.slug !== currentSlug)
+    .slice(0, limit)
 }

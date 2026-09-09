@@ -1,9 +1,11 @@
 const UPLOAD_MARKER = '/image/upload/'
 
 function isCloudinaryImage(source) {
-  return typeof source === 'string'
-    && source.includes('res.cloudinary.com')
-    && source.includes(UPLOAD_MARKER)
+  return (
+    typeof source === 'string' &&
+    source.includes('res.cloudinary.com') &&
+    source.includes(UPLOAD_MARKER)
+  )
 }
 
 export function getCloudinaryImageUrl(source, width) {

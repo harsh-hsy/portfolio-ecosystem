@@ -5,19 +5,21 @@ import {
   getProjectDetailsContent,
   getProjectsContent,
   getSiteSettings,
-} from '../../lib/contentSelectors.js'
-import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
-import { getProjectBySlug } from '../../lib/projects.js'
+} from '../content/contentSelectors.js'
+import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
+import { getProjectBySlug } from '../utils/projects.js'
 
 const siteUrl = 'https://harsh-hsy.onrender.com'
 const defaultTitle = 'Harsh Singh | Frontend Developer'
-const defaultDescription = 'React developer and UI engineer building accessible, responsive, high-performance web experiences.'
+const defaultDescription =
+  'React developer and UI engineer building accessible, responsive, high-performance web experiences.'
 
 function updateMeta(selector, content) {
   document.querySelector(selector)?.setAttribute('content', content)
 }
 
 export default function SiteMetadata() {
+  // Static home metadata lives in index.html; only route-dependent values change here.
   const location = useLocation()
   const contentState = usePortfolioContent()
   const portfolio = contentState?.portfolio

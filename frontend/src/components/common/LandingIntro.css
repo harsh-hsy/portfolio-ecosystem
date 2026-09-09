@@ -18,7 +18,7 @@
   border-top-color: var(--primary);
   border-radius: 50%;
   color: var(--heading);
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   will-change: transform;
@@ -42,15 +42,20 @@
   transform: scaleX(0.04);
   transform-origin: left;
   will-change: transform;
-  animation: landing-intro-progress var(--landing-duration, 2400ms) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: landing-intro-progress var(--landing-duration, 2400ms) cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
 }
 
 @keyframes landing-intro-spin {
-  to { transform: rotate(720deg); }
+  to {
+    transform: rotate(720deg);
+  }
 }
 
 @keyframes landing-intro-progress {
-  to { transform: scaleX(1); }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

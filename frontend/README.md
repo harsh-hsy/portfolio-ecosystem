@@ -34,7 +34,26 @@ flowchart LR
   Frontend --> Visitor["Visitor"]
 ```
 
-The frontend asks the API for the latest published portfolio data. It only uses safe defaults when a field is missing.
+The frontend asks the API for the latest published portfolio data. If the API is unavailable, it uses the repository snapshot assembled in `src/content/portfolioFallback.js`.
+
+## Source structure
+
+```text
+src/
+├── app/         # App shell, providers, routes, and route metadata
+├── components/  # Reusable common, layout, and section components
+├── config/      # Navigation, command, and icon mappings
+├── content/     # Modular offline portfolio content and content helpers
+├── hooks/       # Reusable React hooks
+├── motion/      # Shared animation variants
+├── pages/       # Route-level screens
+├── services/    # API and Cloudinary integration
+├── state/       # React contexts and providers
+├── styles/      # Global, layout, common, section, page, and responsive CSS
+└── utils/       # Framework-independent helpers
+```
+
+Static home-page SEO is managed in `index.html`. Route-specific titles and descriptions are updated by `src/app/SiteMetadata.jsx`.
 
 ## Main features
 
@@ -65,6 +84,8 @@ Other scripts:
 ```bash
 npm run build
 npm run lint
+npm run format
+npm run format:check
 npm run preview
 ```
 

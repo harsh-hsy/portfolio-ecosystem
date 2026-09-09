@@ -1,7 +1,7 @@
 import { FiCheckCircle } from 'react-icons/fi'
 import SectionHeader from '../common/SectionHeader.jsx'
 import Reveal from '../common/Reveal.jsx'
-import { getServicesContent } from '../../lib/contentSelectors.js'
+import { getServicesContent } from '../../content/contentSelectors.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function Services() {
@@ -15,15 +15,11 @@ export default function Services() {
 
         <div className="service-grid">
           {services.map((service) => (
-  <Reveal
-  as="article"
-  className="service-card"
-  key={service}
->
-  <FiCheckCircle />
-  <h3>{service}</h3>
-</Reveal>
-))}
+            <Reveal as="article" className="service-card" key={service}>
+              <FiCheckCircle />
+              <h3>{service}</h3>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

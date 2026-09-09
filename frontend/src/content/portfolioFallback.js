@@ -12,6 +12,7 @@ import { skills } from './skills.js'
 import { timeline } from './timeline.js'
 import { uiContent } from './ui.js'
 
+// This is the single offline snapshot consumed when the published API cannot be reached.
 export const portfolioFallback = {
   profile,
   socials,
