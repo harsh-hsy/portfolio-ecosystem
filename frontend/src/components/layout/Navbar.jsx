@@ -1,26 +1,23 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { FiDownload, FiMenu, FiX } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ThemeToggle from './ThemeToggle.jsx'
 import { fadeDown } from '../../motion/variants.js'
-import {
-  getNavigationContent,
-  getProfileContent,
-  getSiteSettings,
-} from '../../content/contentSelectors.js'
+import { getProfileContent, getSiteSettings } from '../../content/contentSelectors.js'
+import { publicNavigation } from '../../config/navigation.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
+
+const navigationIds = publicNavigation.map((link) => link.id)
 
 export default function Navbar({ entranceReady, sticky = true }) {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const contentState = usePortfolioContent()
-  const navigation = getNavigationContent(contentState?.portfolio)
   const profile = getProfileContent(contentState?.portfolio)
   const settings = getSiteSettings(contentState?.portfolio)
-  const ids = useMemo(() => navigation.map((link) => link.id), [navigation])
-  const active = useScrollSpy(ids)
+  const active = useScrollSpy(navigationIds)
 
   const hrefFor = (id) => (location.pathname === '/' ? `#${id}` : `/#${id}`)
 
@@ -41,7 +38,7 @@ export default function Navbar({ entranceReady, sticky = true }) {
           <strong>{profile.name}</strong>
         </Link>
         <div className={`nav-links ${open ? 'is-open' : ''}`}>
-          {navigation.map((link) => (
+          {publicNavigation.map((link) => (
             <a
               key={link.id}
               href={hrefFor(link.id)}

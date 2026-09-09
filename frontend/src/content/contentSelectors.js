@@ -26,7 +26,6 @@ const emptyPortfolio = {
     notFound: {},
   },
   settings: defaultSettings,
-  navigation: [],
   commands: [],
   ui: {
     commandPalette: {},
@@ -52,10 +51,6 @@ export function getSiteSettings(portfolio) {
 
 export function getProfileContent(portfolio) {
   return withDefaults(resolvePortfolio(portfolio).profile, defaultProfile)
-}
-
-export function getNavigationContent(portfolio) {
-  return ensureArray(resolvePortfolio(portfolio).navigation)
 }
 
 export function getHomeContent(portfolio) {

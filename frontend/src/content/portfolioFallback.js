@@ -2,7 +2,6 @@ import { achievements } from './achievements.js'
 import { certificates } from './certificates.js'
 import { commandActions } from '../config/commands.js'
 import { milestones } from './milestones.js'
-import { publicNavigation } from '../config/navigation.js'
 import { profile, socials } from './profile.js'
 import { projects } from './projects.js'
 import { sectionContent, stats } from './sections.js'
@@ -26,7 +25,6 @@ export const portfolioFallback = {
   sections: sectionContent,
   stats,
   settings: siteSettings,
-  navigation: publicNavigation,
   commands: commandActions,
   ui: uiContent,
 }

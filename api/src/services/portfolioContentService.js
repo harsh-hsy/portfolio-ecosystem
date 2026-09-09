@@ -201,7 +201,6 @@ const modules = {
       settings: withoutCodeOwnedIdentity(
         content.settings ?? defaultPortfolio.settings,
       ),
-      navigation: content.navigation ?? defaultPortfolio.navigation,
       commands: content.commands ?? defaultPortfolio.commands,
       ui: content.ui ?? defaultPortfolio.ui,
     }),
@@ -221,7 +220,6 @@ const editableFields = new Set([
   "sections",
   "stats",
   "settings",
-  "navigation",
   "commands",
   "ui",
 ]);
@@ -251,7 +249,6 @@ const fieldModules = {
   ],
   stats: ["about"],
   settings: ["settings"],
-  navigation: ["settings"],
   commands: ["settings"],
   ui: ["settings"],
 };
@@ -426,7 +423,6 @@ function composePortfolio(documents) {
     },
     stats: about.stats ?? home.stats ?? [],
     settings: portfolioSettings,
-    navigation: settings.navigation ?? [],
     commands: settings.commands ?? [],
     ui: settings.ui ?? {},
   };
