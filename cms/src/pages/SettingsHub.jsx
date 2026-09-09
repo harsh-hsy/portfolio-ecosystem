@@ -1,7 +1,5 @@
 import {
   FiActivity,
-  FiSearch,
-  FiShare2,
   FiShield,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -11,19 +9,9 @@ const groups = [
     id: "portfolio",
     eyebrow: "Public website",
     title: "Portfolio Settings",
-    description: "Manage the experience and shared-link appearance of your public portfolio.",
+    description: "Manage the behavior and accessibility of your public portfolio.",
     items: [
       { title: "Experience", description: "Loading, animation, scrolling, navigation, and motion controls.", icon: FiActivity, path: "/settings/portfolio/experience" },
-      { title: "Social Sharing", description: "Portfolio preview shown on LinkedIn, WhatsApp, X, and Telegram.", icon: FiShare2, path: "/settings/portfolio/social-sharing" },
-    ],
-  },
-  {
-    id: "seo",
-    eyebrow: "Discoverability",
-    title: "SEO Settings",
-    description: "Set portfolio fallback metadata and search-engine visibility.",
-    items: [
-      { title: "SEO Defaults", description: "Default title, description, keywords, indexing, and canonical URL.", icon: FiSearch, path: "/settings/seo" },
     ],
   },
   {

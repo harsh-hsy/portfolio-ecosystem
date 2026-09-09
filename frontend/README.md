@@ -43,7 +43,7 @@ The frontend asks the API for the latest published portfolio data. It only uses 
 - custom cursor
 - command palette
 - animated sections with Framer Motion
-- SEO support with `react-helmet-async`
+- static crawler-readable SEO and social metadata
 - content selectors, defaults, and validation helpers
 
 ## Local setup

@@ -71,7 +71,6 @@ export function validateContactContent(content) {
 
 export function validateLinksContent(content) {
   const profile = content?.profile ?? {}
-  const seo = content?.seo ?? {}
 
   validUrl(profile.github, 'GitHub URL')
   validUrl(profile.linkedin, 'LinkedIn URL')
@@ -79,7 +78,5 @@ export function validateLinksContent(content) {
   validUrl(profile.resume, 'Resume URL')
   requiredText(profile.location, 'Location', 80)
   validUrl(profile.mapUrl, 'Location map URL')
-  validUrl(seo.siteUrl, 'Portfolio URL')
-
   return content
 }

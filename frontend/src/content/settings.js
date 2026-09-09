@@ -1,4 +1,3 @@
-import { profile } from './profile.js'
 import { portfolioIdentity } from './portfolioIdentity.js'
 
 export const siteSettings = {
@@ -15,12 +14,6 @@ export const siteSettings = {
     favicon: portfolioIdentity.favicon,
     authorName: portfolioIdentity.authorName,
     portfolioUrl: portfolioIdentity.portfolioUrl,
-  },
-  socialSharing: {
-    openGraphTitle: `${profile.name} | ${profile.role}`,
-    openGraphDescription: 'React developer and UI engineer building accessible, responsive, high-performance web experiences.',
-    image: '',
-    twitterCard: 'summary_large_image',
   },
   experience: {
     loadingEnabled: true,

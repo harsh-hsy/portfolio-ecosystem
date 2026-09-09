@@ -33,23 +33,10 @@ const emptyPortfolio = {
     projectCard: {},
     projectDetails: { detailCards: [] },
   },
-  seo: {},
 }
 
 function resolvePortfolio(portfolio) {
   return portfolio ?? emptyPortfolio
-}
-
-function getStructuredData(profile) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: profile.fullName,
-    jobTitle: profile.role,
-    email: profile.email,
-    address: profile.location,
-    sameAs: [profile.github, profile.linkedin].filter(Boolean),
-  }
 }
 
 export function getSiteSettings(portfolio) {
@@ -78,8 +65,6 @@ export function getHomeContent(portfolio) {
   return {
     profile,
     socials: ensureArray(resolvedPortfolio.socials),
-    seo: resolvedPortfolio.seo ?? {},
-    structuredData: getStructuredData(profile),
     sections: resolvedPortfolio.sections,
     stats: ensureArray(resolvedPortfolio.stats),
   }

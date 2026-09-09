@@ -654,12 +654,6 @@ export const defaultPortfolio = {
       "authorName": portfolioIdentity.authorName,
       "portfolioUrl": portfolioIdentity.portfolioUrl
     },
-    "socialSharing": {
-      "openGraphTitle": "Harsh Singh | Frontend Developer",
-      "openGraphDescription": "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
-      "image": "https://res.cloudinary.com/tnsbtnlg/image/upload/f_auto,q_auto/ggzfns1etyck4swiqods?_a=BAMAPqWQ0",
-      "twitterCard": "summary_large_image"
-    },
     "experience": {
       "loadingEnabled": true,
       "loadingDurationMs": 2400,
@@ -795,15 +789,5 @@ export const defaultPortfolio = {
       "techStackTitle": "Tech Stack",
       "relatedProjectsTitle": "Related Projects"
     }
-  },
-  "seo": {
-    "siteUrl": portfolioIdentity.portfolioUrl,
-    "title": "Harsh Singh | Frontend Developer",
-    "description": "React developer and UI engineer building accessible, responsive, high-performance web experiences.",
-    "keywords": "Harsh Singh, Harsh Kumar Singh, Harsh HSY, harsh-hsy, harsh.hsy, codewithharshsingh, Frontend Developer, React Developer, JavaScript Developer, MERN Stack Developer, Web Developer, UI Developer, Portfolio, Kanpur, Uttar Pradesh, India, Responsive Web Design, HTML, CSS, JavaScript, React, Vite, Node.js, Express.js, MongoDB, GitHub, QR Fusion, QR Code Generator, harsh-hsy portfolio, harsh-hsy.netlify.app, harsh-hsy.onrender.com",
-    "author": portfolioIdentity.authorName,
-    "bingVerification": "7821903C0AC68D3A01EAD5788B45656C",
-    "allowIndexing": true,
-    "projectTitleSuffix": ` | ${portfolioIdentity.titleSuffix}`
   }
 }

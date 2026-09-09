@@ -11,43 +11,14 @@ function requiredText(value, label, limit) {
   return text
 }
 
-function optionalUrl(value, label) {
-  const text = String(value ?? '').trim()
-  if (!text) return
-
-  try {
-    const url = new URL(text)
-    if (!['http:', 'https:'].includes(url.protocol)) throw new Error()
-  } catch {
-    throw validationError(`${label} must be a valid HTTP or HTTPS URL`)
-  }
-}
-
 function requiredBoolean(value, label) {
   if (typeof value !== 'boolean') throw validationError(`${label} must be true or false`)
 }
 
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const sharing = settings.socialSharing ?? {}
   const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
-  const seo = content.seo ?? {}
-
-  requiredText(seo.title, 'Default meta title', 70)
-  requiredText(seo.description, 'Default meta description', 180)
-  requiredText(seo.keywords, 'SEO keywords', 1000)
-  if (String(seo.bingVerification ?? '').trim().length > 128) {
-    throw validationError('Bing verification code must use 128 characters or fewer')
-  }
-  requiredBoolean(seo.allowIndexing, 'Search engine indexing')
-
-  requiredText(sharing.openGraphTitle, 'Open Graph title', 70)
-  requiredText(sharing.openGraphDescription, 'Open Graph description', 200)
-  optionalUrl(sharing.image, 'Social sharing image URL')
-  if (!['summary', 'summary_large_image'].includes(sharing.twitterCard)) {
-    throw validationError('Select a supported Twitter card type')
-  }
 
   requiredBoolean(experience.loadingEnabled, 'Loading animation')
   const duration = Number(experience.loadingDurationMs)

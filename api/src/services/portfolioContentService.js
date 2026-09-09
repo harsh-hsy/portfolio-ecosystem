@@ -81,6 +81,7 @@ function withCodeOwnedIdentity(settings = {}) {
     cmsManifest: _cmsManifest,
     cmsExperience: _cmsExperience,
     cmsSocialSharing: _cmsSocialSharing,
+    socialSharing: _socialSharing,
     ...settingsWithoutCmsConfiguration
   } = settings;
 
@@ -106,32 +107,11 @@ function withoutCodeOwnedIdentity(settings = {}) {
     cmsManifest: _cmsManifest,
     cmsExperience: _cmsExperience,
     cmsSocialSharing: _cmsSocialSharing,
+    socialSharing: _socialSharing,
     ...cmsManagedSettings
   } = settings;
 
   return cmsManagedSettings;
-}
-
-function withCodeOwnedIdentitySeo(seo = {}) {
-  return {
-    ...seo,
-    siteUrl: portfolioIdentity.portfolioUrl,
-    author: portfolioIdentity.authorName,
-    projectTitleSuffix: portfolioIdentity.titleSuffix
-      ? ` | ${portfolioIdentity.titleSuffix}`
-      : "",
-  };
-}
-
-function withoutCodeOwnedIdentitySeo(seo = {}) {
-  const {
-    siteUrl: _siteUrl,
-    author: _author,
-    projectTitleSuffix: _projectTitleSuffix,
-    ...cmsManagedSeo
-  } = seo;
-
-  return cmsManagedSeo;
 }
 
 const modules = {
@@ -222,7 +202,6 @@ const modules = {
       navigation: content.navigation ?? defaultPortfolio.navigation,
       commands: content.commands ?? defaultPortfolio.commands,
       ui: content.ui ?? defaultPortfolio.ui,
-      seo: withoutCodeOwnedIdentitySeo(content.seo ?? defaultPortfolio.seo),
     }),
   },
 };
@@ -243,7 +222,6 @@ const editableFields = new Set([
   "navigation",
   "commands",
   "ui",
-  "seo",
 ]);
 
 const fieldModules = {
@@ -274,7 +252,6 @@ const fieldModules = {
   navigation: ["settings"],
   commands: ["settings"],
   ui: ["settings"],
-  seo: ["settings"],
 };
 
 const editorModules = {
@@ -331,10 +308,6 @@ async function writeModules(
     settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      socialSharing: {
-        ...defaultPortfolio.settings.socialSharing,
-        ...(content.settings?.socialSharing ?? {}),
-      },
       experience: {
         ...defaultPortfolio.settings.experience,
         ...(content.settings?.experience ?? {}),
@@ -343,10 +316,6 @@ async function writeModules(
         ...defaultPortfolio.settings.maintenance,
         ...(content.settings?.maintenance ?? {}),
       },
-    }),
-    seo: withCodeOwnedIdentitySeo({
-      ...defaultPortfolio.seo,
-      ...(content.seo ?? {}),
     }),
     sections: {
       ...defaultPortfolio.sections,
@@ -419,14 +388,9 @@ function composePortfolio(documents) {
   const links = data("links");
   const settings = data("settings");
   const rawSettings = settings.settings ?? {};
-  const rawSeo = settings.seo ?? {};
   const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    socialSharing: {
-      ...defaultPortfolio.settings.socialSharing,
-      ...(rawSettings.socialSharing ?? {}),
-    },
     experience: {
       ...defaultPortfolio.settings.experience,
       ...(rawSettings.experience ?? {}),
@@ -436,11 +400,6 @@ function composePortfolio(documents) {
       ...(rawSettings.maintenance ?? {}),
     },
   });
-  const portfolioSeo = withCodeOwnedIdentitySeo({
-    ...defaultPortfolio.seo,
-    ...rawSeo,
-  });
-
   return {
     profile: {
       ...defaultPortfolio.profile,
@@ -476,7 +435,6 @@ function composePortfolio(documents) {
     navigation: settings.navigation ?? [],
     commands: settings.commands ?? [],
     ui: settings.ui ?? {},
-    seo: portfolioSeo,
   };
 }
 

@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import Hero from '../components/sections/Hero.jsx'
 import About from '../components/sections/About.jsx'
@@ -12,13 +11,9 @@ import Achievements from '../components/sections/Achievements.jsx'
 import Testimonials from '../components/sections/Testimonials.jsx'
 import Contact from '../components/sections/Contact.jsx'
 import { pageTransition } from '../animations/variants.js'
-import { getHomeContent } from '../lib/contentSelectors.js'
-import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
 
 export default function Home({ entranceReady }) {
-  const contentState = usePortfolioContent()
-  const { structuredData } = getHomeContent(contentState?.portfolio)
   const simplifyMotion = useMediaQuery('(max-width: 640px), (pointer: coarse)')
 
   return (
@@ -28,9 +23,6 @@ export default function Home({ entranceReady }) {
       animate={simplifyMotion ? undefined : 'animate'}
       exit={simplifyMotion ? undefined : 'exit'}
     >
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      </Helmet>
       <Hero entranceReady={entranceReady} />
       <About />
       <Skills />

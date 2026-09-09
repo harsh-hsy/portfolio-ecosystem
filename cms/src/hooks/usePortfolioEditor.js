@@ -18,7 +18,6 @@ export function usePortfolioEditor({
   getPortfolio,
   validate = () => ({}),
   successMessage = "Content updated successfully.",
-  deployTarget = "",
 }) {
   const { showToast } = useToast();
   const [portfolio, setPortfolio] = useState(null);
@@ -131,31 +130,14 @@ export function usePortfolioEditor({
 
       try {
         const nextPortfolio = getPortfolio(portfolio, form);
-        const response = await updateAdminPortfolioModule(
-          moduleName,
-          nextPortfolio,
-          { deployTarget },
-        );
+        const response = await updateAdminPortfolioModule(moduleName, nextPortfolio);
         const nextForm = getForm(response.content);
-
-        let nextSuccessMessage = successMessage;
-        let nextStatusType = "success";
-        const deploymentLabel = response.deployment?.target === "cms" ? "CMS" : "Frontend";
-        if (response.deployment?.status === "accepted") {
-          nextSuccessMessage = `${successMessage} ${deploymentLabel} deployment started.`;
-        } else if (response.deployment?.status === "not_configured") {
-          nextSuccessMessage = `${successMessage} ${deploymentLabel} deploy hook is not configured.`;
-          nextStatusType = "warning";
-        } else if (response.deployment?.status === "failed") {
-          nextSuccessMessage = `${successMessage} ${deploymentLabel} deployment could not be started.`;
-          nextStatusType = "warning";
-        }
 
         setPortfolio(response.content);
         setForm(nextForm);
         setSavedForm(nextForm);
-        setStatus({ message: nextSuccessMessage, type: nextStatusType });
-        showToast(nextSuccessMessage, { type: nextStatusType });
+        setStatus({ message: successMessage, type: "success" });
+        showToast(successMessage, { type: "success" });
         return true;
       } catch (error) {
         const message = error.message || "Unable to save content.";
@@ -175,7 +157,6 @@ export function usePortfolioEditor({
       portfolio,
       showToast,
       successMessage,
-      deployTarget,
       validate,
     ],
   );

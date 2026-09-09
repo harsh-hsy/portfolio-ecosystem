@@ -4,25 +4,10 @@ import { Link } from "react-router-dom";
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
-import ImageUploader from "../components/editor/ImageUploader";
 import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { validateForm, validators } from "../utils/validation";
-import { resolveMediaUrl } from "../utils/media";
-
-const portfolioUrl = (
-  import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
-).replace(/\/$/, "");
 
 const emptyForm = {
-  metaTitle: "",
-  metaDescription: "",
-  seoKeywords: "",
-  bingVerification: "",
-  allowIndexing: true,
-  openGraphTitle: "",
-  openGraphDescription: "",
-  socialImage: "",
-  twitterCard: "summary_large_image",
   loadingEnabled: true,
   loadingDurationSeconds: "2.4",
   desktopAnimations: true,
@@ -40,21 +25,10 @@ const emptyForm = {
 
 function formFromPortfolio(portfolio) {
   const settings = portfolio?.settings ?? {};
-  const sharing = settings.socialSharing ?? {};
   const experience = settings.experience ?? {};
   const maintenance = settings.maintenance ?? {};
-  const seo = portfolio?.seo ?? {};
 
   return {
-    metaTitle: seo.title ?? "",
-    metaDescription: seo.description ?? "",
-    seoKeywords: seo.keywords ?? "",
-    bingVerification: seo.bingVerification ?? "7821903C0AC68D3A01EAD5788B45656C",
-    allowIndexing: seo.allowIndexing ?? true,
-    openGraphTitle: sharing.openGraphTitle ?? seo.title ?? "",
-    openGraphDescription: sharing.openGraphDescription ?? seo.description ?? "",
-    socialImage: sharing.image ?? "",
-    twitterCard: sharing.twitterCard ?? "summary_large_image",
     loadingEnabled: experience.loadingEnabled ?? true,
     loadingDurationSeconds: String((experience.loadingDurationMs ?? 2400) / 1000),
     desktopAnimations: experience.desktopAnimations ?? true,
@@ -76,13 +50,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      socialSharing: {
-        ...(portfolio.settings?.socialSharing ?? {}),
-        openGraphTitle: form.openGraphTitle.trim(),
-        openGraphDescription: form.openGraphDescription.trim(),
-        image: form.socialImage,
-        twitterCard: form.twitterCard,
-      },
       experience: {
         ...(portfolio.settings?.experience ?? {}),
         loadingEnabled: form.loadingEnabled,
@@ -103,25 +70,11 @@ function portfolioFromForm(portfolio, form) {
         announcementText: form.announcementText.trim(),
       },
     },
-    seo: {
-      ...(portfolio.seo ?? {}),
-      title: form.metaTitle.trim(),
-      description: form.metaDescription.trim(),
-      keywords: form.seoKeywords.trim(),
-      bingVerification: form.bingVerification.trim(),
-      allowIndexing: form.allowIndexing,
-    },
   };
 }
 
 function validateSettings(form) {
   return validateForm(form, {
-    metaTitle: [validators.required(), validators.maxLength(70)],
-    metaDescription: [validators.required(), validators.maxLength(180)],
-    seoKeywords: [validators.required(), validators.maxLength(1000)],
-    bingVerification: [validators.maxLength(128)],
-    openGraphTitle: [validators.required(), validators.maxLength(70)],
-    openGraphDescription: [validators.required(), validators.maxLength(200)],
     loadingDurationSeconds: [
       validators.required(),
       (value) => {
@@ -166,18 +119,6 @@ const pageConfig = {
     title: "Portfolio Experience",
     description: "Control public-site motion, loading, navigation, and accessibility preferences.",
   },
-  "portfolio-social-sharing": {
-    kicker: "Portfolio",
-    title: "Portfolio Social Sharing",
-    description: "Manage link previews used by LinkedIn, WhatsApp, X, Telegram, and Facebook.",
-    deployTarget: "frontend",
-  },
-  seo: {
-    kicker: "Discoverability",
-    title: "SEO Defaults",
-    description: "Manage fallback metadata and public search-engine visibility.",
-    deployTarget: "frontend",
-  },
   maintenance: {
     kicker: "Availability",
     title: "Maintenance & Announcement",
@@ -201,7 +142,6 @@ function Settings({ section }) {
     getPortfolio,
     validate: validateSettings,
     successMessage: `${currentPage.title} updated successfully.`,
-    deployTarget: currentPage.deployTarget,
   });
 
   const updateToggle = (name, value) => {
@@ -218,69 +158,6 @@ function Settings({ section }) {
       <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
 
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
-        {section === "seo" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">SEO Defaults</h2>
-              <p>Fallback metadata used when a project or certificate does not provide its own values.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField label="Default Meta Title" name="metaTitle" value={editor.form.metaTitle} onChange={editor.updateField} error={editor.errors.metaTitle} maxLength={70} required />
-            <FormField label="SEO Keywords" name="seoKeywords" value={editor.form.seoKeywords} onChange={editor.updateField} error={editor.errors.seoKeywords} maxLength={1000} required />
-            <FormField label="Bing Webmaster Verification" name="bingVerification" value={editor.form.bingVerification} onChange={editor.updateField} error={editor.errors.bingVerification} helpText="The value used by the msvalidate.01 meta tag." maxLength={128} />
-            <FormField label="Default Meta Description" name="metaDescription" className="form-group--wide" value={editor.form.metaDescription} onChange={editor.updateField} error={editor.errors.metaDescription} maxLength={180} required />
-            <div className="form-group form-group--wide settings-toggle-row">
-              <ToggleField
-                checked={editor.form.allowIndexing}
-                label="Allow search engine indexing"
-                description="Disable temporarily when the public portfolio should not appear in search results."
-                recommended="Enabled"
-                onChange={(value) => updateToggle("allowIndexing", value)}
-              />
-            </div>
-          </div>
-        </section> : null}
-
-        {section === "portfolio-social-sharing" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">Social Sharing</h2>
-              <p>Default LinkedIn, WhatsApp, X, and Facebook preview metadata.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="form-grid">
-            <FormField label="Open Graph Title" name="openGraphTitle" value={editor.form.openGraphTitle} onChange={editor.updateField} error={editor.errors.openGraphTitle} maxLength={70} required />
-            <FormField label="Twitter Card Type" name="twitterCard" as="select" value={editor.form.twitterCard} onChange={editor.updateField} options={[{ value: "summary_large_image", label: "Large image" }, { value: "summary", label: "Compact summary" }]} required />
-            <FormField label="Open Graph Description" name="openGraphDescription" className="form-group--wide" value={editor.form.openGraphDescription} onChange={editor.updateField} error={editor.errors.openGraphDescription} maxLength={200} required />
-            <div className="form-group form-group--wide settings-social-layout">
-              <ImageUploader
-                value={editor.form.socialImage}
-                onChange={(value) => editor.updateForm((current) => ({ ...current, socialImage: value }))}
-                label="Default Social-sharing Image"
-                section="settings"
-                aspectRatio={1200 / 630}
-                outputWidth={1200}
-                outputHeight={630}
-                alt="Default social sharing preview"
-                previewMaxWidth="560px"
-              />
-              <article className="social-preview-card">
-                <div className="social-preview-card__image">
-                  {editor.form.socialImage ? <img src={resolveMediaUrl(editor.form.socialImage)} alt="" /> : <span>1200 × 630 preview</span>}
-                </div>
-                <div>
-                  <small>{portfolioUrl}</small>
-                  <strong>{editor.form.openGraphTitle || "Open Graph title"}</strong>
-                  <p>{editor.form.openGraphDescription || "Open Graph description"}</p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section> : null}
-
         {section === "portfolio-experience" ? <section className="panel account-section settings-card">
           <div className="editor-section-heading">
             <div>

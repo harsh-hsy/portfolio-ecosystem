@@ -43,7 +43,7 @@ Highlights:
 - smooth scrolling and custom cursor
 - motion and interaction polish with Framer Motion
 - command palette
-- SEO support with `react-helmet-async`
+- static crawler-readable SEO and social metadata
 - content selectors and validation helpers so the UI can safely read CMS data
 
 ### CMS
@@ -118,13 +118,10 @@ CMS_ORIGIN=http://localhost:5174
 MONGODB_URI=mongodb://127.0.0.1:27017/portfolio_cms
 JWT_SECRET=your-secret
 JWT_EXPIRES_IN=8h
-RENDER_FRONTEND_DEPLOY_HOOK_URL=your-render-frontend-deploy-hook
 ADMIN_NAME=Harsh Kumar Singh
 ADMIN_EMAIL=you@example.com
 ADMIN_PASSWORD=your-password
 ```
-
-Keep the Render frontend deploy hook only in the API environment. It is a private server-side secret and must never be added to a `VITE_` variable or committed to Git.
 
 ### CMS
 
