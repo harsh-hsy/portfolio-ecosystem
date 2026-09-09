@@ -8,7 +8,6 @@ import Milestones from '../components/sections/Milestones.jsx'
 import Certificates from '../components/sections/Certificates.jsx'
 import Services from '../components/sections/Services.jsx'
 import Achievements from '../components/sections/Achievements.jsx'
-import Testimonials from '../components/sections/Testimonials.jsx'
 import Contact from '../components/sections/Contact.jsx'
 import { pageTransition } from '../animations/variants.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
@@ -32,7 +31,6 @@ export default function Home({ entranceReady }) {
       <Certificates />
       <Services />
       <Achievements />
-      <Testimonials />
       <Contact />
     </motion.div>
   )
