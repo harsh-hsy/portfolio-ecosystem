@@ -97,7 +97,7 @@ const navigation = [
   },
   {
     id: "global-pages",
-    label: "Global Pages",
+    label: "Footer",
     path: "/global-pages",
     icon: FiGlobe,
   },
@@ -109,9 +109,10 @@ const navigation = [
   },
 ];
 
-const portfolioUrl = (
-  import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173"
-).replace(/\/$/, "");
+const portfolioUrl = (import.meta.env.VITE_PORTFOLIO_URL || "http://localhost:5173").replace(
+  /\/$/,
+  "",
+);
 
 export const footerNavigation = [
   {

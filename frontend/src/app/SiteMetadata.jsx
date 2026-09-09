@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
-  getNotFoundContent,
   getProjectDetailsContent,
   getProjectsContent,
   getSiteSettings,
@@ -11,6 +10,7 @@ import { getProjectBySlug } from '../utils/projects.js'
 
 const siteUrl = 'https://harsh-hsy.onrender.com'
 const defaultTitle = 'Harsh Singh | Frontend Developer'
+const notFoundTitle = 'Page Not Found | Harsh Singh'
 const defaultDescription =
   'React developer and UI engineer building accessible, responsive, high-performance web experiences.'
 
@@ -41,10 +41,10 @@ export default function SiteMetadata() {
       title = projectMetadata.title
       description = projectMetadata.description
     } else {
-      title = getNotFoundContent(portfolio).seoTitle
+      title = notFoundTitle
     }
   } else if (location.pathname !== '/') {
-    title = getNotFoundContent(portfolio).seoTitle
+    title = notFoundTitle
   }
 
   useEffect(() => {

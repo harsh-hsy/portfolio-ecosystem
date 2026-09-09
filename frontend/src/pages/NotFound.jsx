@@ -1,13 +1,8 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../motion/variants.js'
-import { getNotFoundContent } from '../content/contentSelectors.js'
-import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 
 export default function NotFound() {
-  const contentState = usePortfolioContent()
-  const { section } = getNotFoundContent(contentState?.portfolio)
-
   return (
     <motion.section
       className="not-found section"
@@ -17,8 +12,8 @@ export default function NotFound() {
       exit="exit"
     >
       <div className="container">
-        <h1>{section.title}</h1>
-        <p>{section.copy}</p>
+        <h1>Page not found.</h1>
+        <p>Looks like this page doesn't exist. Let's get you back to the portfolio.</p>
         <Link className="magnetic-button primary" to="/">
           Back Home
         </Link>

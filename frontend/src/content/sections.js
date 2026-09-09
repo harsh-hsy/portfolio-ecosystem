@@ -99,22 +99,6 @@ export const sectionContent = {
     useHomeAvailability: true,
     availability: 'Available for opportunities',
     panelTitle: "Send me a message and I'll get back to you soon.",
-    errorMessage: 'Please complete every field.',
-    successMessage: 'Message sent successfully.',
-    failureMessage: 'Failed to send message.',
-    submitLabel: 'Send Message',
-    fields: {
-      name: 'Name',
-      email: 'Email',
-      subject: 'Subject',
-      message: 'Message',
-    },
-  },
-  notFound: {
-    id: 'not-found',
-    title: 'Page not found.',
-    copy: "Looks like this page doesn't exist. Let's get you back to the portfolio.",
-    action: 'Back Home',
   },
 }
 

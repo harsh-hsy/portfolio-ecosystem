@@ -41,7 +41,6 @@ function validEmail(value, label) {
 
 export function validateContactContent(content) {
   const contact = content?.sections?.contact
-  const fields = contact?.fields ?? {}
 
   if (!contact) throw validationError('Contact section content is required')
 
@@ -57,14 +56,6 @@ export function validateContactContent(content) {
     requiredText(contact.availability, 'Contact availability', 80)
   }
   requiredText(contact.panelTitle, 'Contact panel title', 120)
-  requiredText(contact.submitLabel, 'Contact submit label', 40)
-  requiredText(contact.successMessage, 'Contact success message', 100)
-  requiredText(contact.errorMessage, 'Contact validation message', 100)
-  requiredText(contact.failureMessage, 'Contact failure message', 100)
-  requiredText(fields.name, 'Name field label', 40)
-  requiredText(fields.email, 'Email field label', 40)
-  requiredText(fields.subject, 'Subject field label', 40)
-  requiredText(fields.message, 'Message field label', 40)
 
   return content
 }

@@ -22,8 +22,7 @@ const emptyPortfolio = {
     certificates: {},
     services: {},
     achievements: {},
-    contact: { fields: {} },
-    notFound: {},
+    contact: {},
   },
   settings: defaultSettings,
   commands: [],
@@ -192,14 +191,4 @@ export function getCommandPaletteContent(portfolio) {
 
 export function getProjectCardContent(portfolio) {
   return resolvePortfolio(portfolio).ui?.projectCard ?? emptyPortfolio.ui.projectCard
-}
-
-export function getNotFoundContent(portfolio) {
-  const resolvedPortfolio = resolvePortfolio(portfolio)
-  const titleSuffix = defaultSettings.siteIdentity.titleSuffix
-
-  return {
-    seoTitle: `Page Not Found${titleSuffix ? ` | ${titleSuffix}` : ''}`,
-    section: resolvedPortfolio.sections.notFound,
-  }
 }

@@ -70,10 +70,17 @@ function pick(source, fields) {
   );
 }
 
-function withoutEyebrow(section = {}) {
-  return Object.fromEntries(
-    Object.entries(section).filter(([key]) => key !== "eyebrow"),
-  );
+function withoutContactFormText(section = {}) {
+  const {
+    fields: _fields,
+    submitLabel: _submitLabel,
+    successMessage: _successMessage,
+    errorMessage: _errorMessage,
+    failureMessage: _failureMessage,
+    ...content
+  } = section;
+
+  return content;
 }
 
 function withCodeOwnedIdentity(settings = {}) {
@@ -184,7 +191,9 @@ const modules = {
   },
   contact: {
     model: ContactContent,
-    extract: (content) => ({ section: content.sections?.contact ?? {} }),
+    extract: (content) => ({
+      section: withoutContactFormText(content.sections?.contact),
+    }),
   },
   links: {
     model: LinksContent,
@@ -197,7 +206,6 @@ const modules = {
     model: SettingsContent,
     extract: (content) => ({
       profile: pick(content.profile, profileFields.settings),
-      section: withoutEyebrow(content.sections?.notFound),
       settings: withoutCodeOwnedIdentity(
         content.settings ?? defaultPortfolio.settings,
       ),
@@ -245,7 +253,6 @@ const fieldModules = {
     "services",
     "achievements",
     "contact",
-    "settings",
   ],
   stats: ["about"],
   settings: ["settings"],
@@ -418,8 +425,7 @@ function composePortfolio(documents) {
       milestones: milestones.section ?? defaultPortfolio.sections.milestones,
       services: services.section ?? {},
       achievements: achievements.section ?? {},
-      contact: contact.section ?? {},
-      notFound: settings.section ?? {},
+      contact: withoutContactFormText(contact.section),
     },
     stats: about.stats ?? home.stats ?? [],
     settings: portfolioSettings,

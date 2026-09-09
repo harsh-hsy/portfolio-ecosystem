@@ -13,6 +13,20 @@ const initialForm = {
   message: '',
 }
 
+const formText = {
+  labels: {
+    name: 'Name',
+    email: 'Email',
+    subject: 'Subject',
+    message: 'Message',
+  },
+  submit: 'Send Message',
+  sending: 'Sending...',
+  validationError: 'Please complete every field.',
+  success: 'Message sent successfully.',
+  failure: 'Failed to send message.',
+}
+
 export default function Contact() {
   const [form, setForm] = useState(initialForm)
   const [status, setStatus] = useState('idle')
@@ -34,7 +48,7 @@ export default function Contact() {
     setError('')
 
     if (!form.name || !form.email || !form.subject || !form.message) {
-      setError(section.errorMessage)
+      setError(formText.validationError)
       return
     }
 
@@ -62,7 +76,7 @@ export default function Contact() {
     } catch (err) {
       console.error(err)
       setStatus('idle')
-      setError(section.failureMessage)
+      setError(formText.failure)
     }
   }
 
@@ -115,13 +129,13 @@ export default function Contact() {
 
           <form className="contact-form" onSubmit={submit}>
             <label>
-              <span>{section.fields.name}</span>
+              <span>{formText.labels.name}</span>
 
               <input name="name" value={form.name} onChange={update} autoComplete="name" required />
             </label>
 
             <label>
-              <span>{section.fields.email}</span>
+              <span>{formText.labels.email}</span>
 
               <input
                 name="email"
@@ -134,13 +148,13 @@ export default function Contact() {
             </label>
 
             <label>
-              <span>{section.fields.subject}</span>
+              <span>{formText.labels.subject}</span>
 
               <input name="subject" value={form.subject} onChange={update} required />
             </label>
 
             <label>
-              <span>{section.fields.message}</span>
+              <span>{formText.labels.message}</span>
 
               <textarea name="message" rows="5" value={form.message} onChange={update} required />
             </label>
@@ -150,14 +164,14 @@ export default function Contact() {
             {status === 'success' && (
               <p className="form-success">
                 <FiCheck />
-                {section.successMessage}
+                {formText.success}
               </p>
             )}
 
             <MagneticButton type="submit" className="primary" disabled={status === 'loading'}>
               {status === 'loading' ? <FiLoader className="spin" /> : <FiSend />}
 
-              {status === 'loading' ? 'Sending...' : section.submitLabel}
+              {status === 'loading' ? formText.sending : formText.submit}
             </MagneticButton>
           </form>
         </div>

@@ -19,8 +19,4 @@ export function validateGlobalPagesContent(content) {
   if (!/^\d{4}$/.test(copyrightYear)) {
     throw validationError('Copyright year must use four digits')
   }
-
-  const notFound = content.sections?.notFound ?? {}
-  requiredText(notFound.title, '404 page title', 90)
-  requiredText(notFound.copy, '404 page message', 240)
 }
