@@ -1246,173 +1246,8 @@ input[type="password"]::-webkit-textfield-decoration-container {
   }
 }
 
-/* Settings overview */
-.settings-overview {
-  display: grid;
-  gap: 28px;
-}
-
-.settings-overview__header {
-  display: grid;
-  gap: 8px;
-  max-width: 720px;
-}
-
-.settings-overview__header h2,
-.settings-overview__header p {
-  margin: 0;
-}
-
-.settings-overview__header p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.settings-overview .settings-overview__grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .settings-editor {
   gap: 28px;
-}
-
-.settings-back-link {
-  width: max-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.settings-hub__groups {
-  display: grid;
-  gap: 34px;
-}
-
-.settings-hub__group {
-  display: grid;
-  gap: 18px;
-}
-
-.settings-hub__group + .settings-hub__group {
-  padding-top: 34px;
-  border-top: 1px solid var(--border);
-}
-
-.settings-hub__group-heading {
-  display: grid;
-  gap: 6px;
-}
-
-.settings-hub__group-heading p,
-.settings-hub__group-heading h2,
-.settings-hub__group-heading span {
-  margin: 0;
-}
-
-.settings-hub__group-heading p {
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.settings-hub__group-heading h2 {
-  color: var(--heading);
-  font-size: clamp(20px, 2vw, 25px);
-}
-
-.settings-hub__group-heading span {
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.settings-hub__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.settings-hub__grid--single {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.settings-hub-card {
-  min-width: 0;
-  min-height: 156px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 22px;
-  padding: 26px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--card-bg);
-  box-shadow: var(--shadow);
-  transition: border-color 180ms ease, transform 180ms ease;
-}
-
-.settings-hub-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-3px);
-}
-
-.settings-hub-card__heading,
-.settings-hub-card__footer {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-}
-
-.settings-hub-card__heading {
-  gap: 16px;
-}
-
-.settings-hub-card__footer {
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.settings-hub-card__icon {
-  width: 48px;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  flex: 0 0 auto;
-  color: var(--primary);
-  background: var(--sidebar-hover);
-}
-
-.settings-hub-card__icon svg {
-  font-size: 21px;
-}
-
-.settings-hub-card__heading strong {
-  color: var(--heading);
-  font-size: 18px;
-}
-
-.settings-hub-card__footer small {
-  min-width: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.settings-hub-card__arrow {
-  flex: 0 0 auto;
-  color: var(--primary);
-  font-size: 22px;
-  transition: transform 180ms ease;
-}
-
-.settings-hub-card:hover .settings-hub-card__arrow {
-  transform: translateX(5px);
 }
 
 .settings-card {
@@ -1431,35 +1266,9 @@ input[type="password"]::-webkit-textfield-decoration-container {
   margin: 0;
 }
 
-.settings-toggle-row {
-  margin-top: 0;
-}
-
 .settings-toggle {
   height: 100%;
   min-height: 88px;
-}
-
-.settings-toggle__recommended {
-  color: var(--success) !important;
-  font-weight: 700;
-}
-
-.settings-toggle__warning {
-  color: var(--warning) !important;
-  font-weight: 700;
-}
-
-.settings-toggle-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: 16px;
-}
-
-.settings-toggle-grid > .form-group {
-  min-height: 88px;
-  justify-content: center;
 }
 
 .settings-card--maintenance.is-enabled {
@@ -1477,36 +1286,9 @@ input[type="password"]::-webkit-textfield-decoration-container {
   box-shadow: var(--shadow);
 }
 
-@media (max-width: 900px) {
-  .settings-toggle-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .settings-hub__grid,
-  .settings-hub__grid--single {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 768px) {
   .settings-card {
     padding: 24px 20px;
-  }
-
-  .settings-hub__grid,
-  .settings-hub__grid--single {
-    grid-template-columns: 1fr;
-  }
-
-  .settings-hub-card {
-    min-height: 142px;
-    padding: 22px;
-  }
-}
-
-@media (max-width: 768px) {
-  .settings-overview .settings-overview__grid {
-    grid-template-columns: 1fr;
   }
 }
 

@@ -654,16 +654,6 @@ export const defaultPortfolio = {
       "authorName": portfolioIdentity.authorName,
       "portfolioUrl": portfolioIdentity.portfolioUrl
     },
-    "experience": {
-      "loadingEnabled": true,
-      "loadingDurationMs": 2400,
-      "desktopAnimations": true,
-      "mobileAnimations": false,
-      "smoothScroll": true,
-      "rotatingRole": true,
-      "stickyHeader": true,
-      "respectReducedMotion": true
-    },
     "maintenance": {
       "enabled": false,
       "heading": "Portfolio under maintenance",

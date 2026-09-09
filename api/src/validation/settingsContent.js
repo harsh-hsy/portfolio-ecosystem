@@ -17,22 +17,7 @@ function requiredBoolean(value, label) {
 
 export function validateSettingsContent(content) {
   const settings = content.settings ?? {}
-  const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
-
-  requiredBoolean(experience.loadingEnabled, 'Loading animation')
-  const duration = Number(experience.loadingDurationMs)
-  if (!Number.isInteger(duration) || duration < 0 || duration > 5000) {
-    throw validationError('Loading duration must be between 0 and 5000 milliseconds')
-  }
-  ;[
-    ['desktopAnimations', 'Desktop animations'],
-    ['mobileAnimations', 'Mobile animations'],
-    ['smoothScroll', 'Smooth scrolling'],
-    ['rotatingRole', 'Rotating job title'],
-    ['stickyHeader', 'Sticky header'],
-    ['respectReducedMotion', 'Reduced-motion preference'],
-  ].forEach(([key, label]) => requiredBoolean(experience[key], label))
 
   requiredBoolean(maintenance.enabled, 'Maintenance mode')
   requiredText(maintenance.heading, 'Maintenance heading', 90)

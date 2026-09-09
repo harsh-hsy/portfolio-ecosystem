@@ -78,6 +78,7 @@ function withoutEyebrow(section = {}) {
 
 function withCodeOwnedIdentity(settings = {}) {
   const {
+    experience: _experience,
     cmsManifest: _cmsManifest,
     cmsExperience: _cmsExperience,
     cmsSocialSharing: _cmsSocialSharing,
@@ -101,6 +102,7 @@ function withCodeOwnedIdentity(settings = {}) {
 
 function withoutCodeOwnedIdentity(settings = {}) {
   const {
+    experience: _experience,
     brandInitials: _brandInitials,
     loadingMark: _loadingMark,
     siteIdentity: _siteIdentity,
@@ -308,10 +310,6 @@ async function writeModules(
     settings: withCodeOwnedIdentity({
       ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
-      experience: {
-        ...defaultPortfolio.settings.experience,
-        ...(content.settings?.experience ?? {}),
-      },
       maintenance: {
         ...defaultPortfolio.settings.maintenance,
         ...(content.settings?.maintenance ?? {}),
@@ -391,10 +389,6 @@ function composePortfolio(documents) {
   const portfolioSettings = withCodeOwnedIdentity({
     ...defaultPortfolio.settings,
     ...rawSettings,
-    experience: {
-      ...defaultPortfolio.settings.experience,
-      ...(rawSettings.experience ?? {}),
-    },
     maintenance: {
       ...defaultPortfolio.settings.maintenance,
       ...(rawSettings.maintenance ?? {}),

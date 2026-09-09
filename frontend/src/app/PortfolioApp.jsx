@@ -4,6 +4,7 @@ import { PortfolioContentProvider } from '../state/PortfolioContentProvider.jsx'
 import { ThemeProvider } from '../state/ThemeProvider.jsx'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 import { getSiteSettings } from '../content/contentSelectors.js'
+import { experienceSettings } from '../config/experience.js'
 import App from './App.jsx'
 
 function PortfolioExperience() {
@@ -11,9 +12,8 @@ function PortfolioExperience() {
   const introStartedAt = useRef(performance.now())
   const contentState = usePortfolioContent()
   const settings = getSiteSettings(contentState?.portfolio)
-  const experience = settings.experience ?? {}
-  const loadingEnabled = experience.loadingEnabled !== false
-  const loadingDurationMs = Math.min(5000, Math.max(0, Number(experience.loadingDurationMs) || 0))
+  const loadingEnabled = experienceSettings.loadingEnabled
+  const loadingDurationMs = experienceSettings.loadingDurationMs
 
   useEffect(() => {
     if (!['ready', 'fallback'].includes(contentState?.status)) return undefined

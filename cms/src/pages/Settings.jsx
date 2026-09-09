@@ -1,6 +1,4 @@
 import { useCallback } from "react";
-import { FiArrowLeft } from "react-icons/fi";
-import { Link } from "react-router-dom";
 
 import EditorActions from "../components/common/EditorActions";
 import FormField from "../components/editor/FormField";
@@ -8,14 +6,6 @@ import { usePortfolioEditor } from "../hooks/usePortfolioEditor";
 import { validateForm, validators } from "../utils/validation";
 
 const emptyForm = {
-  loadingEnabled: true,
-  loadingDurationSeconds: "2.4",
-  desktopAnimations: true,
-  mobileAnimations: false,
-  smoothScroll: true,
-  rotatingRole: true,
-  stickyHeader: true,
-  respectReducedMotion: true,
   maintenanceEnabled: false,
   maintenanceHeading: "",
   maintenanceMessage: "",
@@ -24,22 +14,13 @@ const emptyForm = {
 };
 
 function formFromPortfolio(portfolio) {
-  const settings = portfolio?.settings ?? {};
-  const experience = settings.experience ?? {};
-  const maintenance = settings.maintenance ?? {};
+  const maintenance = portfolio?.settings?.maintenance ?? {};
 
   return {
-    loadingEnabled: experience.loadingEnabled ?? true,
-    loadingDurationSeconds: String((experience.loadingDurationMs ?? 2400) / 1000),
-    desktopAnimations: experience.desktopAnimations ?? true,
-    mobileAnimations: experience.mobileAnimations ?? false,
-    smoothScroll: experience.smoothScroll ?? true,
-    rotatingRole: experience.rotatingRole ?? true,
-    stickyHeader: experience.stickyHeader ?? true,
-    respectReducedMotion: experience.respectReducedMotion ?? true,
     maintenanceEnabled: maintenance.enabled ?? false,
     maintenanceHeading: maintenance.heading ?? "Portfolio under maintenance",
-    maintenanceMessage: maintenance.message ?? "I am making a few improvements. Please check back shortly.",
+    maintenanceMessage:
+      maintenance.message ?? "I am making a few improvements. Please check back shortly.",
     announcementEnabled: maintenance.announcementEnabled ?? false,
     announcementText: maintenance.announcementText ?? "",
   };
@@ -50,17 +31,6 @@ function portfolioFromForm(portfolio, form) {
     ...portfolio,
     settings: {
       ...(portfolio.settings ?? {}),
-      experience: {
-        ...(portfolio.settings?.experience ?? {}),
-        loadingEnabled: form.loadingEnabled,
-        loadingDurationMs: Math.round(Number(form.loadingDurationSeconds) * 1000),
-        desktopAnimations: form.desktopAnimations,
-        mobileAnimations: form.mobileAnimations,
-        smoothScroll: form.smoothScroll,
-        rotatingRole: form.rotatingRole,
-        stickyHeader: form.stickyHeader,
-        respectReducedMotion: form.respectReducedMotion,
-      },
       maintenance: {
         ...(portfolio.settings?.maintenance ?? {}),
         enabled: form.maintenanceEnabled,
@@ -75,73 +45,46 @@ function portfolioFromForm(portfolio, form) {
 
 function validateSettings(form) {
   return validateForm(form, {
-    loadingDurationSeconds: [
-      validators.required(),
-      (value) => {
-        const duration = Number(value);
-        return Number.isFinite(duration) && duration >= 0 && duration <= 5
-          ? ""
-          : "Use a duration between 0 and 5 seconds.";
-      },
-    ],
     maintenanceHeading: [validators.required(), validators.maxLength(90)],
     maintenanceMessage: [validators.required(), validators.maxLength(240)],
     announcementText: [
-      (value, values) => values.announcementEnabled && !String(value).trim()
-        ? "Announcement text is required while visible."
-        : "",
+      (value, values) =>
+        values.announcementEnabled && !String(value).trim()
+          ? "Announcement text is required while visible."
+          : "",
       validators.maxLength(180),
     ],
   });
 }
 
-function ToggleField({ checked, label, description, recommended, warning, onChange }) {
+function ToggleField({ checked, label, description, onChange }) {
   return (
     <label className="toggle-field settings-toggle">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+      />
       <span>
         <strong>{label}</strong>
         {description ? <small>{description}</small> : null}
-        {recommended ? <small className="settings-toggle__recommended">Recommended: {recommended}</small> : null}
-        {warning ? <small className="settings-toggle__warning">Performance impact: {warning}</small> : null}
       </span>
     </label>
   );
 }
 
-function ConnectionBadge({ isLoading }) {
-  return <span className="content-editor__badge">{isLoading ? "Loading" : "Connected"}</span>;
-}
-
-const pageConfig = {
-  "portfolio-experience": {
-    kicker: "Portfolio",
-    title: "Portfolio Experience",
-    description: "Control public-site motion, loading, navigation, and accessibility preferences.",
-  },
-  maintenance: {
-    kicker: "Availability",
-    title: "Maintenance & Announcement",
-    description: "Temporarily replace the public site or display a lightweight announcement.",
-  },
-};
-
-function Settings({ section }) {
-  const currentPage = pageConfig[section] ?? pageConfig["portfolio-experience"];
+export default function Settings() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
     [],
   );
-  const getPortfolio = useCallback(
-    (portfolio, form) => portfolioFromForm(portfolio, form),
-    [],
-  );
+  const getPortfolio = useCallback((portfolio, form) => portfolioFromForm(portfolio, form), []);
   const editor = usePortfolioEditor({
     moduleName: "settings",
     getForm,
     getPortfolio,
     validate: validateSettings,
-    successMessage: `${currentPage.title} updated successfully.`,
+    successMessage: "Maintenance settings updated successfully.",
   });
 
   const updateToggle = (name, value) => {
@@ -149,56 +92,87 @@ function Settings({ section }) {
   };
 
   const changeMaintenanceMode = (enabled) => {
-    if (enabled && !window.confirm("Enable maintenance mode? Public visitors will see only the maintenance page.")) return;
+    if (
+      enabled &&
+      !window.confirm(
+        "Enable maintenance mode? Public visitors will see only the maintenance page.",
+      )
+    ) {
+      return;
+    }
+
     updateToggle("maintenanceEnabled", enabled);
   };
 
   return (
     <section className="page settings-page">
-      <Link className="settings-back-link" to="/settings"><FiArrowLeft /> Back to Settings</Link>
-
       <form className="content-editor settings-editor" onSubmit={editor.saveForm}>
-        {section === "portfolio-experience" ? <section className="panel account-section settings-card">
-          <div className="editor-section-heading">
-            <div>
-              <h2 className="account-section__title">Website Experience</h2>
-              <p>Use recommended defaults to keep the portfolio smooth on mobile devices.</p>
-            </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
-          </div>
-          <div className="settings-toggle-grid">
-            <ToggleField checked={editor.form.loadingEnabled} label="Loading animation" description="Show the short HS intro while content loads." recommended="Enabled" onChange={(value) => updateToggle("loadingEnabled", value)} />
-            <FormField label="Loading Duration (seconds)" name="loadingDurationSeconds" type="number" min="0" max="5" step="0.1" value={editor.form.loadingDurationSeconds} onChange={editor.updateField} error={editor.errors.loadingDurationSeconds} disabled={!editor.form.loadingEnabled} required />
-            <ToggleField checked={editor.form.desktopAnimations} label="Desktop animations" recommended="Enabled" onChange={(value) => updateToggle("desktopAnimations", value)} />
-            <ToggleField checked={editor.form.mobileAnimations} label="Mobile animations" recommended="Disabled" warning="Enabling complex motion may reduce mobile smoothness." onChange={(value) => updateToggle("mobileAnimations", value)} />
-            <ToggleField checked={editor.form.smoothScroll} label="Smooth scrolling" description="Desktop enhanced scrolling; mobile continues using native scrolling." recommended="Enabled" onChange={(value) => updateToggle("smoothScroll", value)} />
-            <ToggleField checked={editor.form.rotatingRole} label="Rotating job title" recommended="Enabled" onChange={(value) => updateToggle("rotatingRole", value)} />
-            <ToggleField checked={editor.form.stickyHeader} label="Sticky header" description="Keep navigation visible while scrolling." recommended="Enabled" onChange={(value) => updateToggle("stickyHeader", value)} />
-            <ToggleField checked={editor.form.respectReducedMotion} label="Respect reduced-motion preference" description="Reduce animation for visitors who request it in their device settings." recommended="Enabled" onChange={(value) => updateToggle("respectReducedMotion", value)} />
-          </div>
-        </section> : null}
-
-        {section === "maintenance" ? <section className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? "is-enabled" : ""}`}>
+        <section
+          className={`panel account-section settings-card settings-card--maintenance ${editor.form.maintenanceEnabled ? "is-enabled" : ""}`}
+        >
           <div className="editor-section-heading">
             <div>
               <h2 className="account-section__title">Maintenance and Announcement</h2>
               <p>Temporarily replace the public site or display a lightweight announcement.</p>
             </div>
-            <ConnectionBadge isLoading={editor.isLoading} />
+            <span className="content-editor__badge">
+              {editor.isLoading ? "Loading" : "Connected"}
+            </span>
           </div>
-          <div className="form-grid">
-            <ToggleField checked={editor.form.maintenanceEnabled} label="Maintenance mode" description="Visitors will see only the maintenance message." onChange={changeMaintenanceMode} />
-            <ToggleField checked={editor.form.announcementEnabled} label="Show announcement" description="Display a small banner above the portfolio navigation." onChange={(value) => updateToggle("announcementEnabled", value)} />
-            <FormField label="Maintenance Heading" name="maintenanceHeading" value={editor.form.maintenanceHeading} onChange={editor.updateField} error={editor.errors.maintenanceHeading} maxLength={90} required />
-            <FormField label="Maintenance Message" name="maintenanceMessage" value={editor.form.maintenanceMessage} onChange={editor.updateField} error={editor.errors.maintenanceMessage} maxLength={240} required />
-            <FormField label="Announcement Text" name="announcementText" className="form-group--wide" value={editor.form.announcementText} onChange={editor.updateField} error={editor.errors.announcementText} maxLength={180} disabled={!editor.form.announcementEnabled} required={editor.form.announcementEnabled} />
-          </div>
-        </section> : null}
 
-        <EditorActions status={editor.status} isDirty={editor.isDirty} isLoading={editor.isLoading} isSaving={editor.isSaving} onReset={editor.resetForm} />
+          <div className="form-grid">
+            <ToggleField
+              checked={editor.form.maintenanceEnabled}
+              label="Maintenance mode"
+              description="Visitors will see only the maintenance message."
+              onChange={changeMaintenanceMode}
+            />
+            <ToggleField
+              checked={editor.form.announcementEnabled}
+              label="Show announcement"
+              description="Display a small banner above the portfolio navigation."
+              onChange={(value) => updateToggle("announcementEnabled", value)}
+            />
+            <FormField
+              label="Maintenance Heading"
+              name="maintenanceHeading"
+              value={editor.form.maintenanceHeading}
+              onChange={editor.updateField}
+              error={editor.errors.maintenanceHeading}
+              maxLength={90}
+              required
+            />
+            <FormField
+              label="Maintenance Message"
+              name="maintenanceMessage"
+              value={editor.form.maintenanceMessage}
+              onChange={editor.updateField}
+              error={editor.errors.maintenanceMessage}
+              maxLength={240}
+              required
+            />
+            <FormField
+              label="Announcement Text"
+              name="announcementText"
+              className="form-group--wide"
+              value={editor.form.announcementText}
+              onChange={editor.updateField}
+              error={editor.errors.announcementText}
+              maxLength={180}
+              disabled={!editor.form.announcementEnabled}
+              required={editor.form.announcementEnabled}
+            />
+          </div>
+        </section>
+
+        <EditorActions
+          status={editor.status}
+          isDirty={editor.isDirty}
+          isLoading={editor.isLoading}
+          isSaving={editor.isSaving}
+          onReset={editor.resetForm}
+        />
       </form>
     </section>
   );
 }
-
-export default Settings;

@@ -4,32 +4,30 @@ import { useEffect, useState } from 'react'
 import MagneticButton from '../common/MagneticButton.jsx'
 import Reveal from '../common/Reveal.jsx'
 import { fadeUp, slideLeft, slideRight, stagger } from '../../motion/variants.js'
-import { getHomeContent, getSiteSettings } from '../../content/contentSelectors.js'
+import { getHomeContent } from '../../content/contentSelectors.js'
 import { getIcon } from '../../config/icons.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../services/cloudinary.js'
+import { experienceSettings } from '../../config/experience.js'
 
 export default function Hero({ entranceReady }) {
   const [index, setIndex] = useState(0)
   const contentState = usePortfolioContent()
   const { profile, socials, sections } = getHomeContent(contentState?.portfolio)
-  const settings = getSiteSettings(contentState?.portfolio)
-  const experience = settings.experience ?? {}
   const content = sections.hero
   const LocationIcon = getIcon(content.orbitLocationIcon || 'mapPin')
   const rotatingRoleCount = profile.rotatingRoles.length
   const systemPrefersReducedMotion = useReducedMotion()
   const isMobile = useMediaQuery('(max-width: 640px), (pointer: coarse)')
-  const prefersReducedMotion =
-    experience.respectReducedMotion !== false && systemPrefersReducedMotion
-  const hasLimitedMotion = isMobile && experience.mobileAnimations !== true
+  const prefersReducedMotion = experienceSettings.respectReducedMotion && systemPrefersReducedMotion
+  const hasLimitedMotion = isMobile && !experienceSettings.mobileAnimations
   const reduceEffects = prefersReducedMotion || hasLimitedMotion
   const copyEntrance = hasLimitedMotion ? fadeUp : slideRight
   const imageEntrance = hasLimitedMotion ? fadeUp : slideLeft
 
   useEffect(() => {
-    if (experience.rotatingRole === false || rotatingRoleCount <= 1) {
+    if (!experienceSettings.rotatingRole || rotatingRoleCount <= 1) {
       setIndex(0)
       return undefined
     }
@@ -39,7 +37,7 @@ export default function Hero({ entranceReady }) {
       1800,
     )
     return () => window.clearInterval(timer)
-  }, [experience.rotatingRole, rotatingRoleCount])
+  }, [rotatingRoleCount])
 
   return (
     <section id="home" className="hero-section section">

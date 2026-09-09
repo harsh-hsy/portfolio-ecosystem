@@ -14,6 +14,7 @@ import NotFound from '../pages/NotFound.jsx'
 import { getSiteSettings } from '../content/contentSelectors.js'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 import { useMediaQuery } from '../hooks/useMediaQuery.js'
+import { experienceSettings } from '../config/experience.js'
 import SiteMetadata from './SiteMetadata.jsx'
 
 const ProjectDetails = lazy(() => import('../pages/ProjectDetails.jsx'))
@@ -24,22 +25,22 @@ function App({ entranceReady }) {
   const lenisRef = useRef(null)
   const contentState = usePortfolioContent()
   const settings = getSiteSettings(contentState?.portfolio)
-  const experience = settings.experience ?? {}
   const maintenance = settings.maintenance ?? {}
   const isMobile = useMediaQuery('(max-width: 640px), (pointer: coarse)')
   const systemReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const animationsEnabled = isMobile
-    ? experience.mobileAnimations === true
-    : experience.desktopAnimations !== false
+    ? experienceSettings.mobileAnimations
+    : experienceSettings.desktopAnimations
   const disableMotion =
-    !animationsEnabled || (experience.respectReducedMotion !== false && systemReducedMotion)
+    !animationsEnabled || (experienceSettings.respectReducedMotion && systemReducedMotion)
   const showAnnouncement = maintenance.announcementEnabled && maintenance.announcementText
 
   useEffect(() => {
-    const reducedMotionQuery =
-      experience.respectReducedMotion !== false ? ', (prefers-reduced-motion: reduce)' : ''
+    const reducedMotionQuery = experienceSettings.respectReducedMotion
+      ? ', (prefers-reduced-motion: reduce)'
+      : ''
     const useNativeScroll =
-      experience.smoothScroll === false ||
+      !experienceSettings.smoothScroll ||
       window.matchMedia(`(max-width: 768px), (pointer: coarse)${reducedMotionQuery}`).matches
     if (useNativeScroll) return undefined
 
@@ -56,15 +57,15 @@ function App({ entranceReady }) {
       lenis.destroy()
       lenisRef.current = null
     }
-  }, [experience.respectReducedMotion, experience.smoothScroll])
+  }, [])
 
   useEffect(() => {
     document.documentElement.classList.toggle(
       'portfolio-native-scroll',
-      experience.smoothScroll === false,
+      !experienceSettings.smoothScroll,
     )
     return () => document.documentElement.classList.remove('portfolio-native-scroll')
-  }, [experience.smoothScroll])
+  }, [])
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -103,7 +104,7 @@ function App({ entranceReady }) {
   return (
     <MotionConfig
       reducedMotion={
-        disableMotion ? 'always' : experience.respectReducedMotion !== false ? 'user' : 'never'
+        disableMotion ? 'always' : experienceSettings.respectReducedMotion ? 'user' : 'never'
       }
     >
       <div
@@ -117,7 +118,7 @@ function App({ entranceReady }) {
         ) : null}
         <ScrollProgress />
         <CustomCursor />
-        <Navbar entranceReady={entranceReady} sticky={experience.stickyHeader !== false} />
+        <Navbar entranceReady={entranceReady} sticky={experienceSettings.stickyHeader} />
         <CommandPalette />
         <main id="main-content">
           <AnimatePresence mode="wait">
