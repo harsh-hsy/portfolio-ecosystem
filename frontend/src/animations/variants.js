@@ -18,11 +18,6 @@ export const slideRight = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut' } },
 }
 
-export const scaleIn = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.55, ease: 'easeOut' } },
-}
-
 export const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.08 } },

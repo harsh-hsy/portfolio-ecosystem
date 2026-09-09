@@ -1,4 +1,4 @@
-export const baseProjects = [
+export const projects = [
   {
     "slug": "qr-fusion",
     "title": "QR Fusion - Free & Advanced QR Code Generator",
@@ -221,5 +221,3 @@ export const baseProjects = [
     "featured": false
   }
 ]
-
-export const projects = baseProjects

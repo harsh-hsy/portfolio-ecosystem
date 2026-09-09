@@ -18,12 +18,6 @@ export const defaultProfile = {
   about: '',
 }
 
-export const defaultSection = {
-  eyebrow: '',
-  title: '',
-  copy: '',
-}
-
 export const defaultSettings = siteSettings
 
 export const defaultProject = {
