@@ -1,3 +1,5 @@
+import { siteSettings } from '../content/settings.js'
+
 export const defaultProfile = {
   name: '',
   fullName: '',
@@ -42,4 +44,3 @@ export const defaultProject = {
   visible: true,
   featured: false,
 }
-import { siteSettings } from '../content/settings.js'

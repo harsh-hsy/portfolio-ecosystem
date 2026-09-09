@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { defaultPortfolio } from '../content/defaultPortfolio.js'
+import { portfolioFallback } from '../content/portfolioFallback.js'
 import { getPublishedPortfolio } from '../services/portfolioApi.js'
 import { PortfolioContentContext } from './portfolio-content-context.js'
 
 export function PortfolioContentProvider({ children }) {
-  const [portfolio, setPortfolio] = useState(defaultPortfolio)
+  const [portfolio, setPortfolio] = useState(portfolioFallback)
   const [status, setStatus] = useState('idle')
 
   useEffect(() => {
