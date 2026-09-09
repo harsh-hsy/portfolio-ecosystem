@@ -1,39 +1,93 @@
 export const skills = [
   {
-    id: 'frontend',
-    category: 'Frontend',
-    featured: true,
-    items: [
-      { id: 'html5', name: 'HTML5', icon: 'html' },
-      { id: 'css3', name: 'CSS3', icon: 'css' },
-      { id: 'javascript', name: 'JavaScript', icon: 'javascript' },
-      { id: 'react', name: 'React', icon: 'react' },
-      { id: 'tailwind', name: 'Tailwind', icon: 'tailwind' },
-      { id: 'bootstrap', name: 'Bootstrap', icon: 'bootstrap' },
-    ],
+    "category": "Frontend",
+    "items": [
+      {
+        "name": "HTML5",
+        "icon": "html"
+      },
+      {
+        "name": "CSS3",
+        "icon": "css"
+      },
+      {
+        "name": "JavaScript",
+        "icon": "javascript"
+      },
+      {
+        "name": "React",
+        "icon": "react"
+      },
+      {
+        "name": "Tailwind",
+        "icon": "tailwind"
+      },
+      {
+        "name": "Bootstrap",
+        "icon": "bootstrap"
+      }
+    ]
   },
   {
-    id: 'backend',
-    category: 'Backend Basics',
-    featured: true,
-    items: [
-      { id: 'nodejs', name: 'Node.js', icon: 'node' },
-      { id: 'express', name: 'Express', icon: 'express' },
-      { id: 'mongodb', name: 'MongoDB', icon: 'mongodb' },
-    ],
+    "category": "Backend Basics",
+    "items": [
+      {
+        "name": "Node.js",
+        "icon": "node"
+      },
+      {
+        "name": "Express",
+        "icon": "express"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "mongodb"
+      }
+    ]
   },
   {
-    id: 'tools',
-    category: 'Tools & Design',
-    featured: true,
-    items: [
-      { id: 'git', name: 'Git', icon: 'git' },
-      { id: 'github', name: 'GitHub', icon: 'github' },
-      { id: 'vscode', name: 'VS Code', icon: 'code' },
-      { id: 'figma', name: 'Figma', icon: 'figma' },
-      { id: 'canva', name: 'Canva', icon: 'canva' },
-      { id: 'photoshop', name: 'Photoshop', icon: 'paint' },
-      { id: 'vite', name: 'Vite', icon: 'vite' },
-    ],
-  },
+    "category": "Tools & Design",
+    "items": [
+      {
+        "name": "Git",
+        "icon": "git"
+      },
+      {
+        "name": "GitHub",
+        "icon": "github"
+      },
+      {
+        "name": "Vite",
+        "icon": "vite"
+      },
+      {
+        "name": "VS Code",
+        "icon": "code"
+      },
+      {
+        "name": "Render",
+        "icon": "render"
+      },
+      {
+        "name": "Vercel",
+        "icon": "vercel"
+      },
+      {
+        "name": "Netlify",
+        "icon": "netlify"
+      },
+      {
+        "name": "Figma",
+        "icon": "figma"
+      },
+      {
+        "name": "Canva",
+        "icon": "canva"
+      },
+      {
+        "name": "Photoshop",
+        "icon": "paint"
+      }
+    ]
+  }
 ]

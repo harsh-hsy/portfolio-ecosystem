@@ -1,14 +1,14 @@
 export const milestones = [
   {
-    title: 'Public Portfolio Foundation',
-    label: 'Portfolio',
-    period: 'Current',
-    body: 'Built a polished public portfolio with responsive layouts, project showcases, motion, theme support, and recruiter-focused content.',
+    "title": "Portfolio Website",
+    "label": "Portfolio",
+    "period": "Completed",
+    "body": "Developed a portfolio website showcasing my projects, technical skills, certifications, and professional journey."
   },
   {
-    title: 'CMS Architecture Preparation',
-    label: 'Architecture',
-    period: 'Phase 1',
-    body: 'Separated content, configuration, selectors, and helper logic so future editing workflows can be added without redesigning the public site.',
-  },
+    "title": "Portfolio Content Management System",
+    "label": "Portfolio CMS",
+    "period": "Completed",
+    "body": "Developed a custom CMS, currently being refined through bug fixes and improvements."
+  }
 ]
