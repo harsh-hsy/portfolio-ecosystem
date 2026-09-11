@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FiAward, FiEye, FiEyeOff, FiFileText, FiPlus, FiSearch, FiStar, FiX } from 'react-icons/fi'
+import { FiFileText } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 
-import EditorActions from '../components/common/EditorActions'
+import CertificateLibraryCard from '../components/certificates/CertificateLibraryCard'
+import CertificateSectionEditor from '../components/certificates/CertificateSectionEditor'
+import CreateResourceDialog from '../components/library/CreateResourceDialog'
+import LibraryToolbar from '../components/library/LibraryToolbar'
 import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
 import { useToast } from '../hooks/useToast'
 import {
@@ -11,29 +14,12 @@ import {
   updateAdminCertificate,
 } from '../services/portfolioService'
 import { updateSection } from '../utils/contentFormUtils'
-import { resolveMediaUrl } from '../utils/urls'
 
-const filters = ['All', 'Published', 'Draft', 'Featured', 'Hidden']
-
-const emptyForm = {
-  title: '',
-  copy: '',
-}
-
-function slugify(value) {
-  return String(value || '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
+const emptyForm = { title: '', copy: '' }
 
 function formFromPortfolio(portfolio) {
   const section = portfolio?.sections?.certificates ?? {}
-  return {
-    title: section.title ?? '',
-    copy: section.copy ?? '',
-  }
+  return { title: section.title ?? '', copy: section.copy ?? '' }
 }
 
 function portfolioFromForm(portfolio, form) {
@@ -117,7 +103,6 @@ function Certificates() {
           .join(' ')
           .toLowerCase()
           .includes(normalizedQuery)
-
       const matchesFilter =
         activeFilter === 'All' ||
         (activeFilter === 'Published' && certificate.publicationStatus === 'published') ||
@@ -171,86 +156,15 @@ function Certificates() {
 
   return (
     <section className="page projects-overview certificates-overview">
-      <form className="panel content-editor certificates-section-editor" onSubmit={editor.saveForm}>
-        <div className="content-editor__header">
-          <div>
-            <span className="content-editor__eyebrow">Certificate showcase</span>
-            <h2>{editor.form.title || 'Certificates title'}</h2>
-            <p>{editor.form.copy || 'Certificate description'}</p>
-          </div>
-          <span className="content-editor__badge">
-            {editor.isLoading ? 'Loading' : 'Connected'}
-          </span>
-        </div>
-        <div className="content-editor__section">
-          <h3>Section Content</h3>
-          <div className="form-grid">
-            <label className="form-group form-group--wide">
-              <span className="form-label">
-                Title <b aria-hidden="true">*</b>
-              </span>
-              <input
-                className="form-input"
-                name="title"
-                value={editor.form.title}
-                onChange={editor.updateField}
-              />
-              {editor.errors.title ? (
-                <span className="form-error">{editor.errors.title}</span>
-              ) : null}
-            </label>
-            <label className="form-group form-group--wide">
-              <span className="form-label">
-                Description <b aria-hidden="true">*</b>
-              </span>
-              <textarea
-                className="form-input form-textarea"
-                name="copy"
-                value={editor.form.copy}
-                onChange={editor.updateField}
-              />
-              {editor.errors.copy ? <span className="form-error">{editor.errors.copy}</span> : null}
-            </label>
-          </div>
-        </div>
-        <EditorActions
-          status={editor.status}
-          isDirty={editor.isDirty}
-          isLoading={editor.isLoading}
-          isSaving={editor.isSaving}
-          onReset={editor.resetForm}
-        />
-      </form>
-
-      <div className="projects-overview__toolbar" aria-label="Certificate library controls">
-        <div className="projects-overview__filters" role="group" aria-label="Filter certificates">
-          {filters.map((filter) => (
-            <button
-              className={activeFilter === filter ? 'is-active' : ''}
-              key={filter}
-              type="button"
-              onClick={() => setActiveFilter(filter)}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-        <div className="projects-overview__toolbar-actions">
-          <label className="projects-overview__search">
-            <FiSearch aria-hidden="true" />
-            <span className="sr-only">Search certificates</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search certificates"
-            />
-          </label>
-          <button className="btn btn-primary" type="button" onClick={() => setIsCreateOpen(true)}>
-            <FiPlus aria-hidden="true" />
-            Add Certificate
-          </button>
-        </div>
-      </div>
+      <CertificateSectionEditor editor={editor} />
+      <LibraryToolbar
+        resourceName="Certificate"
+        activeFilter={activeFilter}
+        query={query}
+        onFilter={setActiveFilter}
+        onQuery={setQuery}
+        onCreate={() => setIsCreateOpen(true)}
+      />
 
       <div className="projects-overview__summary">
         <span>{certificates.length} certificates</span>
@@ -268,107 +182,15 @@ function Certificates() {
         <div className="projects-overview__empty">Loading certificate library...</div>
       ) : filteredCertificates.length ? (
         <div className="project-library-grid certificate-library-grid">
-          {filteredCertificates.map((certificate) => {
-            const isDraft = certificate.publicationStatus === 'draft'
-            const isUpdating = updatingSlug === certificate.slug
-            const canFeature = !isDraft && certificate.visible
-
-            return (
-              <article
-                className="project-library-card certificate-library-card"
-                key={certificate._id || certificate.slug}
-                tabIndex="0"
-                role="link"
-                onClick={() => navigate(`/certificates/${certificate.slug}`)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    navigate(`/certificates/${certificate.slug}`)
-                  }
-                }}
-              >
-                <div className="project-library-card__media certificate-library-card__media">
-                  {certificate.thumbnail ? (
-                    <img src={resolveMediaUrl(certificate.thumbnail)} alt="" />
-                  ) : (
-                    <FiAward aria-hidden="true" />
-                  )}
-                  <span
-                    className={`project-library-card__status project-library-card__status--${isDraft ? 'draft' : 'published'}`}
-                  >
-                    {isDraft ? 'Draft' : 'Published'}
-                  </span>
-                </div>
-
-                <div className="project-library-card__body">
-                  <div>
-                    <p>{certificate.date || 'Date pending'}</p>
-                    <h2>{certificate.title}</h2>
-                    <span>{certificate.issuer || 'Issuer pending'}</span>
-                  </div>
-                  <div
-                    className="project-library-card__actions"
-                    aria-label={`${certificate.title} actions`}
-                  >
-                    <button
-                      className={certificate.featured ? 'is-active' : ''}
-                      type="button"
-                      disabled={isUpdating || !canFeature}
-                      aria-label={
-                        certificate.featured ? 'Remove featured certificate' : 'Feature certificate'
-                      }
-                      title={
-                        !canFeature
-                          ? 'Publish and show the certificate before featuring it'
-                          : 'Feature certificate'
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        updateCertificate(
-                          certificate,
-                          { featured: !certificate.featured },
-                          certificate.featured
-                            ? 'Removed from featured certificates.'
-                            : 'Certificate featured.',
-                        )
-                      }}
-                    >
-                      <FiStar aria-hidden="true" />
-                    </button>
-                    <button
-                      className={certificate.visible ? 'is-active' : ''}
-                      type="button"
-                      disabled={isUpdating || isDraft}
-                      aria-label={certificate.visible ? 'Hide certificate' : 'Show certificate'}
-                      title={
-                        isDraft
-                          ? 'Publish the certificate before showing it'
-                          : certificate.visible
-                            ? 'Hide certificate'
-                            : 'Show certificate'
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        updateCertificate(
-                          certificate,
-                          { visible: !certificate.visible },
-                          certificate.visible
-                            ? 'Certificate hidden from portfolio.'
-                            : 'Certificate visible on portfolio.',
-                        )
-                      }}
-                    >
-                      {certificate.visible ? (
-                        <FiEye aria-hidden="true" />
-                      ) : (
-                        <FiEyeOff aria-hidden="true" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </article>
-            )
-          })}
+          {filteredCertificates.map((certificate) => (
+            <CertificateLibraryCard
+              key={certificate._id || certificate.slug}
+              certificate={certificate}
+              isUpdating={updatingSlug === certificate.slug}
+              onOpen={() => navigate(`/certificates/${certificate.slug}`)}
+              onUpdate={(changes, message) => updateCertificate(certificate, changes, message)}
+            />
+          ))}
         </div>
       ) : (
         <div className="projects-overview__empty">
@@ -379,56 +201,17 @@ function Certificates() {
       )}
 
       {isCreateOpen ? (
-        <div className="dialog-backdrop" onMouseDown={closeCreateDialog}>
-          <form
-            className="project-create-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="create-certificate-title"
-            onSubmit={handleCreate}
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="project-create-dialog__header">
-              <div>
-                <p className="page-kicker">New Certificate</p>
-                <h2 id="create-certificate-title">Create a certificate draft</h2>
-              </div>
-              <button type="button" onClick={closeCreateDialog} aria-label="Close dialog">
-                <FiX aria-hidden="true" />
-              </button>
-            </div>
-            <label className="form-group project-create-dialog__field">
-              <span className="form-label">
-                Certificate Name <b aria-hidden="true">*</b>
-              </span>
-              <input
-                className="form-input"
-                autoFocus
-                value={certificateName}
-                onChange={(event) => setCertificateName(event.target.value)}
-                placeholder="Example: Front-End Software Engineering Job Simulation"
-                aria-describedby="certificate-slug-preview"
-                required
-              />
-            </label>
-            <div className="project-create-dialog__slug" id="certificate-slug-preview">
-              <span>Generated editor URL</span>
-              <code>/certificates/{slugify(certificateName) || 'certificate-name'}</code>
-            </div>
-            <div className="project-create-dialog__actions">
-              <button className="btn btn-secondary" type="button" onClick={closeCreateDialog}>
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={isCreating || !certificateName.trim()}
-              >
-                {isCreating ? 'Creating...' : 'Create Draft'}
-              </button>
-            </div>
-          </form>
-        </div>
+        <CreateResourceDialog
+          resourceName="Certificate"
+          value={certificateName}
+          placeholder="Example: React Developer Certificate"
+          path="certificates"
+          pathLabel="Generated certificate URL"
+          isCreating={isCreating}
+          onChange={setCertificateName}
+          onClose={closeCreateDialog}
+          onSubmit={handleCreate}
+        />
       ) : null}
     </section>
   )

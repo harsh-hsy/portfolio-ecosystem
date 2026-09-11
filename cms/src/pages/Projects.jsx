@@ -1,24 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
-import { FiEye, FiEyeOff, FiFolder, FiPlus, FiSearch, FiStar, FiX } from 'react-icons/fi'
+import { FiFolder } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 
+import CreateResourceDialog from '../components/library/CreateResourceDialog'
+import LibraryToolbar from '../components/library/LibraryToolbar'
+import ProjectLibraryCard from '../components/projects/ProjectLibraryCard'
 import { useToast } from '../hooks/useToast'
 import {
   createAdminProject,
   getAdminProjects,
   updateAdminProject,
 } from '../services/portfolioService'
-import { resolveMediaUrl } from '../utils/urls'
-
-const filters = ['All', 'Published', 'Draft', 'Featured', 'Hidden']
-
-function slugify(value) {
-  return String(value || '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
 
 function Projects() {
   const navigate = useNavigate()
@@ -72,7 +64,6 @@ function Projects() {
           .join(' ')
           .toLowerCase()
           .includes(normalizedQuery)
-
       const matchesFilter =
         activeFilter === 'All' ||
         (activeFilter === 'Published' && project.publicationStatus === 'published') ||
@@ -87,10 +78,7 @@ function Projects() {
   async function updateProject(project, changes, successMessage) {
     try {
       setUpdatingSlug(project.slug)
-      const response = await updateAdminProject(project.slug, {
-        ...project,
-        ...changes,
-      })
+      const response = await updateAdminProject(project.slug, { ...project, ...changes })
       setProjects((current) =>
         current.map((item) => (item._id === project._id ? response.project : item)),
       )
@@ -126,35 +114,14 @@ function Projects() {
 
   return (
     <section className="page projects-overview">
-      <div className="projects-overview__toolbar" aria-label="Project library controls">
-        <div className="projects-overview__filters" role="group" aria-label="Filter projects">
-          {filters.map((filter) => (
-            <button
-              className={activeFilter === filter ? 'is-active' : ''}
-              key={filter}
-              type="button"
-              onClick={() => setActiveFilter(filter)}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-        <div className="projects-overview__toolbar-actions">
-          <label className="projects-overview__search">
-            <FiSearch aria-hidden="true" />
-            <span className="sr-only">Search projects</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search projects"
-            />
-          </label>
-          <button className="btn btn-primary" type="button" onClick={() => setIsCreateOpen(true)}>
-            <FiPlus aria-hidden="true" />
-            Add Project
-          </button>
-        </div>
-      </div>
+      <LibraryToolbar
+        resourceName="Project"
+        activeFilter={activeFilter}
+        query={query}
+        onFilter={setActiveFilter}
+        onQuery={setQuery}
+        onCreate={() => setIsCreateOpen(true)}
+      />
 
       <div className="projects-overview__summary">
         <span>{projects.length} projects</span>
@@ -172,110 +139,16 @@ function Projects() {
         <div className="projects-overview__empty">Loading project library...</div>
       ) : filteredProjects.length ? (
         <div className="project-library-grid">
-          {filteredProjects.map((project) => {
-            const image = project.thumbnail || project.images?.[0]
-            const isDraft = project.publicationStatus === 'draft'
-            const isUpdating = updatingSlug === project.slug
-            const canFeature = !isDraft && project.visible
-
-            return (
-              <article
-                className="project-library-card"
-                key={project._id || project.slug}
-                tabIndex="0"
-                role="link"
-                onClick={() => navigate(`/projects/${project.slug}`)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    navigate(`/projects/${project.slug}`)
-                  }
-                }}
-              >
-                <div className="project-library-card__media">
-                  {image ? (
-                    <img src={resolveMediaUrl(image)} alt="" />
-                  ) : (
-                    <FiFolder aria-hidden="true" />
-                  )}
-                  <span
-                    className={`project-library-card__status project-library-card__status--${isDraft ? 'draft' : 'published'}`}
-                  >
-                    {isDraft ? 'Draft' : 'Published'}
-                  </span>
-                </div>
-
-                <div className="project-library-card__body">
-                  <div>
-                    <p>{project.category || 'Uncategorized'}</p>
-                    <h2>{project.shortTitle || project.title}</h2>
-                    <span>/projects/{project.slug}</span>
-                  </div>
-                  <div
-                    className="project-library-card__actions"
-                    aria-label={`${project.shortTitle || project.title} actions`}
-                  >
-                    <button
-                      className={project.featured ? 'is-active' : ''}
-                      type="button"
-                      disabled={
-                        isUpdating || !canFeature || (!project.featured && featuredCount >= 6)
-                      }
-                      aria-label={
-                        project.featured ? 'Remove from featured projects' : 'Feature project'
-                      }
-                      title={
-                        !canFeature
-                          ? 'Publish and show the project before featuring it'
-                          : 'Feature project'
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        updateProject(
-                          project,
-                          { featured: !project.featured },
-                          project.featured
-                            ? 'Removed from featured projects.'
-                            : 'Project featured on homepage.',
-                        )
-                      }}
-                    >
-                      <FiStar aria-hidden="true" />
-                    </button>
-                    <button
-                      className={project.visible ? 'is-active' : ''}
-                      type="button"
-                      disabled={isUpdating || isDraft}
-                      aria-label={project.visible ? 'Hide project' : 'Show project'}
-                      title={
-                        isDraft
-                          ? 'Publish the project before showing it'
-                          : project.visible
-                            ? 'Hide project'
-                            : 'Show project'
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        updateProject(
-                          project,
-                          { visible: !project.visible },
-                          project.visible
-                            ? 'Project hidden from portfolio.'
-                            : 'Project visible on portfolio.',
-                        )
-                      }}
-                    >
-                      {project.visible ? (
-                        <FiEye aria-hidden="true" />
-                      ) : (
-                        <FiEyeOff aria-hidden="true" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </article>
-            )
-          })}
+          {filteredProjects.map((project) => (
+            <ProjectLibraryCard
+              key={project._id || project.slug}
+              project={project}
+              featuredCount={featuredCount}
+              isUpdating={updatingSlug === project.slug}
+              onOpen={() => navigate(`/projects/${project.slug}`)}
+              onUpdate={(changes, message) => updateProject(project, changes, message)}
+            />
+          ))}
         </div>
       ) : (
         <div className="projects-overview__empty">
@@ -286,56 +159,17 @@ function Projects() {
       )}
 
       {isCreateOpen ? (
-        <div className="dialog-backdrop" onMouseDown={closeCreateDialog}>
-          <form
-            className="project-create-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="create-project-title"
-            onSubmit={handleCreate}
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="project-create-dialog__header">
-              <div>
-                <p className="page-kicker">New Project</p>
-                <h2 id="create-project-title">Create a project draft</h2>
-              </div>
-              <button type="button" onClick={closeCreateDialog} aria-label="Close dialog">
-                <FiX aria-hidden="true" />
-              </button>
-            </div>
-            <label className="form-group project-create-dialog__field">
-              <span className="form-label">
-                Project Name <b aria-hidden="true">*</b>
-              </span>
-              <input
-                className="form-input"
-                autoFocus
-                value={projectName}
-                onChange={(event) => setProjectName(event.target.value)}
-                placeholder="Example: Portfolio CMS"
-                aria-describedby="project-slug-preview"
-                required
-              />
-            </label>
-            <div className="project-create-dialog__slug" id="project-slug-preview">
-              <span>Generated project URL</span>
-              <code>/projects/{slugify(projectName) || 'project-name'}</code>
-            </div>
-            <div className="project-create-dialog__actions">
-              <button className="btn btn-secondary" type="button" onClick={closeCreateDialog}>
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={isCreating || !projectName.trim()}
-              >
-                {isCreating ? 'Creating...' : 'Create Draft'}
-              </button>
-            </div>
-          </form>
-        </div>
+        <CreateResourceDialog
+          resourceName="Project"
+          value={projectName}
+          placeholder="Example: Portfolio CMS"
+          path="projects"
+          pathLabel="Generated project URL"
+          isCreating={isCreating}
+          onChange={setProjectName}
+          onClose={closeCreateDialog}
+          onSubmit={handleCreate}
+        />
       ) : null}
     </section>
   )
