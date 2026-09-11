@@ -5,12 +5,12 @@ import {
   getProjectsContent,
   getSiteSettings,
 } from '../content/contentSelectors.js'
+import { portfolioIdentity } from '../content/portfolioIdentity.js'
 import { usePortfolioContent } from '../hooks/usePortfolioContent.js'
 import { getProjectBySlug } from '../utils/projects.js'
 
-const siteUrl = 'https://harsh-hsy.onrender.com'
-const defaultTitle = 'Harsh Singh | Frontend Developer'
-const notFoundTitle = 'Page Not Found | Harsh Singh'
+const defaultTitle = `${portfolioIdentity.titleSuffix} | Frontend Developer`
+const notFoundTitle = `Page Not Found | ${portfolioIdentity.titleSuffix}`
 const defaultDescription =
   'React developer and UI engineer building accessible, responsive, high-performance web experiences.'
 
@@ -28,10 +28,10 @@ export default function SiteMetadata() {
   let description = defaultDescription
 
   if (settings.maintenance?.enabled) {
-    title = 'Maintenance | Harsh Singh'
+    title = `Maintenance | ${portfolioIdentity.titleSuffix}`
   } else if (location.pathname === '/projects') {
     const { section } = getProjectsContent(portfolio)
-    title = 'Projects | Harsh Singh'
+    title = `Projects | ${portfolioIdentity.titleSuffix}`
     description = section?.copy || description
   } else if (location.pathname.startsWith('/projects/')) {
     const slug = decodeURIComponent(location.pathname.slice('/projects/'.length))
@@ -48,13 +48,23 @@ export default function SiteMetadata() {
   }
 
   useEffect(() => {
-    const canonicalUrl = `${siteUrl}${location.pathname === '/' ? '' : location.pathname}`
+    const canonicalUrl = `${portfolioIdentity.portfolioUrl}${
+      location.pathname === '/' ? '' : location.pathname
+    }`
     const robots = settings.maintenance?.enabled ? 'noindex, nofollow' : 'index, follow'
 
     document.title = title
     updateMeta('meta[name="description"]', description)
+    updateMeta('meta[name="author"]', portfolioIdentity.authorName)
     updateMeta('meta[name="robots"]', robots)
+    updateMeta('meta[property="og:site_name"]', portfolioIdentity.siteName)
+    updateMeta('meta[property="og:title"]', title)
+    updateMeta('meta[property="og:description"]', description)
+    updateMeta('meta[property="og:url"]', canonicalUrl)
+    updateMeta('meta[name="twitter:title"]', title)
+    updateMeta('meta[name="twitter:description"]', description)
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl)
+    document.querySelector('link[rel="icon"]')?.setAttribute('href', portfolioIdentity.favicon)
   }, [description, location.pathname, settings.maintenance?.enabled, title])
 
   return null
