@@ -90,6 +90,8 @@ h1,
 h2,
 h3 {
   font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: inherit;
+  font-weight: inherit;
   color: var(--heading);
   margin: 0;
   letter-spacing: 0;
