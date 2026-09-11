@@ -51,7 +51,9 @@ export default function SiteMetadata() {
     const canonicalUrl = `${portfolioIdentity.portfolioUrl}${
       location.pathname === '/' ? '' : location.pathname
     }`
-    const robots = settings.maintenance?.enabled ? 'noindex, nofollow' : 'index, follow'
+    const robots = settings.maintenance?.enabled
+      ? 'noindex, nofollow'
+      : 'index, follow, max-image-preview:large'
 
     document.title = title
     updateMeta('meta[name="description"]', description)
