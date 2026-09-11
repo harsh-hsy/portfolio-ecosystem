@@ -10,13 +10,8 @@ import {
   validatePhone,
 } from '../validation/account.js'
 import {
-  ensurePublishedPortfolio,
-  getEditableFields,
   getPublishedPortfolio,
   updatePortfolioModule,
-  replacePublishedPortfolio,
-  resetPublishedPortfolio,
-  updatePortfolioField,
 } from '../services/portfolioContentService.js'
 import {
   createDraftCertificate,
@@ -184,7 +179,7 @@ router.delete('/projects/:slug', async (req, res) => {
 })
 
 router.get('/certificates', async (req, res) => {
-  await ensurePublishedPortfolio()
+  await getPublishedPortfolio()
   res.json({ certificates: await listAdminCertificates() })
 })
 
@@ -194,7 +189,7 @@ router.post('/certificates', async (req, res) => {
 })
 
 router.get('/certificates/:slug', async (req, res) => {
-  await ensurePublishedPortfolio()
+  await getPublishedPortfolio()
   res.json({ certificate: await getAdminCertificate(req.params.slug) })
 })
 
@@ -210,38 +205,11 @@ router.delete('/certificates/:slug', async (req, res) => {
   res.json({ certificate })
 })
 
-router.post('/portfolio/initialize', async (req, res) => {
-  const content = await ensurePublishedPortfolio()
-  res.status(201).json({ content })
-})
-
-router.put('/portfolio', async (req, res) => {
-  const content = await replacePublishedPortfolio(req.body)
-  await cleanupUnusedMedia(content)
-  res.json({ content })
-})
-
 router.put('/portfolio/module/:module', async (req, res) => {
   const content = await updatePortfolioModule(req.params.module, req.body)
   await cleanupUnusedMedia(content)
 
   res.json({ content })
-})
-
-router.put('/portfolio/:field', async (req, res) => {
-  const content = await updatePortfolioField(req.params.field, req.body.value)
-  await cleanupUnusedMedia(content)
-  res.json({ content })
-})
-
-router.post('/portfolio/reset', async (req, res) => {
-  const content = await resetPublishedPortfolio()
-  await cleanupUnusedMedia(content)
-  res.json({ content })
-})
-
-router.get('/portfolio-fields', (req, res) => {
-  res.json({ fields: getEditableFields() })
 })
 
 export default router

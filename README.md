@@ -67,9 +67,9 @@ Highlights:
 - Express server with MongoDB and Mongoose
 - JWT-based admin authentication
 - public portfolio endpoint
-- admin endpoints for portfolio modules, projects, certificates, account settings, and reset flows
+- admin endpoints for portfolio modules, projects, certificates, media, and account settings
 - validation layers for module content
-- seed scripts for admin and portfolio data
+- seed script for the first admin user
 
 ## Local Setup
 
@@ -148,7 +148,6 @@ npm run dev
 npm run start
 npm run lint
 npm run seed:admin
-npm run seed:portfolio
 ```
 
 ### CMS

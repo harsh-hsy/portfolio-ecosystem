@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {
-  getAdminPortfolio,
-  initializeAdminPortfolio,
-  updateAdminPortfolioModule,
-} from '../services/portfolioService'
+import { getAdminPortfolio, updateAdminPortfolioModule } from '../services/portfolioService'
 import { useToast } from './useToast'
 import { useUnsavedChanges } from './useUnsavedChanges'
 
@@ -39,10 +35,7 @@ export function usePortfolioEditor({
       setStatus({ message: '', type: 'success' })
 
       try {
-        const response = await getAdminPortfolio()
-        const content = response.content
-          ? response.content
-          : (await initializeAdminPortfolio()).content
+        const { content } = await getAdminPortfolio()
 
         if (!active) return
 

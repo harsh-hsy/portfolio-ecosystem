@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { ensurePublishedPortfolio } from '../services/portfolioContentService.js'
+import { getPublishedPortfolio } from '../services/portfolioContentService.js'
 
 const router = Router()
 
 router.get('/', async (req, res) => {
-  const content = await ensurePublishedPortfolio()
+  const content = await getPublishedPortfolio()
   // Portfolio content is edited independently of the frontend deployment. Do not
   // let a browser or an intermediate CDN keep serving the previous CMS snapshot.
   res

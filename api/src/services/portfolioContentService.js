@@ -1,6 +1,4 @@
-import { defaultPortfolio } from "../data/defaultPortfolio.js";
 import { portfolioIdentity } from "../config/portfolioIdentity.js";
-import { PortfolioContent } from "../models/PortfolioContent.js";
 import { validateAboutContent } from "../validation/aboutContent.js";
 import { validateCertificatesContent } from "../validation/certificateContent.js";
 import { validateHomeContent } from "../validation/homeContent.js";
@@ -23,7 +21,6 @@ import { validateSettingsContent } from "../validation/settingsContent.js";
 import {
   ensureCertificateResources,
   listPublishedCertificates,
-  replaceCertificateResources,
 } from "./certificateService.js";
 import {
   ensureProjectResources,
@@ -206,58 +203,11 @@ const modules = {
     model: SettingsContent,
     extract: (content) => ({
       profile: pick(content.profile, profileFields.settings),
-      settings: withoutCodeOwnedIdentity(
-        content.settings ?? defaultPortfolio.settings,
-      ),
-      commands: content.commands ?? defaultPortfolio.commands,
-      ui: content.ui ?? defaultPortfolio.ui,
+      settings: withoutCodeOwnedIdentity(content.settings ?? {}),
+      commands: content.commands ?? [],
+      ui: content.ui ?? {},
     }),
   },
-};
-
-const editableFields = new Set([
-  "profile",
-  "socials",
-  "skills",
-  "projects",
-  "certificates",
-  "timeline",
-  "achievements",
-  "milestones",
-  "services",
-  "sections",
-  "stats",
-  "settings",
-  "commands",
-  "ui",
-]);
-
-const fieldModules = {
-  profile: ["home", "about", "skills", "links", "settings"],
-  socials: ["links"],
-  skills: ["skills"],
-  projects: ["projects"],
-  certificates: ["certificates"],
-  timeline: ["journey"],
-  achievements: ["achievements"],
-  milestones: ["milestones"],
-  services: ["services"],
-  sections: [
-    "home",
-    "about",
-    "skills",
-    "projects",
-    "certificates",
-    "journey",
-    "milestones",
-    "services",
-    "achievements",
-    "contact",
-  ],
-  stats: ["about"],
-  settings: ["settings"],
-  commands: ["settings"],
-  ui: ["settings"],
 };
 
 const editorModules = {
@@ -275,21 +225,6 @@ const editorModules = {
   settings: ["settings"],
   footer: ["settings"],
 };
-
-function sanitizeLegacyContent(content) {
-  const resume = content.profile?.resume;
-  if (!resume) return content;
-
-  return {
-    ...content,
-    certificates: (content.certificates ?? []).map((certificate) => ({
-      ...certificate,
-      file: certificate.file === resume ? "" : certificate.file,
-      credentialUrl:
-        certificate.credentialUrl === resume ? "" : certificate.credentialUrl,
-    })),
-  };
-}
 
 async function readModuleDocuments() {
   const entries = await Promise.all(
@@ -312,15 +247,12 @@ async function writeModules(
   const normalizedContent = {
     ...content,
     settings: withCodeOwnedIdentity({
-      ...defaultPortfolio.settings,
       ...(content.settings ?? {}),
       maintenance: {
-        ...defaultPortfolio.settings.maintenance,
         ...(content.settings?.maintenance ?? {}),
       },
     }),
     sections: {
-      ...defaultPortfolio.sections,
       ...(content.sections ?? {}),
     },
   };
@@ -373,8 +305,7 @@ async function writeModules(
 }
 
 function composePortfolio(documents) {
-  const data = (name) =>
-    documents[name]?.data ?? modules[name].extract(defaultPortfolio);
+  const data = (name) => documents[name].data ?? {};
 
   const home = data("home");
   const about = data("about");
@@ -390,16 +321,13 @@ function composePortfolio(documents) {
   const settings = data("settings");
   const rawSettings = settings.settings ?? {};
   const portfolioSettings = withCodeOwnedIdentity({
-    ...defaultPortfolio.settings,
     ...rawSettings,
     maintenance: {
-      ...defaultPortfolio.settings.maintenance,
       ...(rawSettings.maintenance ?? {}),
     },
   });
   return {
     profile: {
-      ...defaultPortfolio.profile,
       ...home.profile,
       ...about.profile,
       ...skills.profile,
@@ -421,7 +349,7 @@ function composePortfolio(documents) {
       projects: projects.section ?? {},
       certificates: certificates.section ?? {},
       experience: journey.section ?? {},
-      milestones: milestones.section ?? defaultPortfolio.sections.milestones,
+      milestones: milestones.section ?? {},
       services: services.section ?? {},
       achievements: achievements.section ?? {},
       contact: withoutContactFormText(contact.section),
@@ -433,24 +361,16 @@ function composePortfolio(documents) {
   };
 }
 
-async function ensureModuleDocuments() {
+async function requireModuleDocuments() {
   const documents = await readModuleDocuments();
   const missingNames = Object.keys(modules).filter((name) => !documents[name]);
   if (missingNames.length === 0) return documents;
 
-  const legacy = await PortfolioContent.findOne({ status: "published" }).lean();
-  const migrationSource = sanitizeLegacyContent(legacy ?? defaultPortfolio);
-  await writeModules(migrationSource, missingNames);
-
-  return readModuleDocuments();
-}
-
-export function getEditableFields() {
-  return [...editableFields];
-}
-
-export function isEditableField(field) {
-  return editableFields.has(field);
+  const error = new Error(
+    `Portfolio content is incomplete. Missing published modules: ${missingNames.join(", ")}`,
+  );
+  error.statusCode = 503;
+  throw error;
 }
 
 export function isEditorModule(moduleName) {
@@ -458,7 +378,7 @@ export function isEditorModule(moduleName) {
 }
 
 export async function getPublishedPortfolio() {
-  const content = composePortfolio(await ensureModuleDocuments());
+  const content = composePortfolio(await requireModuleDocuments());
   await ensureProjectResources(content.projects);
   await ensureCertificateResources(content.certificates);
 
@@ -469,10 +389,6 @@ export async function getPublishedPortfolio() {
   };
 }
 
-export async function ensurePublishedPortfolio() {
-  return getPublishedPortfolio();
-}
-
 export async function updatePortfolioModule(moduleName, content) {
   const names = editorModules[moduleName];
   if (!names) {
@@ -481,38 +397,9 @@ export async function updatePortfolioModule(moduleName, content) {
     throw error;
   }
 
-  await ensureModuleDocuments();
+  await requireModuleDocuments();
   await writeModules(content, names, moduleName);
   if (moduleName === "projects")
     await replaceProjectResources(content.projects);
-  return getPublishedPortfolio();
-}
-
-export async function updatePortfolioField(field, value) {
-  if (!isEditableField(field)) {
-    const error = new Error("Unsupported portfolio field");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  const content = await getPublishedPortfolio();
-  const nextContent = { ...content, [field]: value };
-  await writeModules(nextContent, fieldModules[field]);
-  if (field === "projects") await replaceProjectResources(value);
-  if (field === "certificates") await replaceCertificateResources(value);
-  return getPublishedPortfolio();
-}
-
-export async function replacePublishedPortfolio(content) {
-  await writeModules(content);
-  await replaceProjectResources(content.projects);
-  await replaceCertificateResources(content.certificates);
-  return getPublishedPortfolio();
-}
-
-export async function resetPublishedPortfolio() {
-  await writeModules(defaultPortfolio);
-  await replaceProjectResources(defaultPortfolio.projects);
-  await replaceCertificateResources(defaultPortfolio.certificates);
   return getPublishedPortfolio();
 }

@@ -49,17 +49,14 @@ Implemented routes:
 - `GET /api/portfolio`
 - `GET /api/admin/me`
 - `GET /api/admin/portfolio`
-- `POST /api/admin/portfolio/initialize`
-- `PUT /api/admin/portfolio`
-- `PUT /api/admin/portfolio/:field`
-- `POST /api/admin/portfolio/reset`
-- `GET /api/admin/portfolio-fields`
+- `PUT /api/admin/portfolio/module/:module`
 
 ## Data Source Direction
 
-MongoDB will become the source of truth.
+MongoDB is the source of truth for live portfolio content.
 
-During transition, frontend static/default content can remain as fallback content, but CMS-driven content should come from `api`.
+The frontend repository snapshot is used only when the API cannot provide published content.
+The API does not maintain a second default portfolio snapshot.
 
 ## Development Ports
 

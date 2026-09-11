@@ -11,7 +11,7 @@ It connects the CMS and the public frontend to MongoDB, keeps the portfolio data
 - managing projects and certificates
 - storing account updates
 - providing the published portfolio data to the public frontend
-- seeding the first admin user and default portfolio data
+- seeding the first admin user
 
 ## How it fits in the ecosystem
 
@@ -45,12 +45,7 @@ The API is the source of truth for CMS-managed content. The CMS writes to it, Mo
 - `PUT /api/admin/account`
 - `PUT /api/admin/account/password`
 - `GET /api/admin/portfolio`
-- `POST /api/admin/portfolio/initialize`
-- `PUT /api/admin/portfolio`
 - `PUT /api/admin/portfolio/module/:module`
-- `PUT /api/admin/portfolio/:field`
-- `POST /api/admin/portfolio/reset`
-- `GET /api/admin/portfolio-fields`
 - `GET /api/admin/projects`
 - `POST /api/admin/projects`
 - `GET /api/admin/projects/:slug`
@@ -99,8 +94,10 @@ Other scripts:
 npm run start
 npm run lint
 npm run seed:admin
-npm run seed:portfolio
 ```
+
+MongoDB is the only API content source. The API returns a service error when a published
+content module is missing instead of silently restoring repository defaults.
 
 ## Environment variables
 
