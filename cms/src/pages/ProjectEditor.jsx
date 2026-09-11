@@ -23,8 +23,7 @@ import {
   getAdminProject,
   updateAdminProject,
 } from '../services/portfolioService'
-
-const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
+import { resolveMediaUrl, resolvePortfolioUrl } from '../utils/urls'
 
 function toParagraph(value) {
   if (Array.isArray(value)) {
@@ -46,12 +45,6 @@ function cleanProject(project) {
     challenges: toParagraph(project.challenges),
     lessons: toParagraph(project.lessons),
   }
-}
-
-function resolveImageUrl(path) {
-  if (!path) return ''
-  if (/^(https?:|data:|blob:)/i.test(path)) return path
-  return `${portfolioUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 
 function ProjectEditor() {
@@ -202,7 +195,7 @@ function ProjectEditor() {
           {isPublished ? (
             <a
               className="btn btn-secondary"
-              href={`${portfolioUrl}/projects/${project.slug}`}
+              href={resolvePortfolioUrl(`/projects/${project.slug}`)}
               target="_blank"
               rel="noreferrer"
             >
@@ -273,7 +266,7 @@ function ProjectEditor() {
           </div>
           <div className="project-media-preview">
             {image ? (
-              <img src={resolveImageUrl(image)} alt="Current project preview" />
+              <img src={resolveMediaUrl(image)} alt="Current project preview" />
             ) : (
               <span>No preview available</span>
             )}

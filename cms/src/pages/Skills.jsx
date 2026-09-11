@@ -8,6 +8,7 @@ import RepeaterField from '../components/editor/RepeaterField'
 import { isSupportedIcon } from '../data/iconCatalog'
 import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
 import { updateSection } from '../utils/contentFormUtils'
+import { resolveMediaUrl } from '../utils/urls'
 import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
@@ -112,23 +113,9 @@ function validateSkillsForm(form) {
   })
 }
 
-function resolvePreviewUrl(source) {
-  const value = String(source ?? '').trim()
-  if (!value) return ''
-  if (/^(https?:|data:|blob:)/i.test(value)) return value
-
-  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
-
-  try {
-    return new URL(value, `${portfolioUrl.replace(/\/$/, '')}/`).href
-  } catch {
-    return value
-  }
-}
-
 function SkillsImagePreview({ source }) {
   const [hasError, setHasError] = useState(false)
-  const previewUrl = resolvePreviewUrl(source)
+  const previewUrl = resolveMediaUrl(source)
 
   if (!previewUrl || hasError) return <span>Image preview</span>
 

@@ -8,6 +8,7 @@ import RepeaterField from '../components/editor/RepeaterField'
 import { isSupportedIcon } from '../data/iconCatalog'
 import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
 import { updateSection } from '../utils/contentFormUtils'
+import { resolveMediaUrl } from '../utils/urls'
 import { validateForm, validators } from '../utils/validation'
 
 const emptyForm = {
@@ -102,20 +103,6 @@ function validateHomeForm(form) {
   })
 }
 
-function resolvePreviewUrl(source) {
-  const value = String(source ?? '').trim()
-  if (!value) return ''
-  if (/^(https?:|data:|blob:)/i.test(value)) return value
-
-  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
-
-  try {
-    return new URL(value, `${portfolioUrl.replace(/\/$/, '')}/`).href
-  } catch {
-    return value
-  }
-}
-
 function Home() {
   const getForm = useCallback(
     (portfolio) => (portfolio ? formFromPortfolio(portfolio) : emptyForm),
@@ -135,7 +122,7 @@ function Home() {
   const previewRole = editor.form.rotatingRoles[0] || 'Job title will appear here'
   const publishedPreviewName = editor.savedForm.name || 'Portfolio owner'
   const publishedPreviewImage = useMemo(
-    () => resolvePreviewUrl(editor.savedForm.heroImage),
+    () => resolveMediaUrl(editor.savedForm.heroImage),
     [editor.savedForm.heroImage],
   )
 

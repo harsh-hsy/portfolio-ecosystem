@@ -11,9 +11,9 @@ import {
   updateAdminCertificate,
 } from '../services/portfolioService'
 import { updateSection } from '../utils/contentFormUtils'
+import { resolveMediaUrl } from '../utils/urls'
 
 const filters = ['All', 'Published', 'Draft', 'Featured', 'Hidden']
-const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
 
 const emptyForm = {
   title: '',
@@ -26,12 +26,6 @@ function slugify(value) {
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-}
-
-function resolveImageUrl(path) {
-  if (!path) return ''
-  if (/^(https?:|data:|blob:)/i.test(path)) return path
-  return `${portfolioUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 
 function formFromPortfolio(portfolio) {
@@ -295,7 +289,7 @@ function Certificates() {
               >
                 <div className="project-library-card__media certificate-library-card__media">
                   {certificate.thumbnail ? (
-                    <img src={resolveImageUrl(certificate.thumbnail)} alt="" />
+                    <img src={resolveMediaUrl(certificate.thumbnail)} alt="" />
                   ) : (
                     <FiAward aria-hidden="true" />
                   )}

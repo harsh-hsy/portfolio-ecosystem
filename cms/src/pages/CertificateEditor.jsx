@@ -22,8 +22,7 @@ import {
   getAdminCertificate,
   updateAdminCertificate,
 } from '../services/portfolioService'
-
-const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
+import { resolveMediaUrl, resolvePortfolioUrl } from '../utils/urls'
 
 function cleanCertificate(certificate) {
   return {
@@ -39,12 +38,6 @@ function cleanCertificate(certificate) {
     visible: Boolean(certificate?.visible),
     featured: Boolean(certificate?.featured),
   }
-}
-
-function resolveImageUrl(path) {
-  if (!path) return ''
-  if (/^(https?:|data:|blob:)/i.test(path)) return path
-  return `${portfolioUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 
 function CertificateEditor() {
@@ -199,7 +192,7 @@ function CertificateEditor() {
           {isPublished && certificate.visible ? (
             <a
               className="btn btn-secondary"
-              href={`${portfolioUrl}/#certificates`}
+              href={resolvePortfolioUrl('/#certificates')}
               target="_blank"
               rel="noreferrer"
             >
@@ -260,7 +253,7 @@ function CertificateEditor() {
           </div>
           <div className="project-media-preview certificate-media-preview">
             {image ? (
-              <img src={resolveImageUrl(image)} alt="Current certificate preview" />
+              <img src={resolveMediaUrl(image)} alt="Current certificate preview" />
             ) : (
               <span>
                 <FiAward aria-hidden="true" /> No certificate image added

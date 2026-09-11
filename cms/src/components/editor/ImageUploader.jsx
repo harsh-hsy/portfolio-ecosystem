@@ -18,7 +18,7 @@ import {
   getMediaUploadSignature,
   registerMediaAsset,
 } from '../../services/mediaService'
-import { resolveMediaUrl } from '../../utils/media'
+import { resolveMediaUrl } from '../../utils/urls'
 
 const maxFileSize = 10_000_000
 const allowedTypes = new Set(['image/jpeg', 'image/png', 'image/webp'])

@@ -16,6 +16,8 @@ import {
   FiLogOut,
 } from 'react-icons/fi'
 
+import { portfolioUrl } from '../utils/urls'
+
 const navigation = [
   {
     id: 'dashboard',
@@ -102,11 +104,6 @@ const navigation = [
     icon: FiSettings,
   },
 ]
-
-const portfolioUrl = (import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173').replace(
-  /\/$/,
-  '',
-)
 
 export const footerNavigation = [
   {

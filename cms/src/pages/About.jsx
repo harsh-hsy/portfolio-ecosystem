@@ -8,6 +8,7 @@ import RepeaterField from '../components/editor/RepeaterField'
 import { isSupportedIcon } from '../data/iconCatalog'
 import { usePortfolioEditor } from '../hooks/usePortfolioEditor'
 import { updateSection } from '../utils/contentFormUtils'
+import { resolveMediaUrl } from '../utils/urls'
 import { validateForm, validators } from '../utils/validation'
 
 const suffixOptions = [
@@ -138,20 +139,6 @@ function validateAboutForm(form) {
   })
 }
 
-function resolvePreviewUrl(source) {
-  const value = String(source ?? '').trim()
-  if (!value) return ''
-  if (/^(https?:|data:|blob:)/i.test(value)) return value
-
-  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:5173'
-
-  try {
-    return new URL(value, `${portfolioUrl.replace(/\/$/, '')}/`).href
-  } catch {
-    return value
-  }
-}
-
 function ImagePreview({ source, alt }) {
   const [hasError, setHasError] = useState(false)
 
@@ -178,7 +165,7 @@ function About() {
   })
 
   const publishedPreviewImage = useMemo(
-    () => resolvePreviewUrl(editor.savedForm.aboutImage),
+    () => resolveMediaUrl(editor.savedForm.aboutImage),
     [editor.savedForm.aboutImage],
   )
 
