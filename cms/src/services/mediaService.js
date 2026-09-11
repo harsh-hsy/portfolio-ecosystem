@@ -17,9 +17,3 @@ export function registerMediaAsset(asset) {
     body: JSON.stringify(asset),
   })
 }
-
-export function deleteMediaAsset(id) {
-  return apiRequest(`/api/admin/media/${encodeURIComponent(id)}`, {
-    method: 'DELETE',
-  })
-}

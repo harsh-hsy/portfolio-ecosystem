@@ -88,11 +88,6 @@ export async function ensureCertificateResources(legacyCertificates = []) {
   }
 }
 
-export async function replaceCertificateResources(certificates = []) {
-  await Certificate.deleteMany({})
-  await ensureCertificateResources(certificates)
-}
-
 export async function listPublishedCertificates() {
   const certificates = await Certificate.find({
     publicationStatus: 'published',

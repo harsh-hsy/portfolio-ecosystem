@@ -373,10 +373,6 @@ async function requireModuleDocuments() {
   throw error;
 }
 
-export function isEditorModule(moduleName) {
-  return Boolean(editorModules[moduleName]);
-}
-
 export async function getPublishedPortfolio() {
   const content = composePortfolio(await requireModuleDocuments());
   await ensureProjectResources(content.projects);

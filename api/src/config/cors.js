@@ -6,8 +6,6 @@ function normalizeOrigin(value) {
 
 const normalizedAllowedOrigins = [env.clientOrigin, env.cmsOrigin].map(normalizeOrigin)
 
-export const allowedOrigins = normalizedAllowedOrigins
-
 export const corsOptions = {
   origin(origin, callback) {
     if (!origin) {
