@@ -25,7 +25,9 @@ export function validateAboutContent(content) {
   }
 
   if (!cleanText(about.copy) || cleanText(about.copy).length > 280) {
-    throw validationError('About short description is required and must use 280 characters or fewer')
+    throw validationError(
+      'About short description is required and must use 280 characters or fewer',
+    )
   }
 
   if (!cleanText(profile.about) || cleanText(profile.about).length > 1200) {

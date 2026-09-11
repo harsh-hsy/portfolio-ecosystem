@@ -49,7 +49,9 @@ async function uniqueSlug(value, ignoredId) {
   let candidate = root
   let suffix = 2
 
-  while (await Certificate.exists({ slug: candidate, ...(ignoredId ? { _id: { $ne: ignoredId } } : {}) })) {
+  while (
+    await Certificate.exists({ slug: candidate, ...(ignoredId ? { _id: { $ne: ignoredId } } : {}) })
+  ) {
     candidate = `${root}-${suffix}`
     suffix += 1
   }

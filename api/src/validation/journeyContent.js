@@ -34,19 +34,27 @@ function validateEntries(entries, label) {
     const body = cleanText(entry?.body)
 
     if (!title || title.length > 120) {
-      throw validationError(`Every ${label.toLowerCase()} entry needs a title using 120 characters or fewer`)
+      throw validationError(
+        `Every ${label.toLowerCase()} entry needs a title using 120 characters or fewer`,
+      )
     }
 
     if (!category || category.length > 40) {
-      throw validationError(`Every ${label.toLowerCase()} entry needs a label using 40 characters or fewer`)
+      throw validationError(
+        `Every ${label.toLowerCase()} entry needs a label using 40 characters or fewer`,
+      )
     }
 
     if (!period || period.length > 60) {
-      throw validationError(`Every ${label.toLowerCase()} entry needs a status or period using 60 characters or fewer`)
+      throw validationError(
+        `Every ${label.toLowerCase()} entry needs a status or period using 60 characters or fewer`,
+      )
     }
 
     if (!body || body.length > 500) {
-      throw validationError(`Every ${label.toLowerCase()} entry needs a description using 500 characters or fewer`)
+      throw validationError(
+        `Every ${label.toLowerCase()} entry needs a description using 500 characters or fewer`,
+      )
     }
   }
 }

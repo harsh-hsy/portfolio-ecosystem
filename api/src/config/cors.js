@@ -1,7 +1,10 @@
 import { env } from './env.js'
 
 function normalizeOrigin(value) {
-  return String(value || '').trim().replace(/^['"]|['"]$/g, '').replace(/\/$/, '')
+  return String(value || '')
+    .trim()
+    .replace(/^['"]|['"]$/g, '')
+    .replace(/\/$/, '')
 }
 
 const normalizedAllowedOrigins = [env.clientOrigin, env.cmsOrigin].map(normalizeOrigin)

@@ -47,7 +47,10 @@ export function validateContactContent(content) {
   optionalText(contact.eyebrow, 'Contact eyebrow', 40)
   requiredText(contact.title, 'Contact title', 110)
   requiredText(contact.copy, 'Contact copy', 280)
-  if (contact.useHomeAvailability !== undefined && typeof contact.useHomeAvailability !== 'boolean') {
+  if (
+    contact.useHomeAvailability !== undefined &&
+    typeof contact.useHomeAvailability !== 'boolean'
+  ) {
     throw validationError('Contact availability source must be true or false')
   }
   if (contact.useHomeAvailability) {

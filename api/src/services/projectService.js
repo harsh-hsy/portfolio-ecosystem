@@ -22,7 +22,10 @@ function cleanList(value) {
 
 function cleanParagraphList(value) {
   const paragraph = Array.isArray(value)
-    ? value.map((item) => String(item).trim()).filter(Boolean).join(', ')
+    ? value
+        .map((item) => String(item).trim())
+        .filter(Boolean)
+        .join(', ')
     : String(value ?? '').trim()
 
   return paragraph ? [paragraph] : []
@@ -71,7 +74,9 @@ async function uniqueSlug(value, ignoredId) {
   let candidate = root
   let suffix = 2
 
-  while (await Project.exists({ slug: candidate, ...(ignoredId ? { _id: { $ne: ignoredId } } : {}) })) {
+  while (
+    await Project.exists({ slug: candidate, ...(ignoredId ? { _id: { $ne: ignoredId } } : {}) })
+  ) {
     candidate = `${root}-${suffix}`
     suffix += 1
   }

@@ -7,9 +7,7 @@ function validationError(message) {
 }
 
 function cleanList(value) {
-  return Array.isArray(value)
-    ? value.map((item) => String(item).trim()).filter(Boolean)
-    : []
+  return Array.isArray(value) ? value.map((item) => String(item).trim()).filter(Boolean) : []
 }
 
 export function validateHomeContent(content) {

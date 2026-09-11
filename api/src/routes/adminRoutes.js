@@ -56,10 +56,7 @@ function serializeUser(user) {
 }
 
 async function cleanupUnusedMedia(content) {
-  const [projects, certificates] = await Promise.all([
-    listAdminProjects(),
-    listAdminCertificates(),
-  ])
+  const [projects, certificates] = await Promise.all([listAdminProjects(), listAdminCertificates()])
   await pruneUnreferencedCloudinaryAssets({ content, projects, certificates })
 }
 

@@ -1,32 +1,20 @@
-import { portfolioIdentity } from "../config/portfolioIdentity.js";
-import { validateAboutContent } from "../validation/aboutContent.js";
-import { validateCertificatesContent } from "../validation/certificateContent.js";
-import { validateHomeContent } from "../validation/homeContent.js";
-import {
-  validateJourneyContent,
-  validateMilestonesContent,
-} from "../validation/journeyContent.js";
-import {
-  validateAchievementsContent,
-  validateServicesContent,
-} from "../validation/listContent.js";
-import {
-  validateContactContent,
-  validateLinksContent,
-} from "../validation/contactContent.js";
-import { validateProjectsContent } from "../validation/projectContent.js";
-import { validateSkillsContent } from "../validation/skillsContent.js";
-import { validateFooterContent } from "../validation/footerContent.js";
-import { validateSettingsContent } from "../validation/settingsContent.js";
-import {
-  ensureCertificateResources,
-  listPublishedCertificates,
-} from "./certificateService.js";
+import { portfolioIdentity } from '../config/portfolioIdentity.js'
+import { validateAboutContent } from '../validation/aboutContent.js'
+import { validateCertificatesContent } from '../validation/certificateContent.js'
+import { validateHomeContent } from '../validation/homeContent.js'
+import { validateJourneyContent, validateMilestonesContent } from '../validation/journeyContent.js'
+import { validateAchievementsContent, validateServicesContent } from '../validation/listContent.js'
+import { validateContactContent, validateLinksContent } from '../validation/contactContent.js'
+import { validateProjectsContent } from '../validation/projectContent.js'
+import { validateSkillsContent } from '../validation/skillsContent.js'
+import { validateFooterContent } from '../validation/footerContent.js'
+import { validateSettingsContent } from '../validation/settingsContent.js'
+import { ensureCertificateResources, listPublishedCertificates } from './certificateService.js'
 import {
   ensureProjectResources,
   listPublishedProjects,
   replaceProjectResources,
-} from "./projectService.js";
+} from './projectService.js'
 import {
   AboutContent,
   AchievementsContent,
@@ -40,31 +28,20 @@ import {
   ServicesContent,
   SettingsContent,
   SkillsContent,
-} from "../models/PortfolioModule.js";
+} from '../models/PortfolioModule.js'
 
 const profileFields = {
-  home: [
-    "name",
-    "fullName",
-    "role",
-    "rotatingRoles",
-    "location",
-    "mapUrl",
-    "image",
-    "tagline",
-  ],
-  about: ["about", "aboutImage"],
-  skills: ["skillsImage"],
-  links: ["github", "linkedin", "email", "resume"],
-  settings: ["copyrightYear"],
-};
+  home: ['name', 'fullName', 'role', 'rotatingRoles', 'location', 'mapUrl', 'image', 'tagline'],
+  about: ['about', 'aboutImage'],
+  skills: ['skillsImage'],
+  links: ['github', 'linkedin', 'email', 'resume'],
+  settings: ['copyrightYear'],
+}
 
 function pick(source, fields) {
   return Object.fromEntries(
-    fields
-      .filter((field) => source?.[field] !== undefined)
-      .map((field) => [field, source[field]]),
-  );
+    fields.filter((field) => source?.[field] !== undefined).map((field) => [field, source[field]]),
+  )
 }
 
 function withoutContactFormText(section = {}) {
@@ -75,9 +52,9 @@ function withoutContactFormText(section = {}) {
     errorMessage: _errorMessage,
     failureMessage: _failureMessage,
     ...content
-  } = section;
+  } = section
 
-  return content;
+  return content
 }
 
 function withCodeOwnedIdentity(settings = {}) {
@@ -88,7 +65,7 @@ function withCodeOwnedIdentity(settings = {}) {
     cmsSocialSharing: _cmsSocialSharing,
     socialSharing: _socialSharing,
     ...settingsWithoutCmsConfiguration
-  } = settings;
+  } = settings
 
   return {
     ...settingsWithoutCmsConfiguration,
@@ -101,7 +78,7 @@ function withCodeOwnedIdentity(settings = {}) {
       authorName: portfolioIdentity.authorName,
       portfolioUrl: portfolioIdentity.portfolioUrl,
     },
-  };
+  }
 }
 
 function withoutCodeOwnedIdentity(settings = {}) {
@@ -115,9 +92,9 @@ function withoutCodeOwnedIdentity(settings = {}) {
     cmsSocialSharing: _cmsSocialSharing,
     socialSharing: _socialSharing,
     ...cmsManagedSettings
-  } = settings;
+  } = settings
 
-  return cmsManagedSettings;
+  return cmsManagedSettings
 }
 
 const modules = {
@@ -208,124 +185,114 @@ const modules = {
       ui: content.ui ?? {},
     }),
   },
-};
+}
 
 const editorModules = {
-  home: ["home"],
-  about: ["about"],
-  skills: ["skills"],
-  projects: ["projects"],
-  certificates: ["certificates"],
-  journey: ["journey"],
-  milestones: ["milestones"],
-  services: ["services"],
-  achievements: ["achievements"],
-  contact: ["contact", "links"],
-  links: ["links", "home", "settings"],
-  settings: ["settings"],
-  footer: ["settings"],
-};
+  home: ['home'],
+  about: ['about'],
+  skills: ['skills'],
+  projects: ['projects'],
+  certificates: ['certificates'],
+  journey: ['journey'],
+  milestones: ['milestones'],
+  services: ['services'],
+  achievements: ['achievements'],
+  contact: ['contact', 'links'],
+  links: ['links', 'home', 'settings'],
+  settings: ['settings'],
+  footer: ['settings'],
+}
 
 async function readModuleDocuments() {
   const entries = await Promise.all(
     Object.entries(modules).map(async ([name, definition]) => {
-      const document = await definition.model
-        .findOne({ status: "published" })
-        .lean();
-      return [name, document];
+      const document = await definition.model.findOne({ status: 'published' }).lean()
+      return [name, document]
     }),
-  );
+  )
 
-  return Object.fromEntries(entries);
+  return Object.fromEntries(entries)
 }
 
-async function writeModules(
-  content,
-  names = Object.keys(modules),
-  editorName = "",
-) {
+async function writeModules(content, names = Object.keys(modules), editorName = '') {
   const normalizedContent = {
     ...content,
     settings: withCodeOwnedIdentity({
-      ...(content.settings ?? {}),
+      ...content.settings,
       maintenance: {
-        ...(content.settings?.maintenance ?? {}),
+        ...content.settings?.maintenance,
       },
     }),
     sections: {
-      ...(content.sections ?? {}),
+      ...content.sections,
     },
-  };
+  }
 
-  if (names.includes("home")) validateHomeContent(normalizedContent);
-  if (names.includes("about")) validateAboutContent(normalizedContent);
-  if (names.includes("journey")) validateJourneyContent(normalizedContent);
-  if (names.includes("milestones"))
-    validateMilestonesContent(normalizedContent);
-  if (names.includes("projects")) validateProjectsContent(normalizedContent);
-  if (names.includes("certificates"))
-    validateCertificatesContent(normalizedContent);
-  if (names.includes("skills")) validateSkillsContent(normalizedContent);
-  if (names.includes("services")) validateServicesContent(normalizedContent);
-  if (names.includes("achievements"))
-    validateAchievementsContent(normalizedContent);
-  if (names.includes("contact")) validateContactContent(normalizedContent);
-  if (names.includes("links")) validateLinksContent(normalizedContent);
-  if (names.includes("settings")) {
-    if (editorName === "footer") validateFooterContent(normalizedContent);
-    else if (editorName === "settings")
-      validateSettingsContent(normalizedContent);
+  if (names.includes('home')) validateHomeContent(normalizedContent)
+  if (names.includes('about')) validateAboutContent(normalizedContent)
+  if (names.includes('journey')) validateJourneyContent(normalizedContent)
+  if (names.includes('milestones')) validateMilestonesContent(normalizedContent)
+  if (names.includes('projects')) validateProjectsContent(normalizedContent)
+  if (names.includes('certificates')) validateCertificatesContent(normalizedContent)
+  if (names.includes('skills')) validateSkillsContent(normalizedContent)
+  if (names.includes('services')) validateServicesContent(normalizedContent)
+  if (names.includes('achievements')) validateAchievementsContent(normalizedContent)
+  if (names.includes('contact')) validateContactContent(normalizedContent)
+  if (names.includes('links')) validateLinksContent(normalizedContent)
+  if (names.includes('settings')) {
+    if (editorName === 'footer') validateFooterContent(normalizedContent)
+    else if (editorName === 'settings') validateSettingsContent(normalizedContent)
     else {
-      validateFooterContent(normalizedContent);
-      validateSettingsContent(normalizedContent);
+      validateFooterContent(normalizedContent)
+      validateSettingsContent(normalizedContent)
     }
   }
 
   await Promise.all(
     names.map((name) => {
-      const definition = modules[name];
+      const definition = modules[name]
       if (!definition) {
-        const error = new Error(`Unsupported portfolio module: ${name}`);
-        error.statusCode = 400;
-        throw error;
+        const error = new Error(`Unsupported portfolio module: ${name}`)
+        error.statusCode = 400
+        throw error
       }
 
       return definition.model.findOneAndUpdate(
-        { status: "published" },
+        { status: 'published' },
         {
           $set: {
             data: definition.extract(normalizedContent),
-            status: "published",
+            status: 'published',
           },
         },
-        { upsert: true, returnDocument: "after", runValidators: true },
-      );
+        { upsert: true, returnDocument: 'after', runValidators: true },
+      )
     }),
-  );
+  )
 }
 
 function composePortfolio(documents) {
-  const data = (name) => documents[name].data ?? {};
+  const data = (name) => documents[name].data ?? {}
 
-  const home = data("home");
-  const about = data("about");
-  const skills = data("skills");
-  const projects = data("projects");
-  const certificates = data("certificates");
-  const journey = data("journey");
-  const milestones = data("milestones");
-  const services = data("services");
-  const achievements = data("achievements");
-  const contact = data("contact");
-  const links = data("links");
-  const settings = data("settings");
-  const rawSettings = settings.settings ?? {};
+  const home = data('home')
+  const about = data('about')
+  const skills = data('skills')
+  const projects = data('projects')
+  const certificates = data('certificates')
+  const journey = data('journey')
+  const milestones = data('milestones')
+  const services = data('services')
+  const achievements = data('achievements')
+  const contact = data('contact')
+  const links = data('links')
+  const settings = data('settings')
+  const rawSettings = settings.settings ?? {}
   const portfolioSettings = withCodeOwnedIdentity({
     ...rawSettings,
     maintenance: {
-      ...(rawSettings.maintenance ?? {}),
+      ...rawSettings.maintenance,
     },
-  });
+  })
   return {
     profile: {
       ...home.profile,
@@ -358,44 +325,43 @@ function composePortfolio(documents) {
     settings: portfolioSettings,
     commands: settings.commands ?? [],
     ui: settings.ui ?? {},
-  };
+  }
 }
 
 async function requireModuleDocuments() {
-  const documents = await readModuleDocuments();
-  const missingNames = Object.keys(modules).filter((name) => !documents[name]);
-  if (missingNames.length === 0) return documents;
+  const documents = await readModuleDocuments()
+  const missingNames = Object.keys(modules).filter((name) => !documents[name])
+  if (missingNames.length === 0) return documents
 
   const error = new Error(
-    `Portfolio content is incomplete. Missing published modules: ${missingNames.join(", ")}`,
-  );
-  error.statusCode = 503;
-  throw error;
+    `Portfolio content is incomplete. Missing published modules: ${missingNames.join(', ')}`,
+  )
+  error.statusCode = 503
+  throw error
 }
 
 export async function getPublishedPortfolio() {
-  const content = composePortfolio(await requireModuleDocuments());
-  await ensureProjectResources(content.projects);
-  await ensureCertificateResources(content.certificates);
+  const content = composePortfolio(await requireModuleDocuments())
+  await ensureProjectResources(content.projects)
+  await ensureCertificateResources(content.certificates)
 
   return {
     ...content,
     projects: await listPublishedProjects(),
     certificates: await listPublishedCertificates(),
-  };
+  }
 }
 
 export async function updatePortfolioModule(moduleName, content) {
-  const names = editorModules[moduleName];
+  const names = editorModules[moduleName]
   if (!names) {
-    const error = new Error("Unsupported portfolio module");
-    error.statusCode = 400;
-    throw error;
+    const error = new Error('Unsupported portfolio module')
+    error.statusCode = 400
+    throw error
   }
 
-  await requireModuleDocuments();
-  await writeModules(content, names, moduleName);
-  if (moduleName === "projects")
-    await replaceProjectResources(content.projects);
-  return getPublishedPortfolio();
+  await requireModuleDocuments()
+  await writeModules(content, names, moduleName)
+  if (moduleName === 'projects') await replaceProjectResources(content.projects)
+  return getPublishedPortfolio()
 }

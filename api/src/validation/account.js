@@ -12,7 +12,9 @@ export function validateAccountName(value) {
 }
 
 export function validateAccountEmail(value) {
-  const email = String(value ?? '').trim().toLowerCase()
+  const email = String(value ?? '')
+    .trim()
+    .toLowerCase()
   if (!email) throw validationError('Email is required')
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw validationError('Enter a valid email address')
@@ -45,14 +47,16 @@ export function parseDateOfBirth(value) {
   const year = Number(match[3])
   const date = new Date(Date.UTC(year, month - 1, day))
   const today = new Date()
-  const todayUtc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
+  const todayUtc = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()),
+  )
 
   if (
-    year < 1900
-    || date.getUTCFullYear() !== year
-    || date.getUTCMonth() !== month - 1
-    || date.getUTCDate() !== day
-    || date > todayUtc
+    year < 1900 ||
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day ||
+    date > todayUtc
   ) {
     throw validationError('Enter a valid date of birth')
   }

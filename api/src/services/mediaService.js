@@ -2,14 +2,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import { env } from '../config/env.js'
 import { MediaAsset } from '../models/MediaAsset.js'
 
-const allowedSections = new Set([
-  'home',
-  'about',
-  'skills',
-  'projects',
-  'certificates',
-  'settings',
-])
+const allowedSections = new Set(['home', 'about', 'skills', 'projects', 'certificates', 'settings'])
 
 function configurationError() {
   const error = new Error('Cloudinary is not configured on the API')
@@ -31,7 +24,9 @@ function assertConfigured() {
 }
 
 function normalizeSection(value) {
-  const section = String(value ?? '').trim().toLowerCase()
+  const section = String(value ?? '')
+    .trim()
+    .toLowerCase()
   if (!allowedSections.has(section)) {
     const error = new Error('Unsupported media section')
     error.statusCode = 400
@@ -41,13 +36,7 @@ function normalizeSection(value) {
 }
 
 function sanitizeSigningParameters(input = {}) {
-  const blocked = new Set([
-    'api_key',
-    'cloud_name',
-    'file',
-    'resource_type',
-    'signature',
-  ])
+  const blocked = new Set(['api_key', 'cloud_name', 'file', 'resource_type', 'signature'])
 
   return Object.fromEntries(
     Object.entries(input).filter(([key, value]) => !blocked.has(key) && value !== undefined),
@@ -174,20 +163,25 @@ export async function pruneUnreferencedCloudinaryAssets(content) {
     updatedAt: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
   })
 
-  await Promise.all(assets.map(async (asset) => {
-    const isReferenced = referencedUrls.has(asset.url) || referencedUrls.has(asset.originalUrl)
-    if (isReferenced) return
+  await Promise.all(
+    assets.map(async (asset) => {
+      const isReferenced = referencedUrls.has(asset.url) || referencedUrls.has(asset.originalUrl)
+      if (isReferenced) return
 
-    try {
-      if (asset.publicId) {
-        await cloudinary.uploader.destroy(asset.publicId, {
-          resource_type: asset.resourceType || 'image',
-          invalidate: true,
-        })
+      try {
+        if (asset.publicId) {
+          await cloudinary.uploader.destroy(asset.publicId, {
+            resource_type: asset.resourceType || 'image',
+            invalidate: true,
+          })
+        }
+        await asset.deleteOne()
+      } catch (error) {
+        console.error(
+          `Unable to remove orphaned Cloudinary asset ${asset.publicId}:`,
+          error.message,
+        )
       }
-      await asset.deleteOne()
-    } catch (error) {
-      console.error(`Unable to remove orphaned Cloudinary asset ${asset.publicId}:`, error.message)
-    }
-  }))
+    }),
+  )
 }

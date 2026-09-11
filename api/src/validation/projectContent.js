@@ -69,8 +69,7 @@ export function validateProjectsContent(content) {
     const listFields = ['features', 'challenges', 'lessons']
     const invalidList = listFields.find(
       (field) =>
-        !Array.isArray(project[field]) ||
-        project[field].some((item) => typeof item !== 'string'),
+        !Array.isArray(project[field]) || project[field].some((item) => typeof item !== 'string'),
     )
 
     if (invalidList) {
