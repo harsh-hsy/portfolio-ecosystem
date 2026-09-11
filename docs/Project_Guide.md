@@ -44,10 +44,6 @@ Services
 
 Achievements
 
-Inbox
-
-Resume
-
 Settings
 
 Back to Portfolio

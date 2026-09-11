@@ -34,7 +34,7 @@ Responsibilities:
 - Handle authentication.
 - Connect to MongoDB.
 - Store admin users with hashed passwords.
-- Store portfolio content, media metadata, and contact messages.
+- Store portfolio content and media metadata.
 - Expose public published-content APIs.
 - Expose protected admin APIs.
 

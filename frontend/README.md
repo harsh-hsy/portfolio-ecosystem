@@ -110,7 +110,3 @@ Make sure the API is running before opening the public site.
 ## Current status
 
 The public experience is already connected to the CMS-driven content flow. The remaining work is mostly about refinement and keeping the data model clean.
-
-## Future goal
-
-Keep the public site aligned with new CMS modules, including the inbox-related workflow when it is added later.

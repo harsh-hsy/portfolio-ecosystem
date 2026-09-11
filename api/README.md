@@ -75,7 +75,6 @@ The API uses separate MongoDB models for:
 - projects
 - certificates
 - media assets
-- contact messages
 - admin users
 
 This makes each content area easier to manage and update without mixing everything into one document.
@@ -128,7 +127,3 @@ Cloudinary credentials belong only in the API environment. Never expose the API 
 ## Current status
 
 The backend foundation is already in place. The main work now is content completeness, editor improvements, and deployment setup.
-
-## Future goal
-
-Build the inbox page and connect it properly to the contact messages stored in the API.

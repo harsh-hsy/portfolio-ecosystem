@@ -53,7 +53,7 @@ The private admin dashboard for editing portfolio content.
 Highlights:
 
 - authenticated admin access
-- editable modules for Home, About, Skills, Projects, Certificates, Journey, Milestones, Services, Achievements, Contact, Links, Settings, Account, Resume, and Inbox
+- editable modules for Home, About, Skills, Projects, Certificates, Journey, Milestones, Services, Achievements, Contact, Links, Settings, and Account
 - reusable form patterns for repeaters, structured entries, and icon selection
 - validation, unsaved-change protection, confirmation dialogs, and toast feedback
 - content synchronization with the API and MongoDB
