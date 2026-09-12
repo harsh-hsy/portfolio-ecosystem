@@ -212,14 +212,16 @@
 .about-photo,
 .skills-image {
   width: 100%;
+  aspect-ratio: 4 / 5;
   align-self: start;
+  overflow: hidden;
   padding: 12px;
 }
 .about-photo img,
 .skills-image img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: var(--radius);
