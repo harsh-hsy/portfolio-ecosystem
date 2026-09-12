@@ -103,6 +103,12 @@ export function getProjectDetailsContent(project, portfolio) {
   const safeProject = withDefaults(project, defaultProject)
   const resolvedPortfolio = resolvePortfolio(portfolio)
   const titleSuffix = defaultSettings.siteIdentity.titleSuffix
+  const projectDetailsUi = resolvedPortfolio.ui?.projectDetails ?? emptyPortfolio.ui.projectDetails
+
+  // The hero description is the project overview, so a legacy `desc` detail card is redundant.
+  const detailCards = ensureArray(projectDetailsUi.detailCards).filter(
+    (card) => card.field !== 'desc',
+  )
 
   return {
     project: safeProject,
@@ -110,7 +116,7 @@ export function getProjectDetailsContent(project, portfolio) {
       title: `${safeProject.shortTitle}${titleSuffix ? ` | ${titleSuffix}` : ''}`,
       description: safeProject.desc,
     },
-    ui: resolvedPortfolio.ui?.projectDetails ?? emptyPortfolio.ui.projectDetails,
+    ui: { ...projectDetailsUi, detailCards },
   }
 }
 

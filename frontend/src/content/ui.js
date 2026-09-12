@@ -22,7 +22,6 @@ export const uiContent = {
     mainScreenshotSuffix: 'main screenshot',
     screenshotLabel: 'screenshot',
     detailCards: [
-      { label: 'Overview', field: 'desc', type: 'text' },
       { label: 'Problem', field: 'problem', type: 'text' },
       { label: 'Solution', field: 'solution', type: 'text' },
       { label: 'Challenges', field: 'challenges', type: 'list' },
