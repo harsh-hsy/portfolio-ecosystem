@@ -85,8 +85,8 @@ function ProjectEditorPanel({ project, isDirty, isSaving, onChange, onReset, onS
 
       <div className="project-editor-section">
         <div className="project-editor-section__heading">
-          <h2>Technology and features</h2>
-          <p>Technologies appear on project cards; features support the case study.</p>
+          <h2>Technology</h2>
+          <p>Technologies appear on project cards.</p>
         </div>
         <div className="project-editor-repeaters">
           <RepeaterField
@@ -97,14 +97,6 @@ function ProjectEditorPanel({ project, isDirty, isSaving, onChange, onReset, onS
             createItem={() => ''}
             addLabel="Add Technology"
             emptyMessage="Add at least one technology before publishing."
-          />
-          <RepeaterField
-            className="project-editor-list-repeater project-editor-list-repeater--columns"
-            label="Features"
-            items={project.features}
-            onChange={(items) => onChange('features', items)}
-            createItem={() => ''}
-            addLabel="Add Feature"
           />
         </div>
       </div>

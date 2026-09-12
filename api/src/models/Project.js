@@ -12,7 +12,6 @@ const projectSchema = new mongoose.Schema(
     thumbnail: { type: String, default: '', trim: true },
     images: { type: [String], default: [] },
     tech: { type: [String], default: [] },
-    features: { type: [String], default: [] },
     problem: { type: String, default: '', trim: true },
     solution: { type: String, default: '', trim: true },
     challenges: { type: [String], default: [] },

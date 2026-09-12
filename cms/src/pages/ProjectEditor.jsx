@@ -29,7 +29,6 @@ function cleanProject(project) {
     ...project,
     images: Array.isArray(project.images) ? project.images : [],
     tech: Array.isArray(project.tech) ? project.tech : [],
-    features: Array.isArray(project.features) ? project.features : [],
     challenges: toParagraph(project.challenges),
     lessons: toParagraph(project.lessons),
   }

@@ -29,7 +29,6 @@ export const defaultProject = {
   github: '',
   tech: [],
   images: [''],
-  features: [],
   slug: '',
   problem: '',
   solution: '',

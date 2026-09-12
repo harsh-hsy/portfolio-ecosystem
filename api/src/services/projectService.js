@@ -35,7 +35,7 @@ function serializeProject(project) {
   const value = project?.toObject ? project.toObject() : project
   if (!value) return null
 
-  const { __v, ...serialized } = value
+  const { __v, features: _features, ...serialized } = value
   return serialized
 }
 
@@ -55,7 +55,6 @@ function normalizeProject(input, fallback = {}) {
     thumbnail: String(input.thumbnail ?? fallback.thumbnail ?? '').trim() || images[0] || '',
     images,
     tech: cleanList(input.tech ?? fallback.tech),
-    features: cleanList(input.features ?? fallback.features),
     problem: String(input.problem ?? fallback.problem ?? '').trim(),
     solution: String(input.solution ?? fallback.solution ?? '').trim(),
     challenges: cleanParagraphList(input.challenges ?? fallback.challenges),

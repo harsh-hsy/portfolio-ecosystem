@@ -14,12 +14,6 @@ export const projects = [
       '/assets/images/qr-fusion/qrfusion-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript', 'UI Design'],
-    features: [
-      'Custom QR styling',
-      'Instant download',
-      'Privacy-friendly workflow',
-      'Responsive utility interface',
-    ],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:
@@ -48,12 +42,6 @@ export const projects = [
       '/assets/images/typrush/typrush-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript', 'Sound UX'],
-    features: [
-      'Typing speed test',
-      'Accuracy feedback',
-      'Sound-powered interactions',
-      'Focused practice UI',
-    ],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:
@@ -82,12 +70,6 @@ export const projects = [
       '/assets/images/quickdrivelink/quickdrivelink-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript', 'Utility UX'],
-    features: [
-      'Drive link conversion',
-      'Clear validation',
-      'Fast copy flow',
-      'Responsive single-purpose tool',
-    ],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:
@@ -116,12 +98,6 @@ export const projects = [
       '/assets/images/freshcart/freshcart-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript', 'Responsive Design'],
-    features: [
-      'Product browsing layout',
-      'Grocery storefront UI',
-      'Mobile-ready grids',
-      'Clean ecommerce presentation',
-    ],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:
@@ -150,7 +126,6 @@ export const projects = [
       '/assets/images/weather-app/weather-app-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript', 'OpenWeatherMap'],
-    features: ['Live weather data', 'Theme toggle', 'City search', 'Responsive dashboard cards'],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:
@@ -179,12 +154,6 @@ export const projects = [
       '/assets/images/calculator/calculator-3.png',
     ],
     tech: ['HTML', 'CSS', 'JavaScript'],
-    features: [
-      'Basic arithmetic',
-      'Keyboard-friendly layout',
-      'Responsive sizing',
-      'Clean interaction states',
-    ],
     problem:
       'The project focuses on turning a common everyday web task into a cleaner, faster, and more approachable browser experience.',
     solution:

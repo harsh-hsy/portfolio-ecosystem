@@ -66,7 +66,7 @@ export function validateProjectsContent(content) {
       throw validationError(`${label}: add at least one technology`)
     }
 
-    const listFields = ['features', 'challenges', 'lessons']
+    const listFields = ['challenges', 'lessons']
     const invalidList = listFields.find(
       (field) =>
         !Array.isArray(project[field]) || project[field].some((item) => typeof item !== 'string'),
