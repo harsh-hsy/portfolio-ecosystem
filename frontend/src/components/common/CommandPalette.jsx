@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FiArrowRight, FiCommand } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { getCommandPaletteContent } from '../../content/contentSelectors.js'
+import { resumeUrl } from '../../config/resume.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
 export default function CommandPalette() {
@@ -23,7 +24,10 @@ export default function CommandPalette() {
         ...action,
         run: () => {
           if (action.type === 'route') navigate(action.target)
-          if (action.type === 'externalProfile') window.open(profile[action.target], '_blank')
+          if (action.type === 'externalProfile') {
+            const url = action.target === 'resume' ? resumeUrl : profile[action.target]
+            if (url) window.open(url, '_blank')
+          }
           if (action.type === 'email') window.location.href = `mailto:${profile.email}`
         },
       })),
