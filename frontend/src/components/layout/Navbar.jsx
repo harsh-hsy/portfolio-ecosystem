@@ -6,7 +6,7 @@ import ThemeToggle from './ThemeToggle.jsx'
 import { fadeDown } from '../../motion/variants.js'
 import { getProfileContent, getSiteSettings } from '../../content/contentSelectors.js'
 import { publicNavigation } from '../../config/navigation.js'
-import { resumeUrl } from '../../config/resume.js'
+import { getResumeUrl } from '../../config/resume.js'
 import { useScrollSpy } from '../../hooks/useScrollSpy.js'
 import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 
@@ -52,7 +52,12 @@ export default function Navbar({ entranceReady, sticky = true }) {
         </div>
         <div className="nav-actions">
           <ThemeToggle />
-          <a className="resume-link" href={resumeUrl} target="_blank" rel="noreferrer">
+          <a
+            className="resume-link"
+            href={getResumeUrl(profile.resume)}
+            target="_blank"
+            rel="noreferrer"
+          >
             <FiDownload /> {settings.nav.resumeLabel}
           </a>
           <button

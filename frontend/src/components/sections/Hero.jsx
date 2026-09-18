@@ -10,7 +10,7 @@ import { usePortfolioContent } from '../../hooks/usePortfolioContent.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 import { getCloudinaryImageUrl, getCloudinarySrcSet } from '../../services/cloudinary.js'
 import { experienceSettings } from '../../config/experience.js'
-import { resumeUrl } from '../../config/resume.js'
+import { getResumeUrl } from '../../config/resume.js'
 
 export default function Hero({ entranceReady }) {
   const [index, setIndex] = useState(0)
@@ -61,7 +61,7 @@ export default function Hero({ entranceReady }) {
           </div>
           <p>{content.description}</p>
           <div className="hero-actions">
-            <MagneticButton href={resumeUrl} target="_blank" className="primary">
+            <MagneticButton href={getResumeUrl(profile.resume)} target="_blank" className="primary">
               <FiDownload /> {content.primaryAction}
             </MagneticButton>
             <MagneticButton href="#projects" className="secondary">
